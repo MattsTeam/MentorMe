@@ -42,3 +42,10 @@ Application to match mentors and mentees based on shared interests, goals, avail
     mixed system (sometimes payments, sometime not)
 * donation system
 * Fund the costs for people that are less well off
+
+
+# APIs
+
+* Google Maps
+* Parse Push for push notification
+* Calendar Provider API 
