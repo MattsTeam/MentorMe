@@ -51,5 +51,6 @@ Application to match mentors and mentees based on shared interests, goals, avail
 * Calendar Provider API 
 
 # Models
-* User: goals, skills, location
-* Meeting: time (Calendar), location
+* User: goals, skills, location, profile picture, current mentors/mentees
+* Meeting: time, location
+* Calendar: meetings
