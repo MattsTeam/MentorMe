@@ -49,3 +49,7 @@ Application to match mentors and mentees based on shared interests, goals, avail
 * Google Maps
 * Parse Push for push notification
 * Calendar Provider API 
+
+# Models
+* User: goals, skills, location
+* Meeting: time (Calendar), location
