@@ -10,12 +10,11 @@ public class User extends ParseObject{
     public String getUsername() {return getString("username"); }
     public void setUsername(String username) {put("username", username); }
 
-
-    public ParseFile getImage() {
-        return getParseFile("");
+    public ParseFile getProfileImage() {
+        return getParseFile("profileImage");
     }
 
-    public void setImage(ParseFile image) {
+    public void setProfileImage(ParseFile image) {
         put("profileImage", image);
     }
 
