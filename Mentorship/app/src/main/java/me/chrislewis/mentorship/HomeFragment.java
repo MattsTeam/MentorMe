@@ -16,14 +16,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.User;
 
 public class HomeFragment extends Fragment {
     ParseUser currentUser;
-    me.vanessahlyan.parstagram.GridAdapter gridAdapter;
+    GridAdapter gridAdapter;
     ArrayList<User> users;
     RecyclerView rvUsers;
     ProgressBar pb;
@@ -42,7 +41,7 @@ public class HomeFragment extends Fragment {
         rvUsers = (RecyclerView) view.findViewById(R.id.rvGrid);
 
         users = new ArrayList<>();
-        gridAdapter = new me.vanessahlyan.parstagram.GridAdapter(users);
+        gridAdapter = new GridAdapter(users);
         pb = (ProgressBar) view.findViewById(R.id.pbLoading);
 
         rvUsers.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
@@ -55,14 +54,13 @@ public class HomeFragment extends Fragment {
     public void getUsers() {
         pb.setVisibility(ProgressBar.VISIBLE);
 
-        ParseQuery<User> query = ParseQuery.getQuery(User   .class);
-        query.whereEqualTo("user", currentUser);
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        //query.whereEqualTo("user", currentUser);
         query.findInBackground(new FindCallback<User>() {
             @Override
             public void done(List<User> objects, ParseException e) {
                 if (e == null) {
                     gridAdapter.clear();
-                    Collections.reverse(objects);
                     gridAdapter.addAll(objects);
                     gridAdapter.notifyDataSetChanged();
                     pb.setVisibility(ProgressBar.INVISIBLE);
