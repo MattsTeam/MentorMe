@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
                 login(usernameString, passwordString);
             }
         });
-    } // test
+    } // testing
 
     private void login(String username, String password) {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
