@@ -12,9 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import me.chrislewis.mentorship.models.Message;
 
 public class MessageFragment extends Fragment {
 
@@ -45,9 +46,9 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String data = etMessage.getText().toString();
-                ParseObject message = ParseObject.create("Message");
-                message.put(USER_ID_KEY, ParseUser.getCurrentUser().getObjectId());
-                message.put(BODY_KEY, data);
+                Message message = new Message();
+                message.setBody(data);
+                message.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
                 message.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
