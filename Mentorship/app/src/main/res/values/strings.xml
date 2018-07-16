@@ -6,4 +6,7 @@
     <string name="title_calendar">Calendar</string>
     <string name="title_messages">Messages</string>
     <string name="title_profile">Profile</string>
+    <string name="title_favorites">Favorite</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
