@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,16 @@ public class MessageFragment extends Fragment {
     EditText etMessage;
     Button bSend;
 
+    static final int POLL_INTERVAL = 1000;
+    Handler myHandler = new Handler();
+    Runnable mRefreshMessagesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshMessages();
+            myHandler.postDelayed(this, POLL_INTERVAL);
+        }
+    };
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +66,7 @@ public class MessageFragment extends Fragment {
         adapter = new MessageAdapter(view.getContext(), user.getObjectId(), mMessages);
         rvMessages.setAdapter(adapter);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
+        linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
         bSend = view.findViewById(R.id.bSend);
         bSend.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +91,7 @@ public class MessageFragment extends Fragment {
             }
         });
         refreshMessages();
+        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
     }
 
     void refreshMessages() {
@@ -90,12 +103,12 @@ public class MessageFragment extends Fragment {
                 if (e == null) {
                     mMessages.clear();
                     mMessages.addAll(messages);
-                    adapter.notifyDataSetChanged(); // update adapter
+                    adapter.notifyDataSetChanged();
+                    rvMessages.scrollToPosition(0);
                 } else {
                     Log.e("message", "Error Loading Messages" + e);
                 }
             }
         });
     }
-
 }
