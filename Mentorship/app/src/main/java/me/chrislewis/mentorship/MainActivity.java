@@ -13,8 +13,10 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private FragmentTransaction fragmentTransaction;
+
     final FragmentManager fragmentManager = getSupportFragmentManager();
-    final  HomeFragment homeFragment = new HomeFragment();
+    final HomeFragment homeFragment = new HomeFragment();
+    final CalendarFragment calendarFragment = new CalendarFragment();
     //final UserFragment userFragment = new UserFragment();
     final MessageFragment messageFragment = new MessageFragment();
 
@@ -36,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
                     return true;
                 case R.id.navigation_calendar:
-                    mTextMessage.setText("Calendar");
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, calendarFragment).commit();
                     return true;
                 case R.id.navigation_profile:
                     mTextMessage.setText("Profile");
