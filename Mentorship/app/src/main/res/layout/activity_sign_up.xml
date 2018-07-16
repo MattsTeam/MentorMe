@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/loginGrey"
+    tools:context=".SignUpActivity">
+
+
+    <EditText
+        android:id="@+id/newUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="73dp"
+        android:layout_marginTop="84dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:textColor="@color/loginGrey"
+        android:background="@drawable/sign_up_text_input"
+        android:hint="Username" />
+
+    <TextView
+        android:id="@+id/usernameIcon"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/newUsername"
+        android:layout_toStartOf="@+id/newUsername"
+        android:background="@drawable/sign_up_image"
+        android:text="" />
+
+    <EditText
+        android:id="@+id/newPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/newUsername"
+        android:layout_alignLeft="@+id/newUsername"
+        android:textColor="@color/loginGrey"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:background="@drawable/sign_up_text_input"
+        android:hint="Password" />
+
+    <TextView
+        android:id="@+id/passwordIcon"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/newPassword"
+        android:layout_toStartOf="@+id/newPassword"
+        android:background="@drawable/sign_up_image"
+        android:text="" />
+
+    <EditText
+        android:id="@+id/newEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/newPassword"
+        android:layout_alignLeft="@+id/newPassword"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:textColor="@color/loginGrey"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:background="@drawable/sign_up_text_input"
+        android:hint="Email" />
+
+    <TextView
+        android:id="@+id/emailIcon"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/newEmail"
+        android:layout_toStartOf="@+id/newEmail"
+        android:background="@drawable/sign_up_image"
+        android:text="" />
+
+    <EditText
+        android:id="@+id/newName"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/newEmail"
+        android:layout_alignLeft="@+id/newEmail"
+        android:textColor="@color/loginGrey"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:background="@drawable/sign_up_text_input"
+        android:hint="Full Name" />
+
+    <TextView
+        android:id="@+id/nameIcon"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/newName"
+        android:layout_toStartOf="@+id/newName"
+        android:background="@drawable/sign_up_image"
+        android:text="" />
+
+    <ImageView
+        android:id="@+id/usernameImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignLeft="@+id/usernameIcon"
+        android:layout_alignRight="@+id/usernameIcon"
+        android:layout_alignTop="@+id/usernameIcon"
+        android:layout_alignBottom="@+id/usernameIcon"
+        android:gravity="center"
+        app:srcCompat="@drawable/ic_username" />
+
+    <ImageView
+        android:id="@+id/passwordImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignLeft="@+id/passwordIcon"
+        android:layout_alignRight="@+id/passwordIcon"
+        android:layout_alignTop="@+id/passwordIcon"
+        android:layout_alignBottom="@+id/passwordIcon"
+        android:gravity="center"
+        app:srcCompat="@drawable/ic_password" />
+
+    <ImageView
+        android:id="@+id/emailImage"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        android:layout_alignBottom="@+id/emailIcon"
+        android:layout_alignLeft="@+id/emailIcon"
+        android:layout_alignRight="@+id/emailIcon"
+        android:layout_alignTop="@+id/emailIcon"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:srcCompat="@drawable/ic_email" />
+
+    <ImageView
+        android:id="@+id/nameImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignLeft="@+id/nameIcon"
+        android:layout_alignRight="@+id/nameIcon"
+        android:layout_alignTop="@+id/nameIcon"
+        android:layout_alignBottom="@+id/nameIcon"
+        android:gravity="center"
+        app:srcCompat="@drawable/ic_name" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newName"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/round_login_button"
+        android:textSize="20sp"
+        android:text="Register" />
+</RelativeLayout>
