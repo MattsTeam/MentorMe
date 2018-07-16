@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
@@ -16,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button loginButton;
+    private TextView signUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.tvUsername);
         password = findViewById(R.id.tvPassword);
         loginButton = findViewById(R.id.loginButton);
+        signUpButton = findViewById(R.id.tvSignUp);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,7 +37,15 @@ public class LoginActivity extends AppCompatActivity {
                 login(usernameString, passwordString);
             }
         });
-    } // testing
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
     private void login(String username, String password) {
         ParseUser.logInInBackground(username, password, new LogInCallback() {

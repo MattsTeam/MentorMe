@@ -13,22 +13,23 @@
         android:layout_height="35dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="190dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:paddingLeft="15dp"
         android:background="@drawable/round_text_input"
-        android:hint=" Username"
-        android:padding="5dip" />
+        android:textColor="@color/loginGrey"
+        android:textCursorDrawable="@null"
+        android:hint=" Username" />
 
     <EditText
         android:id="@+id/tvPassword"
         android:layout_width="216dp"
         android:layout_height="35dp"
         android:layout_alignLeft="@+id/tvUsername"
+        android:textColor="@color/loginGrey"
         android:layout_below="@id/tvUsername"
         android:layout_marginTop="20dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:paddingLeft="15dp"
         android:background="@drawable/round_text_input"
+        android:textCursorDrawable="@null"
         android:ems="10"
         android:hint="  Password"
         android:inputType="textPassword" />
@@ -40,10 +41,22 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tvPassword"
         android:layout_alignLeft="@id/tvUsername"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/round_login_button"
-        android:textColor="#FFFFFF"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         android:text="Sign In" />
+
+    <TextView
+        android:id="@+id/tvSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:textStyle="bold"
+        android:textColor="@color/loginGreen"
+        android:text="Don't have an account? Sign up." />
 
 </RelativeLayout>
