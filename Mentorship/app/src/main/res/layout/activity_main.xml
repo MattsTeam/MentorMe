@@ -11,8 +11,7 @@
         android:id="@+id/flContainer"
         android:layout_width="match_parent"
         android:layout_height="511dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar">
+        android:layout_alignParentStart="true" >
 
     </FrameLayout>
 

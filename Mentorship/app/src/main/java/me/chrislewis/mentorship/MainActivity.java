@@ -14,17 +14,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final  HomeFragment homeFragment = new HomeFragment();
-    //final UserFragment userFragment = new UserFragment();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction fragmentTransaction;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
-                    //fragmentTransaction
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
                     return true;
                 case R.id.navigation_favorites:
                     mTextMessage.setText(R.string.title_dashboard);
