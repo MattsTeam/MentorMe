@@ -9,39 +9,36 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.parse.ParseUser;
 
 import java.util.List;
 
-import me.chrislewis.mentorship.models.User;
-
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
-    private List<User> mUsers;
+    private List<ParseUser> mUsers;
     Context context;
 
 
-    public GridAdapter(List<User> users) {
+    public GridAdapter(List<ParseUser> users) {
         mUsers = users;
     }
 
 
     @NonNull
     @Override
-    public GridAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext(); // context is UserFragment
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View gridView = inflater.inflate(R.layout.item_user, parent, false);
-        ViewHolder viewHolder = new ViewHolder(gridView);
         return new ViewHolder(gridView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull GridAdapter.ViewHolder holder, int position) {
-        User user = mUsers.get(position);
-        holder.tvUsername.setText(user.getUsername());
-        Glide.with(context).load(user.getProfileImage().getUrl()).into(holder.ivProfileImage);
+        ParseUser user = mUsers.get(position);
+        holder.tvUsername.setText(user.getString("username"));
+        //Glide.with(context).load(user.getParseFile("profileImage").getUrl()).into(holder.ivProfileImage);
     }
 
     @Override
@@ -56,6 +53,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
         }
     }
 
@@ -65,7 +63,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
-    public void addAll(List<User> list) {
+    public void addAll(List<ParseUser> list) {
         mUsers.addAll(list);
         notifyDataSetChanged();
     }

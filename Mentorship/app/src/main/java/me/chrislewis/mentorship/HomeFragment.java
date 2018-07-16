@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,10 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.User;
-
 public class HomeFragment extends Fragment {
     ParseUser currentUser;
     GridAdapter gridAdapter;
-    ArrayList<User> users;
+    ArrayList<ParseUser> users;
     RecyclerView rvUsers;
     ProgressBar pb;
     private SwipeRefreshLayout swipeContainer;
@@ -40,7 +39,7 @@ public class HomeFragment extends Fragment {
         currentUser = ParseUser.getCurrentUser();
         rvUsers = (RecyclerView) view.findViewById(R.id.rvGrid);
 
-        users = new ArrayList<>();
+        users = new ArrayList<ParseUser>();
         gridAdapter = new GridAdapter(users);
         pb = (ProgressBar) view.findViewById(R.id.pbLoading);
 
@@ -54,15 +53,24 @@ public class HomeFragment extends Fragment {
     public void getUsers() {
         pb.setVisibility(ProgressBar.VISIBLE);
 
-        ParseQuery<User> query = ParseQuery.getQuery(User.class);
-        //query.whereEqualTo("user", currentUser);
-        query.findInBackground(new FindCallback<User>() {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("isMentor", false);
+        query.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<User> objects, ParseException e) {
+            public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
+
                     gridAdapter.clear();
-                    gridAdapter.addAll(objects);
-                    gridAdapter.notifyDataSetChanged();
+                    users.clear();
+                    Log.d("size is", String.valueOf(objects.size()));
+
+                    for (int i = 0; i < objects.size(); i++) {
+
+                        ParseUser user = objects.get(i);
+                        users.add(user);
+                        gridAdapter.notifyItemInserted(i);
+                    }
+                    //gridAdapter.notifyDataSetChanged();
                     pb.setVisibility(ProgressBar.INVISIBLE);
 
                 } else {
