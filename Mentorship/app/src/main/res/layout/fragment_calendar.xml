@@ -5,14 +5,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF">
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_showOtherDates="all"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         app:mcv_arrowColor="@color/loginGreen"
         app:mcv_selectionColor="@color/loginGreen"
-        />
+        app:mcv_showOtherDates="all" />
+
+    <ImageView
+        android:id="@+id/calendarHeader"
+        android:layout_width="match_parent"
+        android:layout_height="73dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@color/loginGreen" />
+
+    <TextView
+        android:id="@+id/tvCurrentDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:layout_alignLeft="@+id/calendarHeader"
+        android:layout_alignRight="@+id/calendarHeader"
+        android:layout_alignTop="@+id/calendarHeader"
+        android:layout_alignBottom="@+id/calendarHeader"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="TextView" />
 
 </RelativeLayout>
