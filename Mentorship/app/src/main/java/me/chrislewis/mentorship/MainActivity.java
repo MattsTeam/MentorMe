@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
                     return true;
                 case R.id.navigation_calendar:
-                    mTextMessage.setText("Calendar");
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, calendarFragment).commit();
                     return true;
                 case R.id.navigation_profile:
                     mTextMessage.setText("Profile");
