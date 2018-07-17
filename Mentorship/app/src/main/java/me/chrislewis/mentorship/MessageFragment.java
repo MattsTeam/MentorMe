@@ -42,8 +42,8 @@ public class MessageFragment extends Fragment {
     EditText etMessage;
     Button bSend;
 
-    static final int POLL_INTERVAL = 1000;
-    Handler myHandler = new Handler();
+    static final int POLL_INTERVAL = 1000; // milliseconds
+    Handler myHandler = new Handler();  // android.os.Handler
     Runnable mRefreshMessagesRunnable = new Runnable() {
         @Override
         public void run() {
@@ -53,6 +53,7 @@ public class MessageFragment extends Fragment {
     };
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,16 +61,20 @@ public class MessageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        firstLoad = true;
-        etMessage = view.findViewById(R.id.etMessage);
-        rvMessages = view.findViewById(R.id.rvMessages);
-        user = ParseUser.getCurrentUser();
+        super.onViewCreated(view, savedInstanceState);
+        etMessage = (EditText) view.findViewById(R.id.etMessage);
+        bSend = (Button) view.findViewById(R.id.bSend);
+        rvMessages = (RecyclerView) view.findViewById(R.id.rvMessages);
         mMessages = new ArrayList<>();
-        adapter = new MessageAdapter(view.getContext(), user.getObjectId(), mMessages);
+        firstLoad = true;
+        final String userId = ParseUser.getCurrentUser().getObjectId();
+        adapter = new MessageAdapter(view.getContext(), userId, mMessages);
         rvMessages.setAdapter(adapter);
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
+
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
 //        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
@@ -117,10 +122,10 @@ public class MessageFragment extends Fragment {
     }
 
     void refreshMessages() {
-        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
-        parseQuery.setLimit(50);
-        parseQuery.orderByDescending("createdAt");
-        parseQuery.findInBackground(new FindCallback<Message>() {
+        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
+        query.setLimit(50);
+        query.orderByDescending("createdAt");
+        query.findInBackground(new FindCallback<Message>() {
             public void done(List<Message> messages, ParseException e) {
                 if (e == null) {
                     mMessages.clear();
@@ -136,4 +141,5 @@ public class MessageFragment extends Fragment {
             }
         });
     }
+
 }
