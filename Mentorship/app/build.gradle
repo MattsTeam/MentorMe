@@ -55,4 +55,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
 
+    // for side navigation drawer
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+
 }
