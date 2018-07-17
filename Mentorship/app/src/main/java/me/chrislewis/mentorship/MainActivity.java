@@ -12,15 +12,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.parse.ParseGeoPoint;
 
 public class MainActivity extends AppCompatActivity {
-
-    private Button btnUpdateLocation;
     private TextView mTextMessage;
     private FragmentTransaction fragmentTransaction;
     final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -57,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.replace(R.id.flContainer, calendarFragment).commit();
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText("Profile");
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
                     return true;
             }
             return false;
@@ -76,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
-
-        btnUpdateLocation = (Button) findViewById(R.id.btnUpdateLocation);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -104,12 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        btnUpdateLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
-            }
-        });
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
 
     }
 }

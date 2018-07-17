@@ -55,17 +55,16 @@ public class HomeFragment extends Fragment {
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("isMentor", false);
+        query.whereNotEqualTo("user", currentUser);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-
                     gridAdapter.clear();
                     users.clear();
                     Log.d("size is", String.valueOf(objects.size()));
 
                     for (int i = 0; i < objects.size(); i++) {
-
                         ParseUser user = objects.get(i);
                         users.add(user);
                         gridAdapter.notifyItemInserted(i);
