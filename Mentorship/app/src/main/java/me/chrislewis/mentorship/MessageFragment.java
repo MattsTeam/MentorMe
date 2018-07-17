@@ -16,9 +16,11 @@ import android.widget.EditText;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseLiveQueryClient;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SubscriptionHandling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class MessageFragment extends Fragment {
     MessageAdapter adapter;
 
     ParseUser user;
+    ParseQuery<Message> parseQuery;
 
     static final String USER_ID_KEY = "userId";
     static final String BODY_KEY = "body";
@@ -68,37 +71,56 @@ public class MessageFragment extends Fragment {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
+        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
+        parseQuery = ParseQuery.getQuery(Message.class);
+        SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
+        subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new
+                SubscriptionHandling.HandleEventCallback<Message>() {
+                    @Override
+                    public void onEvent(ParseQuery<Message> query, Message object) {
+                        mMessages.add(0, object);
+                        Log.d("Messages", "Sent");
+                        // RecyclerView updates need to be run on the UI thread
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.notifyDataSetChanged();
+                                rvMessages.scrollToPosition(0);
+                            }
+                        });
+                    }
+                });
         bSend = view.findViewById(R.id.bSend);
         bSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String data = etMessage.getText().toString();
-                Message message = new Message();
-                message.setBody(data);
-                message.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
-                message.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e == null) {
-                            Log.d("Messages", "Working");
+                if (!etMessage.getText().toString().equals("")) {
+                    String data = etMessage.getText().toString();
+                    Message message = new Message();
+                    message.setBody(data);
+                    message.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
+                    message.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("Messages", "Working");
+                            } else {
+                                Log.d("Messages", "Fail");
+                            }
                         }
-                        else {
-                            Log.d("Messages", "Fail");
-                        }
-                    }
-                });
-                etMessage.setText(null);
+                    });
+                    etMessage.setText(null);
+                }
             }
         });
         refreshMessages();
-        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
+//        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
     }
 
     void refreshMessages() {
-        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
-        query.setLimit(50);
-        query.orderByDescending("createdAt");
-        query.findInBackground(new FindCallback<Message>() {
+        parseQuery.setLimit(50);
+        parseQuery.orderByDescending("createdAt");
+        parseQuery.findInBackground(new FindCallback<Message>() {
             public void done(List<Message> messages, ParseException e) {
                 if (e == null) {
                     mMessages.clear();
