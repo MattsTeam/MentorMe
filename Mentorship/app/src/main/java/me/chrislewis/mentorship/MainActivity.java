@@ -17,8 +17,9 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final HomeFragment homeFragment = new HomeFragment();
     final CalendarFragment calendarFragment = new CalendarFragment();
-    //final UserFragment userFragment = new UserFragment();
     final MessageFragment messageFragment = new MessageFragment();
+    final ProfileFragment profileFragment = new ProfileFragment();
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.replace(R.id.flContainer, calendarFragment).commit();
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText("Profile");
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
                     return true;
             }
             return false;
