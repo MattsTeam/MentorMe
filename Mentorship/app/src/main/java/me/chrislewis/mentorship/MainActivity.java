@@ -1,7 +1,6 @@
 package me.chrislewis.mentorship;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
     };
     private int REQUEST_LOCATION = 10;
 
-    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

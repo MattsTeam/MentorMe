@@ -133,6 +133,7 @@ public class MessageFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                     if (firstLoad) {
                         rvMessages.scrollToPosition(0);
+                        Log.d("MessageFragment", "is scrolling");
                         firstLoad = false;
                     }
                 } else {
