@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -65,7 +66,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         return mUsers.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvDistance;
@@ -75,6 +76,18 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvDistance = (TextView) itemView.findViewById(R.id.tvDistance);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                ParseUser user = mUsers.get(position);
+                Intent intent = new Intent(context, DetailsActivity.class);
+                intent.putExtra("UserObjectId", user.getObjectId());
+                view.getContext().startActivity(intent);
+            }
         }
     }
 
