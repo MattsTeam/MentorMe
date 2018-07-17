@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment {
                         users.add(user);
                         gridAdapter.notifyItemInserted(i);
                     }
-                    //gridAdapter.notifyDataSetChanged();
                     pb.setVisibility(ProgressBar.INVISIBLE);
 
                 } else {
