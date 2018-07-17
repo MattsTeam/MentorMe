@@ -53,5 +53,6 @@ dependencies {
     // ButterKnife view binding
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
 
 }
