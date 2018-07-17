@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.parse.Parse;
 import com.parse.ParseGeoPoint;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
     final MessageFragment messageFragment = new MessageFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
 
-    private String TAG = "yay";
-    public Location myLocation;
     ParseGeoPoint ParseLocation;
 
 
@@ -95,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProviderEnabled(String s) {
+
 
             }
 
