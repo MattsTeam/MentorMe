@@ -72,7 +72,7 @@ public class MessageFragment extends Fragment {
         linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
         ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
-        parseQuery = ParseQuery.getQuery(Message.class);
+        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
         SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
         subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new
                 SubscriptionHandling.HandleEventCallback<Message>() {
@@ -80,7 +80,6 @@ public class MessageFragment extends Fragment {
                     public void onEvent(ParseQuery<Message> query, Message object) {
                         mMessages.add(0, object);
                         Log.d("Messages", "Sent");
-                        // RecyclerView updates need to be run on the UI thread
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -118,6 +117,8 @@ public class MessageFragment extends Fragment {
     }
 
     void refreshMessages() {
+        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
+
         parseQuery.setLimit(50);
         parseQuery.orderByDescending("createdAt");
         parseQuery.findInBackground(new FindCallback<Message>() {
