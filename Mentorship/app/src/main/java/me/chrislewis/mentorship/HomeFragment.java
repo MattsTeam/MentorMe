@@ -1,12 +1,16 @@
 package me.chrislewis.mentorship;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -26,6 +30,7 @@ public class HomeFragment extends Fragment {
     RecyclerView rvUsers;
     ProgressBar pb;
     private SwipeRefreshLayout swipeContainer;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -35,6 +40,17 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mDrawerLayout = view.findViewById(R.id.drawer_layout);
+        NavigationView navigationView = view.findViewById(R.id.drawer_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                menuItem.setChecked(true);
+                mDrawerLayout.closeDrawers();
+                // swap fragment here...
+                return true;
+            }
+        });
 
         currentUser = ParseUser.getCurrentUser();
         rvUsers = (RecyclerView) view.findViewById(R.id.rvGrid);
@@ -45,6 +61,8 @@ public class HomeFragment extends Fragment {
 
         rvUsers.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
         rvUsers.setAdapter(gridAdapter);
+
+
 
         getUsers();
 

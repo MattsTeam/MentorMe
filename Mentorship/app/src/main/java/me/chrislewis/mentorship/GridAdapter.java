@@ -57,7 +57,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         double distanceInMeters = currentLocation.distanceTo(location);
         double distanceInMiles = distanceInMeters * 0.000621371192;
 
-        holder.tvDistance.setText(String.format("%.2f", distanceInMiles) + " miles away");
+        holder.tvDistance.setText(String.format("%.1f", distanceInMiles) + " miles away");
     }
 
     @Override
