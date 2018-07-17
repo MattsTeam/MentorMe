@@ -16,11 +16,9 @@ import android.widget.EditText;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseLiveQueryClient;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.parse.SubscriptionHandling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +26,8 @@ import java.util.List;
 import me.chrislewis.mentorship.models.Message;
 
 public class MessageFragment extends Fragment {
+
+    boolean firstLoad;
 
     RecyclerView rvMessages;
     ArrayList<Message> mMessages;
@@ -62,6 +62,7 @@ public class MessageFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        firstLoad = true;
         etMessage = view.findViewById(R.id.etMessage);
         rvMessages = view.findViewById(R.id.rvMessages);
         user = ParseUser.getCurrentUser();
@@ -71,24 +72,24 @@ public class MessageFragment extends Fragment {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
-        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
-        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
-        SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
-        subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new
-                SubscriptionHandling.HandleEventCallback<Message>() {
-                    @Override
-                    public void onEvent(ParseQuery<Message> query, Message object) {
-                        mMessages.add(0, object);
-                        Log.d("Messages", "Sent");
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.notifyDataSetChanged();
-                                rvMessages.scrollToPosition(0);
-                            }
-                        });
-                    }
-                });
+//        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
+//        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
+//        SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
+//        subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new
+//                SubscriptionHandling.HandleEventCallback<Message>() {
+//                    @Override
+//                    public void onEvent(ParseQuery<Message> query, Message object) {
+//                        mMessages.add(0, object);
+//                        Log.d("Messages", "Sent");
+//                        getActivity().runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                adapter.notifyDataSetChanged();
+//                                rvMessages.scrollToPosition(0);
+//                            }
+//                        });
+//                    }
+//                });
         bSend = view.findViewById(R.id.bSend);
         bSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,13 +113,11 @@ public class MessageFragment extends Fragment {
                 }
             }
         });
-        refreshMessages();
-//        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
+        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
     }
 
     void refreshMessages() {
         ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
-
         parseQuery.setLimit(50);
         parseQuery.orderByDescending("createdAt");
         parseQuery.findInBackground(new FindCallback<Message>() {
@@ -127,7 +126,10 @@ public class MessageFragment extends Fragment {
                     mMessages.clear();
                     mMessages.addAll(messages);
                     adapter.notifyDataSetChanged();
-                    rvMessages.scrollToPosition(0);
+                    if (firstLoad) {
+                        rvMessages.scrollToPosition(0);
+                        firstLoad = false;
+                    }
                 } else {
                     Log.e("message", "Error Loading Messages" + e);
                 }
