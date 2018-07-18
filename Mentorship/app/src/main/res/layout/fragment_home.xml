@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvGrid"
                     android:layout_width="match_parent"
@@ -34,7 +35,7 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/drawer_view"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
