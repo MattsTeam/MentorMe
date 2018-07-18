@@ -116,6 +116,7 @@ public class HomeFragment extends Fragment {
                         gridAdapter.notifyItemInserted(i);
                     }
                     pb.setVisibility(ProgressBar.INVISIBLE);
+                    swipeContainer.setRefreshing(false);
 
                 } else {
                     e.printStackTrace();
