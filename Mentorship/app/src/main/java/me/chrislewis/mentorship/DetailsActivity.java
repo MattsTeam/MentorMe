@@ -3,6 +3,8 @@ package me.chrislewis.mentorship;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,12 +19,16 @@ import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
+    ParseUser currentUser;
     ParseUser user;
     String userId;
     TextView tvName;
     TextView tvJob;
     TextView tvSkills;
     TextView tvSummary;
+    TextView tvEdu;
+    Button btFav;
+    Button btMessage;
     ImageView ivProfile;
 
     final static String NAME_KEY = "name";
@@ -30,49 +36,65 @@ public class DetailsActivity extends AppCompatActivity {
     final static String PROFILE_IMAGE_KEY = "profileImage";
     final static String SKILLS_KEY = "skills";
     final static String SUMMARY_KEY = "summary";
+    final static String EDUCATION_KEY = "education";
+    final static String FAVORITE_KEY = "favorites";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_details);
         tvName = findViewById(R.id.tvName);
         tvJob = findViewById(R.id.tvJob);
         tvSkills = findViewById(R.id.tvSkills);
         tvSummary = findViewById(R.id.tvSummary);
+        tvEdu = findViewById(R.id.tvEdu);
+        btFav = findViewById(R.id.btFav);
+        btMessage = findViewById(R.id.btMessage);
         ivProfile = findViewById(R.id.ivProfile);
+
+        currentUser = ParseUser.getCurrentUser();
         userId = getIntent().getStringExtra("UserObjectId");
-        Log.d("Details", userId);
         ParseQuery<ParseUser> query = ParseUser.getQuery().whereEqualTo("objectId", userId);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
                     user = objects.get(0);
-                    tvName.setText(user.getString(NAME_KEY));
-                    if (user.getString(JOB_KEY) != null ) {
-                        tvJob.setText("Job: " + user.getString(JOB_KEY));
-                    } else {
-                        tvJob.setText("Job: UNLISTED");
-                    }
-                    if (user.getString(SKILLS_KEY) != null ) {
-                        tvSkills.setText("Skills: " + user.getString(SKILLS_KEY));
-                    } else {
-                        tvSkills.setText("Skills: UNLISTED");
-                    }
-                    if (user.getString(SUMMARY_KEY) != null ) {
-                        tvSummary.setText("Summary: " + user.getString(SUMMARY_KEY));
-                    } else {
-                        tvSummary.setText("Summary: UNLISTED");
-                    }
-                    Glide.with(getApplicationContext())
-                            .load(user.getParseFile(PROFILE_IMAGE_KEY).getUrl())
-                            .apply(new RequestOptions().circleCrop())
-                            .into(ivProfile);
-
+                    populateInfo(user);
                 } else {
                     e.printStackTrace();
                 }
             }
         });
+
+        btFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Details", "test");
+                currentUser.addUnique(FAVORITE_KEY, user.getObjectId());
+                currentUser.saveInBackground();
+            }
+        });
+    }
+
+    private void populateInfo(ParseUser user) {
+        tvName.setText(user.getString(NAME_KEY));
+        if (user.getString(JOB_KEY) != null ) {
+            tvJob.setText(String.format("Job: %s", user.getString(JOB_KEY)));
+        }
+        if (user.getString(SKILLS_KEY) != null ) {
+            tvSkills.setText(String.format("Skills: %s", user.getString(SKILLS_KEY)));
+        }
+        if (user.getString(SUMMARY_KEY) != null ) {
+            tvSummary.setText(String.format("Summary: %s", user.getString(SUMMARY_KEY)));
+        }
+        if (user.getString(EDUCATION_KEY) != null ) {
+            tvSummary.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
+        }
+        Glide.with(getApplicationContext())
+                .load(user.getParseFile(PROFILE_IMAGE_KEY).getUrl())
+                .apply(new RequestOptions().circleCrop())
+                .into(ivProfile);
     }
 }

@@ -12,6 +12,7 @@
         android:layout_height="223dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:contentDescription="Profile Picture"
         app:srcCompat="@android:color/black" />
 
     <ScrollView
@@ -37,20 +38,42 @@
                 android:id="@+id/tvSkills"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/skills_unlisted" />
 
             <TextView
                 android:id="@+id/tvJob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/job_unlisted" />
 
             <TextView
                 android:id="@+id/tvSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/summary_unlisted" />
+
+            <TextView
+                android:id="@+id/tvEdu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/education_unlisted" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/title_messages" />
+
+    <Button
+        android:id="@+id/btFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/btMessage"
+        android:text="@string/title_favorites" />
 
 </RelativeLayout>
