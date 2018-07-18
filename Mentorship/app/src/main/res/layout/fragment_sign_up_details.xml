@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/loginGrey">
+
+    <Button
+        android:id="@+id/mentorButton"
+        android:layout_width="97dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/mentor_mentee_button"
+        android:text="Mentor"
+        android:textAllCaps="false"
+        android:textColor="@color/loginGrey"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/menteeButton"
+        android:layout_width="97dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/mentorButton"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/mentor_mentee_button"
+        android:text="Mentee"
+        android:textAllCaps="false"
+        android:textColor="@color/loginGrey"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/engineeringButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/mentorButton"
+        android:layout_marginTop="159dp"
+        android:text="Engineering" />
+
+    <Button
+        android:id="@+id/artButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/menteeButton"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:text="Art" />
+
+    <Button
+        android:id="@+id/sportsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/mentorButton"
+        android:layout_centerVertical="true"
+        android:text="Sports" />
+
+    <Button
+        android:id="@+id/mathButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/menteeButton"
+        android:layout_centerVertical="true"
+        android:text="Math" />
+
+
+</RelativeLayout>

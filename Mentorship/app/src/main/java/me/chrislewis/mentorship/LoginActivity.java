@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
         else {
             username = findViewById(R.id.tvUsername);
             password = findViewById(R.id.tvPassword);

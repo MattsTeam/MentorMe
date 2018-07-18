@@ -62,8 +62,8 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         calendarView.setDateSelected(calendar.getTime(), true);
         todayText.setText(todayFormat.format(calendar.getTime()));
         calendarView.setOnDateChangedListener(this);
-        int eventGreen = getIntFromColor(15, 164, 124);
-        calendarView.addDecorators(new CurrentDayDecorator(eventGreen, days));
+        int eventColor = getIntFromColor(255, 128, 0);
+        calendarView.addDecorators(new CurrentDayDecorator(eventColor, days));
     }
 
     public void refreshEvents() {

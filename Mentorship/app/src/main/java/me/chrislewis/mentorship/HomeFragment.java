@@ -16,21 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import java.util.Collections;
+import java.util.Comparator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    ParseUser currentUser;
-    String currentCategory;
-    GridAdapter gridAdapter;
-    ArrayList<ParseUser> users;
-    RecyclerView rvUsers;
-    ProgressBar pb;
+    private ParseUser currentUser;
+    private String currentCategory;
+    private GridAdapter gridAdapter;
+    private ArrayList<ParseUser> users;
+    private RecyclerView rvUsers;
+    private ProgressBar pb;
     private SwipeRefreshLayout swipeContainer;
     private DrawerLayout mDrawerLayout;
 
@@ -89,96 +89,58 @@ public class HomeFragment extends Fragment {
 
 
         getUsers();
-
     }
 
     public void getUsers() {
         pb.setVisibility(ProgressBar.VISIBLE);
-
         ParseUser.getCurrentUser().fetchInBackground();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        /*
         query.whereEqualTo("isMentor", true);
         query.whereNotEqualTo("objectId", currentUser.getObjectId());
         currentCategory = currentUser.getString("category");
         query.whereEqualTo("category", currentCategory);
-        query.orderByAscending("relativeDistance");
-        */
-
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e == null) {
-                    for (int i = 0; i < objects.size(); i++) {
-                        ParseUser user = objects.get(i);
-                        double rankNum = calculateRank(user);
-                        user.put("rank", rankNum);
-                        user.saveInBackground();
-                    }
-                    pb.setVisibility(ProgressBar.INVISIBLE);
-                    swipeContainer.setRefreshing(false);
-
-                } else {
-                    e.printStackTrace();
-                }
+        try {
+            List<ParseUser> sameCategoryUsers = query.find();
+            for(int i = 0; i < sameCategoryUsers.size(); i++) {
+                ParseUser user = sameCategoryUsers.get(i);
+                user.put("rank", calculateRank(user));
+                user.saveInBackground();
             }
-        });
-
-
-
-        ParseUser.getCurrentUser().fetchInBackground();
-        ParseQuery<ParseUser> query2 = ParseUser.getQuery();
-        query2.whereEqualTo("isMentor", true);
-        query2.whereNotEqualTo("objectId", currentUser.getObjectId());
-        currentCategory = currentUser.getString("category");
-        query2.whereEqualTo("category", currentCategory);
-        query2.orderByAscending("rank");
-
-        query2.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e == null) {gridAdapter.clear();
-                    users.clear();
-                    Log.d("size is", String.valueOf(objects.size()));
-
-                    for (int i = 0; i < objects.size(); i++) {
-                        ParseUser user = objects.get(i);
-                        double rankNum = calculateRank(user);
-                        user.put("rank", rankNum);
-                        user.saveInBackground();
-                        users.add(user);
-                    }
-
-                    gridAdapter.addAll(objects);
-                    pb.setVisibility(ProgressBar.INVISIBLE);
-                    swipeContainer.setRefreshing(false);
-
-                } else {
-                    e.printStackTrace();
+            Collections.sort(sameCategoryUsers, new Comparator<ParseUser>() {
+                @Override
+                public int compare(ParseUser o1, ParseUser o2) {
+                    return (int)(o1.getDouble("rank") - (o2.getDouble("rank")));
                 }
+            });
+            for(int i = 0; i < sameCategoryUsers.size(); i++) {
+                ParseUser user = sameCategoryUsers.get(i);
+                Log.d("UserRank", user.getUsername() + " " + user.getDouble("rank"));
+                users.add(user);
+                gridAdapter.notifyItemInserted(i);
             }
-        });
-
+        }
+        catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
         pb.setVisibility(ProgressBar.INVISIBLE);
     }
 
-
     public double calculateRank(ParseUser user) {
+        double distanceRank = 0;
         double organizationRank = 0;
         double educationRank = 0;
-        double distanceRank = 0.2 * user.getDouble("relativeDistance");
-
-        if (currentUser.getString("education").equals(user.getString("education"))) {
-            educationRank = 2;
+        distanceRank = 10 * user.getDouble("relativeDistance");
+        if(!user.getString("organization").equals(currentUser.getString("organization"))) {
+            organizationRank = 4;
         }
-        if (currentUser.getString("organization").equals(user.getString("organization"))) {
-            organizationRank = 3;
+        if(!user.getString("education").equals(currentUser.getString("education"))) {
+            educationRank = 5;
         }
-        return organizationRank + educationRank + distanceRank;
+        Log.d("UserRank", user.getUsername());
+        Log.d("UserRank", Double.toString(distanceRank));
+        Log.d("UserRank", Double.toString(organizationRank));
+        Log.d("UserRank", Double.toString(educationRank));
+        return distanceRank + organizationRank + educationRank;
     }
-
-
-
-
 
 }
