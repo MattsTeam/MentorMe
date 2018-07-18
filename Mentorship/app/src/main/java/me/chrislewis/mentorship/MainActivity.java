@@ -15,18 +15,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.parse.ParseGeoPoint;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
     private FragmentTransaction fragmentTransaction;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final HomeFragment homeFragment = new HomeFragment();
     final CalendarFragment calendarFragment = new CalendarFragment();
     final MessageFragment messageFragment = new MessageFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
+    final FavoritesFragment favoritesFragment = new FavoritesFragment();
 
     ParseGeoPoint ParseLocation;
 
@@ -45,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
                     return true;
                 case R.id.navigation_favorites:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
                     return true;
                 case R.id.navigation_messages:
                     fragmentTransaction = fragmentManager.beginTransaction();
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -104,13 +103,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+
             return;
+
+            /*
+            public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+            }
+             */
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
 

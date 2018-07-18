@@ -24,7 +24,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class FavoritesFragment extends Fragment {
     ParseUser currentUser;
     String currentCategory;
     GridAdapter gridAdapter;
@@ -36,13 +36,12 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, parent, false);
+        return inflater.inflate(R.layout.fragment_favorites, parent, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         currentUser = ParseUser.getCurrentUser();
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
         NavigationView navigationView = view.findViewById(R.id.drawer_view);
@@ -50,7 +49,7 @@ public class HomeFragment extends Fragment {
         MenuItem cat_1 = menu.findItem(R.id.cat_1);
 
 
-        //currentCategory = currentUser.getString("description");
+        currentCategory = currentUser.getString("category");
         // TODO- why is currentCategory null?
         //cat_1.setTitle(currentCategory);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -97,11 +96,7 @@ public class HomeFragment extends Fragment {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("isMentor", true);
         query.whereNotEqualTo("user", currentUser);
-        currentCategory = currentUser.getString("name");
-
-
-
-        //query.whereEqualTo("category", ); //TODO- make sure currentCategory not null
+        //query.whereEqualTo("category", currentCategory); TODO- make sure currentCategory not null
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull GridAdapter.ViewHolder holder, int position) {
         ParseUser user = mUsers.get(position);
         holder.tvUsername.setText(user.getString("username"));
+        holder.tvDescription.setText(user.getString("description"));
         Glide.with(context).load(user.getParseFile("profileImage").getUrl()).into(holder.ivProfileImage);
 
         ParseGeoPoint ParseLocation = user.getParseGeoPoint("location");
@@ -70,12 +72,15 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvDistance;
+        public TextView tvDescription;
+        public Button btnProfile;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvDistance = (TextView) itemView.findViewById(R.id.tvDistance);
+            tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             itemView.setOnClickListener(this);
         }
 
@@ -88,6 +93,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
                 intent.putExtra("UserObjectId", user.getObjectId());
                 view.getContext().startActivity(intent);
             }
+
         }
     }
 
