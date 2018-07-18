@@ -114,10 +114,7 @@ public class HomeFragment extends Fragment {
                         double rankNum = calculateRank(user);
                         user.put("rank", rankNum);
                         user.saveInBackground();
-                        users.add(user);
                     }
-
-                    gridAdapter.addAll(objects);
                     pb.setVisibility(ProgressBar.INVISIBLE);
                     swipeContainer.setRefreshing(false);
 
