@@ -35,6 +35,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext(); // context is UserFragment
+        ParseUser.getCurrentUser().fetchInBackground();
         currentUser = ParseUser.getCurrentUser();
         ParseGeoPoint ParseCurrentLocation = currentUser.getParseGeoPoint("location");
         currentLocation.setLatitude(ParseCurrentLocation.getLatitude());
@@ -59,8 +60,14 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         location.setLatitude(ParseLocation.getLatitude());
         double distanceInMeters = currentLocation.distanceTo(location);
         double distanceInMiles = distanceInMeters * 0.000621371192;
+        double distance = Math.round(distanceInMiles*10)/10;
 
-        holder.tvDistance.setText(String.format("%.1f", distanceInMiles) + " miles away");
+        holder.tvDistance.setText(Double.toString(distance) + " miles away");
+
+        user.put("distance", Double.toString(distance));
+        user.put("relativeDistance", distance);
+        user.saveInBackground();
+        currentUser.saveInBackground();
     }
 
     @Override

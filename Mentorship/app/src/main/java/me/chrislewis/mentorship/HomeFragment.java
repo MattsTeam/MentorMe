@@ -97,24 +97,59 @@ public class HomeFragment extends Fragment {
 
         ParseUser.getCurrentUser().fetchInBackground();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        /*
         query.whereEqualTo("isMentor", true);
-        query.whereNotEqualTo("user", currentUser);
+        query.whereNotEqualTo("objectId", currentUser.getObjectId());
         currentCategory = currentUser.getString("category");
         query.whereEqualTo("category", currentCategory);
+        query.orderByAscending("relativeDistance");
+        */
 
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-                    gridAdapter.clear();
+                    for (int i = 0; i < objects.size(); i++) {
+                        ParseUser user = objects.get(i);
+                        double rankNum = calculateRank(user);
+                        user.put("rank", rankNum);
+                        user.saveInBackground();
+                    }
+                    pb.setVisibility(ProgressBar.INVISIBLE);
+                    swipeContainer.setRefreshing(false);
+
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+        ParseUser.getCurrentUser().fetchInBackground();
+        ParseQuery<ParseUser> query2 = ParseUser.getQuery();
+        query2.whereEqualTo("isMentor", true);
+        query2.whereNotEqualTo("objectId", currentUser.getObjectId());
+        currentCategory = currentUser.getString("category");
+        query2.whereEqualTo("category", currentCategory);
+        query2.orderByAscending("rank");
+
+        query2.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {gridAdapter.clear();
                     users.clear();
                     Log.d("size is", String.valueOf(objects.size()));
 
                     for (int i = 0; i < objects.size(); i++) {
                         ParseUser user = objects.get(i);
+                        double rankNum = calculateRank(user);
+                        user.put("rank", rankNum);
+                        user.saveInBackground();
                         users.add(user);
-                        gridAdapter.notifyItemInserted(i);
                     }
+
+                    gridAdapter.addAll(objects);
                     pb.setVisibility(ProgressBar.INVISIBLE);
                     swipeContainer.setRefreshing(false);
 
@@ -126,6 +161,23 @@ public class HomeFragment extends Fragment {
 
         pb.setVisibility(ProgressBar.INVISIBLE);
     }
+
+
+    public double calculateRank(ParseUser user) {
+        double organizationRank = 0;
+        double educationRank = 0;
+        double distanceRank = 0.2 * user.getDouble("relativeDistance");
+
+        if (currentUser.getString("education").equals(user.getString("education"))) {
+            educationRank = 2;
+        }
+        if (currentUser.getString("organization").equals(user.getString("organization"))) {
+            organizationRank = 3;
+        }
+        return organizationRank + educationRank + distanceRank;
+    }
+
+
 
 
 
