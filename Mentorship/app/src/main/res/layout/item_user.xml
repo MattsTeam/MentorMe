@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginLeft="20dp"
+    android:layout_marginStart="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/ivProfileImage"
+        android:id="@+id/ivProfile"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_alignParentStart="true"
@@ -21,8 +21,8 @@
         android:id="@+id/tvUsername"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ivProfileImage"
-        android:layout_below="@+id/ivProfileImage"
+        android:layout_alignStart="@+id/ivProfile"
+        android:layout_below="@+id/ivProfile"
         android:text="Username"
         android:textAlignment="center"
         android:textStyle="bold"/>
@@ -31,7 +31,7 @@
         android:id="@+id/tvDistance"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ivProfileImage"
+        android:layout_alignStart="@+id/ivProfile"
         android:layout_below="@+id/tvUsername"
         android:text="Distance away"
         android:textAlignment="center" />
@@ -58,8 +58,8 @@
         android:layout_width="10dp"
         android:id="@+id/imageButton"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfileImage"
+        android:layout_below="@+id/ivProfile"
         android:layout_toEndOf="@+id/tvUsername"
-        android:layout_alignRight="@id/ivProfileImage"
+        android:layout_alignEnd="@id/ivProfile"
         app:srcCompat="@android:color/holo_blue_bright" />
 </RelativeLayout>
