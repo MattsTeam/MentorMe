@@ -7,4 +7,5 @@
     <color name="textGrey">#808080</color>
     <color name="loginGreen">#0FA47C</color>
     <color name="imageGray">#696969</color>
+    <color name="white">#fafafa</color>
 </resources>

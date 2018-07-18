@@ -3,7 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/cat_1"
-            android:title="Category 1" />
+            android:title="Category 1"/>
         <item
             android:id="@+id/cat_2"
             android:title="Category 2" />
