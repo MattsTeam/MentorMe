@@ -22,12 +22,14 @@ public class DetailsActivity extends AppCompatActivity {
     TextView tvName;
     TextView tvJob;
     TextView tvSkills;
-    TextView tvDescription;
+    TextView tvSummary;
     ImageView ivProfile;
 
     final static String NAME_KEY = "name";
     final static String JOB_KEY = "job";
     final static String PROFILE_IMAGE_KEY = "profileImage";
+    final static String SKILLS_KEY = "skills";
+    final static String SUMMARY_KEY = "summary";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvJob = findViewById(R.id.tvJob);
         tvSkills = findViewById(R.id.tvSkills);
-        tvDescription = findViewById(R.id.tvDescription);
+        tvSummary = findViewById(R.id.tvSummary);
         ivProfile = findViewById(R.id.ivProfile);
         userId = getIntent().getStringExtra("UserObjectId");
         Log.d("Details", userId);
@@ -47,7 +49,21 @@ public class DetailsActivity extends AppCompatActivity {
                 if (e == null) {
                     user = objects.get(0);
                     tvName.setText(user.getString(NAME_KEY));
-                    tvJob.setText(user.getString(JOB_KEY));
+                    if (user.getString(JOB_KEY) != null ) {
+                        tvJob.setText("Job: " + user.getString(JOB_KEY));
+                    } else {
+                        tvJob.setText("Job: UNLISTED");
+                    }
+                    if (user.getString(SKILLS_KEY) != null ) {
+                        tvSkills.setText("Skills: " + user.getString(SKILLS_KEY));
+                    } else {
+                        tvSkills.setText("Skills: UNLISTED");
+                    }
+                    if (user.getString(SUMMARY_KEY) != null ) {
+                        tvSummary.setText("Summary: " + user.getString(SUMMARY_KEY));
+                    } else {
+                        tvSummary.setText("Summary: UNLISTED");
+                    }
                     Glide.with(getApplicationContext())
                             .load(user.getParseFile(PROFILE_IMAGE_KEY).getUrl())
                             .apply(new RequestOptions().circleCrop())
