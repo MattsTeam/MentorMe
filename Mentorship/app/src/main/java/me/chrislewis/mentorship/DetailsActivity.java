@@ -15,6 +15,10 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.Collections;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -30,6 +34,8 @@ public class DetailsActivity extends AppCompatActivity {
     Button btFav;
     Button btMessage;
     ImageView ivProfile;
+
+    boolean isFavorite;
 
     final static String NAME_KEY = "name";
     final static String JOB_KEY = "job";
@@ -54,6 +60,7 @@ public class DetailsActivity extends AppCompatActivity {
         ivProfile = findViewById(R.id.ivProfile);
 
         currentUser = ParseUser.getCurrentUser();
+
         userId = getIntent().getStringExtra("UserObjectId");
         ParseQuery<ParseUser> query = ParseUser.getQuery().whereEqualTo("objectId", userId);
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -72,8 +79,15 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("Details", "test");
-                currentUser.addUnique(FAVORITE_KEY, user.getObjectId());
-                currentUser.saveInBackground();
+                if (!isFavorite) {
+                    currentUser.addUnique(FAVORITE_KEY, user.getObjectId());
+                    currentUser.saveInBackground();
+                    isFavorite = true;
+                } else {
+                    currentUser.removeAll(FAVORITE_KEY, Collections.singleton(user.getObjectId()));
+                    currentUser.saveInBackground();
+                    isFavorite = false;
+                }
             }
         });
     }
@@ -91,6 +105,16 @@ public class DetailsActivity extends AppCompatActivity {
         }
         if (user.getString(EDUCATION_KEY) != null ) {
             tvSummary.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
+        }
+        JSONArray favArray = ParseUser.getCurrentUser().getJSONArray(FAVORITE_KEY);
+        for (int i = 0; i < favArray.length(); i++) {
+            try {
+                if ((user.getObjectId()).equals(favArray.getString(i))) {
+                    isFavorite = true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         Glide.with(getApplicationContext())
                 .load(user.getParseFile(PROFILE_IMAGE_KEY).getUrl())
