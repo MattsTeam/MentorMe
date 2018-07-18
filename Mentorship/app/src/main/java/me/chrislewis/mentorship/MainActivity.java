@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         photoFile = getPhotoFileUri(photoFileName);
 
-        Uri fileProvider = FileProvider.getUriForFile(MainActivity.this, "me.vanessahlyan.parstagram", photoFile);
+        Uri fileProvider = FileProvider.getUriForFile(MainActivity.this, "me.chrislewis.mentorship", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         if (intent.resolveActivity(getPackageManager()) != null) {
