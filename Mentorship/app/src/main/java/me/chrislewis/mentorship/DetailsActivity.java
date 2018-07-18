@@ -107,13 +107,16 @@ public class DetailsActivity extends AppCompatActivity {
             tvSummary.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
         }
         JSONArray favArray = ParseUser.getCurrentUser().getJSONArray(FAVORITE_KEY);
-        for (int i = 0; i < favArray.length(); i++) {
-            try {
-                if ((user.getObjectId()).equals(favArray.getString(i))) {
-                    isFavorite = true;
+        if (favArray != null) {
+            for (int i = 0; i < favArray.length(); i++) {
+                try {
+                    if ((user.getObjectId()).equals(favArray.getString(i))) {
+                        isFavorite = true;
+                        btFav.setText("FAVORITED");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
         Glide.with(getApplicationContext())
