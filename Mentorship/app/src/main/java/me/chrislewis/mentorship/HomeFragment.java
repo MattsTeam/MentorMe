@@ -43,16 +43,17 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ParseUser.getCurrentUser().fetchInBackground();
         currentUser = ParseUser.getCurrentUser();
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
+
         NavigationView navigationView = view.findViewById(R.id.drawer_view);
         Menu menu = navigationView.getMenu();
         MenuItem cat_1 = menu.findItem(R.id.cat_1);
 
 
-        //currentCategory = currentUser.getString("description");
-        // TODO- why is currentCategory null?
-        //cat_1.setTitle(currentCategory);
+        currentCategory = currentUser.getString("category");
+        cat_1.setTitle(currentCategory);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -94,14 +95,13 @@ public class HomeFragment extends Fragment {
     public void getUsers() {
         pb.setVisibility(ProgressBar.VISIBLE);
 
+        ParseUser.getCurrentUser().fetchInBackground();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("isMentor", true);
         query.whereNotEqualTo("user", currentUser);
-        currentCategory = currentUser.getString("name");
+        currentCategory = currentUser.getString("category");
+        query.whereEqualTo("category", currentCategory);
 
-
-
-        //query.whereEqualTo("category", ); //TODO- make sure currentCategory not null
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
