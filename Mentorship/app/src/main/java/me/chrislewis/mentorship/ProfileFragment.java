@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-
 import java.io.File;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -31,6 +32,9 @@ public class ProfileFragment extends Fragment {
     final static String SUMMARY_KEY = "summary";
     final static String EDUCATION_KEY = "education";
     final static String FAVORITE_KEY = "favorites";
+
+    FavoritesAdapter adapter;
+    RecyclerView rvFavorites;
 
     ImageView ivProfile;
     TextView tvName;
@@ -94,6 +98,11 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+        adapter = new FavoritesAdapter(view.getContext(), "test", (List<ParseUser>) user.get("test"));
+
+        rvFavorites = view.findViewById(R.id.rvFavorites);
+        rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvFavorites.setAdapter(adapter);
     }
 
     // method that takes a string file path
@@ -122,7 +131,6 @@ public class ProfileFragment extends Fragment {
         if (user.getString(EDUCATION_KEY) != null ) {
             tvEdu.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
         }
-        JSONArray favArray = ParseUser.getCurrentUser().getJSONArray(FAVORITE_KEY);
 
         if (user.getParseFile(PROFILE_IMAGE_KEY) != null) {
             Glide.with(getContext())
@@ -131,5 +139,7 @@ public class ProfileFragment extends Fragment {
                     .into(ivProfile);
         }
     }
+
+
 
 }

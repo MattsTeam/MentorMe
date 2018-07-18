@@ -61,6 +61,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         currentUser = ParseUser.getCurrentUser();
 
+
         userId = getIntent().getStringExtra("UserObjectId");
         ParseQuery<ParseUser> query = ParseUser.getQuery().whereEqualTo("objectId", userId);
         query.findInBackground(new FindCallback<ParseUser>() {

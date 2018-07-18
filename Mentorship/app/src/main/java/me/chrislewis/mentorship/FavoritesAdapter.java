@@ -38,6 +38,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ParseUser user = favorites.get(i);
+        user.fetchInBackground();
         viewHolder.tvName.setText(user.getString("username"));
         Glide.with(mContext)
                 .load(user.getParseFile("profileImage").getUrl())
