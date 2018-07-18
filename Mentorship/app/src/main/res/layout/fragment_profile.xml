@@ -10,27 +10,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_launcher_background"/>
+
     <Button
         android:id="@+id/bLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="34dp"
+        android:layout_marginEnd="23dp"
         android:text="@string/log_out" />
 
     <Button
         android:id="@+id/bUploadProfileImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bLogOut"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/bTakePhoto"
         android:text="Upload Profile Photo" />
 
     <Button
         android:id="@+id/bTakePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="132dp"
-        android:layout_toEndOf="@+id/bUploadProfileImage"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivProfileImage"
         android:text="Take Photo" />
 </RelativeLayout>
