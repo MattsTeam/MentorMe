@@ -64,6 +64,7 @@ public class ProfileFragment extends Fragment {
 
         user = ParseUser.getCurrentUser();
         populateInfo(user);
+
         bLogOut = view.findViewById(R.id.bLogOut);
         bLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +120,7 @@ public class ProfileFragment extends Fragment {
             tvSummary.setText(String.format("Summary: %s", user.getString(SUMMARY_KEY)));
         }
         if (user.getString(EDUCATION_KEY) != null ) {
-            tvSummary.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
+            tvEdu.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
         }
         JSONArray favArray = ParseUser.getCurrentUser().getJSONArray(FAVORITE_KEY);
 

@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/bUploadProfileImage"
+        android:id="@+id/svInfo"
         android:orientation="vertical" >
 
         <TextView
@@ -70,4 +71,12 @@
             android:layout_height="wrap_content"
             android:text="@string/education_unlisted" />
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvMentors"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/svInfo" />
 </RelativeLayout>
