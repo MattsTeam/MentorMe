@@ -12,21 +12,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.parse.ParseFile;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
+
+import org.json.JSONArray;
 
 import java.io.File;
 
 public class ProfileFragment extends Fragment {
-    ImageView ivProfileImage;
+
+    final static String NAME_KEY = "name";
+    final static String JOB_KEY = "job";
+    final static String PROFILE_IMAGE_KEY = "profileImage";
+    final static String SKILLS_KEY = "skills";
+    final static String SUMMARY_KEY = "summary";
+    final static String EDUCATION_KEY = "education";
+    final static String FAVORITE_KEY = "favorites";
+
+    ImageView ivProfile;
+    TextView tvName;
+    TextView tvJob;
+    TextView tvSkills;
+    TextView tvSummary;
+    TextView tvEdu;
     Button bLogOut;
     Button bUploadProfileImage;
     Button bTakePhoto;
     File photoFile;
     Bitmap photoBitmap;
-    ParseFile parseFile;
+
+    ParseUser user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +55,15 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ivProfileImage = view.findViewById(R.id.ivProfileImage);
+        tvName = view.findViewById(R.id.tvName);
+        tvJob = view.findViewById(R.id.tvJob);
+        tvSkills = view.findViewById(R.id.tvSkills);
+        tvSummary = view.findViewById(R.id.tvSummary);
+        tvEdu = view.findViewById(R.id.tvEdu);
+        ivProfile = view.findViewById(R.id.ivProfile);
+
+        user = ParseUser.getCurrentUser();
+        populateInfo(user);
         bLogOut = view.findViewById(R.id.bLogOut);
         bLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,12 +99,36 @@ public class ProfileFragment extends Fragment {
     public void processImageString(String uri) {
         Bitmap takenImage = BitmapFactory.decodeFile(uri);
         photoFile = new File(uri);
-        Glide.with(this).load(takenImage).into(ivProfileImage);
+        Glide.with(this).load(takenImage).into(ivProfile);
     }
 
     public void processImageBitmap(Bitmap takenImage) {
         photoBitmap = takenImage;
-        Glide.with(this).load(takenImage).into(ivProfileImage);
+        Glide.with(this).load(takenImage).into(ivProfile);
+    }
+
+    private void populateInfo(ParseUser user) {
+        tvName.setText(user.getString(NAME_KEY));
+        if (user.getString(JOB_KEY) != null ) {
+            tvJob.setText(String.format("Job: %s", user.getString(JOB_KEY)));
+        }
+        if (user.getString(SKILLS_KEY) != null ) {
+            tvSkills.setText(String.format("Skills: %s", user.getString(SKILLS_KEY)));
+        }
+        if (user.getString(SUMMARY_KEY) != null ) {
+            tvSummary.setText(String.format("Summary: %s", user.getString(SUMMARY_KEY)));
+        }
+        if (user.getString(EDUCATION_KEY) != null ) {
+            tvSummary.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
+        }
+        JSONArray favArray = ParseUser.getCurrentUser().getJSONArray(FAVORITE_KEY);
+
+        if (user.getParseFile(PROFILE_IMAGE_KEY) != null) {
+            Glide.with(getContext())
+                    .load(user.getParseFile(PROFILE_IMAGE_KEY).getUrl())
+                    .apply(new RequestOptions().circleCrop())
+                    .into(ivProfile);
+        }
     }
 
 }

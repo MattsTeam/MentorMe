@@ -21,9 +21,9 @@ import java.util.List;
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
     private List<ParseUser> mUsers;
-    Context context;
+    private Context context;
     private ParseUser currentUser;
-    Location currentLocation = new Location("currentLocation");
+    private Location currentLocation = new Location("currentLocation");
 
 
     public GridAdapter(List<ParseUser> users) {
@@ -77,7 +77,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfile);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvDistance = (TextView) itemView.findViewById(R.id.tvDistance);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
