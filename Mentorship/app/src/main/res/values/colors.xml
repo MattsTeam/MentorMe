@@ -8,4 +8,7 @@
     <color name="loginGreen">#0FA47C</color>
     <color name="imageGray">#696969</color>
     <color name="white">#fafafa</color>
+    <color name="orange">#ff8000</color>
+    <color name="darkOrange">#ff5800</color>
+    <color name="papaya">#ffefd5</color>
 </resources>
