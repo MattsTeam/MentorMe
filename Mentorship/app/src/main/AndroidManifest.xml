@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.chrislewis.mentorship"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="me.chrislewis.mentorship">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_CALENDAR"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR"></uses-permission>
 
     <application
         android:name=".ParseApp"
@@ -22,6 +32,10 @@
 
         <meta-data android:name="com.parse.push.gcm_976064185196"
             android:value="id:976064185196" />
+        <meta-data android:name="com.google.android.gms.vision"
+            android:value="@integer/google_play_services_version"></meta-data>
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" />
