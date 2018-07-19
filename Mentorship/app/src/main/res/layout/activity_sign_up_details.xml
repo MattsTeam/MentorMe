@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/loginGrey">
+
+    <Button
+        android:id="@+id/mentorButton"
+        android:layout_width="97dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="90dp"
+        android:text="Mentor"
+        android:textAllCaps="false"
+        android:textColor="@color/loginGrey" />
+
+    <Button
+        android:id="@+id/menteeButton"
+        android:layout_width="97dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/mentorButton"
+        android:layout_marginEnd="62dp"
+        android:text="Mentee"
+        android:textAllCaps="false"
+        android:textColor="@color/loginGrey" />
+
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/round_login_button"
+        android:text="Register"
+        android:textAllCaps="false"
+        android:textColor="@color/loginGrey"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/engineeringButton"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="193dp"
+        android:background="@drawable/round_category_button"/>
+
+    <ImageButton
+        android:id="@+id/artButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/round_category_button"/>
+
+    <ImageButton
+        android:id="@+id/sportsButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageButton
+        android:id="@+id/scienceButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignLeft="@id/engineeringButton"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageButton
+        android:id="@+id/humanitiesButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/scienceButton"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageButton
+        android:id="@+id/languagesButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignLeft="@id/artButton"
+        android:layout_alignTop="@+id/artButton"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageView
+        android:id="@+id/ivEngineering"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/engineeringButton"
+        android:layout_alignTop="@+id/engineeringButton"
+        app:srcCompat="@drawable/engineering_icon" />
+
+    <ImageView
+        android:id="@+id/ivArt"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/artButton"
+        android:layout_alignTop="@+id/artButton"
+        app:srcCompat="@drawable/art_icon" />
+
+    <ImageView
+        android:id="@+id/ivSport"
+        android:layout_width="85dp"
+        android:layout_height="79dp"
+        android:layout_alignEnd="@+id/sportsButton"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        app:srcCompat="@drawable/sport_icon" />
+
+    <ImageView
+        android:id="@+id/ivHumanities"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/humanitiesButton"
+        android:layout_alignTop="@+id/humanitiesButton"
+        android:layout_marginEnd="-34dp"
+        app:srcCompat="@drawable/humanities_icon" />
+
+    <ImageView
+        android:id="@+id/ivSciences"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/scienceButton"
+        android:layout_alignTop="@+id/scienceButton"
+        app:srcCompat="@drawable/sciences_icon" />
+
+    <ImageView
+        android:id="@+id/ivLanguages"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/languagesButton"
+        android:layout_alignTop="@+id/languagesButton"
+        app:srcCompat="@drawable/languages_icon" />
+
+    <TextView
+        android:id="@+id/tvInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:textColor="@color/orange"
+        android:textSize="30sp"
+        android:text="Select your categories" />
+
+
+</RelativeLayout>

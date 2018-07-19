@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-
         getUsers();
     }
 
@@ -104,7 +103,7 @@ public class HomeFragment extends Fragment {
             for(int i = 0; i < sameCategoryUsers.size(); i++) {
                 ParseUser user = sameCategoryUsers.get(i);
                 user.put("rank", calculateRank(user));
-                user.saveInBackground();
+                //user.saveInBackground();
             }
             Collections.sort(sameCategoryUsers, new Comparator<ParseUser>() {
                 @Override
@@ -136,10 +135,10 @@ public class HomeFragment extends Fragment {
         if(!user.getString("education").equals(currentUser.getString("education"))) {
             educationRank = 5;
         }
-        Log.d("UserRank", user.getUsername());
+        /*Log.d("UserRank", user.getUsername());
         Log.d("UserRank", Double.toString(distanceRank));
         Log.d("UserRank", Double.toString(organizationRank));
-        Log.d("UserRank", Double.toString(educationRank));
+        Log.d("UserRank", Double.toString(educationRank));*/
         return distanceRank + organizationRank + educationRank;
     }
 

@@ -42,7 +42,10 @@ public class SignUpActivity extends AppCompatActivity {
                     public void done(ParseException e) {
                         if(e == null) {
                             Log.d("SignUpActivity", "Successfully registered new user!");
-                            login(usernameInput.getText().toString(), passwordInput.getText().toString());
+                            Intent intent = new Intent(SignUpActivity.this, SignUpDetailsActivity.class);
+                            startActivity(intent);
+                            finish();
+                            //login(usernameInput.getText().toString(), passwordInput.getText().toString());
                         }
                         else {
                             Log.d("SignUpActivity", "Failed to register new user.");
