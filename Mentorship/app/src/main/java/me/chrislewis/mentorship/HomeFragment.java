@@ -120,6 +120,8 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
         pb.setVisibility(ProgressBar.INVISIBLE);
+        swipeContainer.setRefreshing(false);
+
     }
 
     public double calculateRank(ParseUser user) {

@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment {
     Bitmap photoBitmap;
 
     User user;
-    User test;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
