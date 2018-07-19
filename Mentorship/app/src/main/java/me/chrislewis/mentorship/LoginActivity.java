@@ -48,8 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             signUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                    Intent intent = new Intent(LoginActivity.this, SignUpDetailsActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                     startActivity(intent);
                 }
             });
@@ -62,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, com.parse.ParseException e) {
                 if(e == null) {
                     Log.d("LoginActivity", "Log in successful!");
-                    final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }

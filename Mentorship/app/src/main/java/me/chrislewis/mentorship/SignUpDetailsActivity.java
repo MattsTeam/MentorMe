@@ -1,11 +1,17 @@
 package me.chrislewis.mentorship;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.parse.LogInCallback;
+import com.parse.ParseUser;
 
 public class SignUpDetailsActivity extends AppCompatActivity {
 
@@ -21,13 +27,20 @@ public class SignUpDetailsActivity extends AppCompatActivity {
     private ImageView ivHumanities;
     private ImageView sciencesButton;
     private ImageView ivSciences;
-    private  Button mentorButton;
+    private Button mentorButton;
     private Button menteeButton;
+    private Button registerButton;
+    private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_details);
+        Intent intent = getIntent();
+        Bundle loginInfo = intent.getExtras();
+        username = loginInfo.getString("username");
+        password = loginInfo.getString("password");
 
         engineeringButton = findViewById(R.id.engineeringButton);
         ivEngineering = findViewById(R.id.ivEngineering);
@@ -43,16 +56,17 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         ivLanguages = findViewById(R.id.ivLanguages);
         mentorButton = findViewById(R.id.mentorButton);
         menteeButton = findViewById(R.id.menteeButton);
+        registerButton = findViewById(R.id.registerButton);
 
         engineeringButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 engineeringButton.setSelected(!engineeringButton.isSelected());
                 if(engineeringButton.isSelected()) {
-                    ivEngineering.setImageResource(R.drawable.ic_engineering);
+                    ivEngineering.setImageResource(R.drawable.ic_engineering_pressed);
                 }
                 else {
-                    ivEngineering.setImageResource(R.drawable.ic_engineering_pressed);
+                    ivEngineering.setImageResource(R.drawable.ic_engineering);
                 }
             }
         });
@@ -62,10 +76,10 @@ public class SignUpDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 artButton.setSelected(!artButton.isSelected());
                 if(artButton.isSelected()) {
-                    ivArt.setImageResource(R.drawable.ic_art);
+                    ivArt.setImageResource(R.drawable.ic_art_pressed);
                 }
                 else {
-                    ivArt.setImageResource(R.drawable.ic_art_pressed);
+                    ivArt.setImageResource(R.drawable.ic_art);
                 }
             }
         });
@@ -75,10 +89,10 @@ public class SignUpDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 humanitiesButton.setSelected(!humanitiesButton.isSelected());
                 if(humanitiesButton.isSelected()) {
-                    ivHumanities.setImageResource(R.drawable.ic_humanities);
+                    ivHumanities.setImageResource(R.drawable.ic_humanities_pressed);
                 }
                 else {
-                    ivHumanities.setImageResource(R.drawable.ic_humanities_pressed);
+                    ivHumanities.setImageResource(R.drawable.ic_humanities);
                 }
             }
         });
@@ -88,10 +102,10 @@ public class SignUpDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 sportsButton.setSelected(!sportsButton.isSelected());
                 if(sportsButton.isSelected()) {
-                    ivSports.setImageResource(R.drawable.ic_sport);
+                    ivSports.setImageResource(R.drawable.ic_sport_pressed);
                 }
                 else {
-                    ivSports.setImageResource(R.drawable.ic_sport_pressed);
+                    ivSports.setImageResource(R.drawable.ic_sport);
                 }
             }
         });
@@ -101,10 +115,10 @@ public class SignUpDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 sciencesButton.setSelected(!sciencesButton.isSelected());
                 if(sciencesButton.isSelected()) {
-                    ivSciences.setImageResource(R.drawable.ic_sciences);
+                    ivSciences.setImageResource(R.drawable.ic_sciences_pressed);
                 }
                 else {
-                    ivSciences.setImageResource(R.drawable.ic_sciences_pressed);
+                    ivSciences.setImageResource(R.drawable.ic_sciences);
                 }
             }
         });
@@ -114,10 +128,102 @@ public class SignUpDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 languagesButton.setSelected(!languagesButton.isSelected());
                 if(languagesButton.isSelected()) {
-                    ivLanguages.setImageResource(R.drawable.ic_languages);
+                    ivLanguages.setImageResource(R.drawable.ic_languages_pressed);
                 }
                 else {
-                    ivLanguages.setImageResource(R.drawable.ic_languages_pressed);
+                    ivLanguages.setImageResource(R.drawable.ic_languages);
+                }
+            }
+        });
+
+        mentorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mentorButton.setSelected(!mentorButton.isSelected());
+                if(mentorButton.isSelected()) {
+                    mentorButton.setTextColor(Color.parseColor("#ff8000"));
+                    if(menteeButton.isSelected()) {
+                        menteeButton.setSelected(!menteeButton.isSelected());
+                        menteeButton.setTextColor(Color.parseColor("#36373C"));
+                    }
+                }
+                else {
+                    mentorButton.setTextColor(Color.parseColor("#36373C"));
+                }
+            }
+        });
+
+        menteeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menteeButton.setSelected(!menteeButton.isSelected());
+                if(menteeButton.isSelected()) {
+                    menteeButton.setTextColor(Color.parseColor("#ff8000"));
+                    if(mentorButton.isSelected()) {
+                        mentorButton.setSelected(!mentorButton.isSelected());
+                        mentorButton.setTextColor(Color.parseColor("#36373C"));
+                    }
+                }
+                else {
+                    menteeButton.setTextColor(Color.parseColor("#36373C"));
+                }
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ParseUser.getCurrentUser().logOut();
+                login(username, password);
+            }
+        });
+    }
+
+    private void saveCategoryInfo() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(artButton.isSelected()) {
+            currentUser.put("category", "art");
+        }
+        if(sportsButton.isSelected()) {
+            currentUser.put("category", "sports");
+        }
+        if(humanitiesButton.isSelected()) {
+            currentUser.put("category", "humanities");
+        }
+        if(languagesButton.isSelected()) {
+            currentUser.put("category", "languages");
+        }
+        if(engineeringButton.isSelected()) {
+            currentUser.put("category", "engineering");
+        }
+        if(sciencesButton.isSelected()) {
+            currentUser.put("category", "sciences");
+        }
+        currentUser.saveInBackground();
+    }
+
+    private void login(String username, String password) {
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, com.parse.ParseException e) {
+                if(e == null) {
+                    Log.d("LoginActivity", "Log in successful!");
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    if(mentorButton.isSelected()) {
+                        currentUser.put("isMentor", true);
+                    }
+                    else {
+                        currentUser.put("isMentor", false);
+                    }
+                    saveCategoryInfo();
+                    currentUser.saveInBackground();
+                    Intent intent = new Intent(SignUpDetailsActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    Log.d("LoginActivity", "Login failure.");
+                    e.printStackTrace();
                 }
             }
         });

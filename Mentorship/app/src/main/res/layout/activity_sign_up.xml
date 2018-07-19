@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/loginGrey"
+    android:background="@color/loginOrange"
     tools:context=".SignUpActivity">
 
 
@@ -157,7 +157,7 @@
         android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
         android:textAllCaps="false"
-        android:textColor="@color/loginGrey"
+        android:textColor="@color/papaya"
         android:background="@drawable/round_login_button"
         android:textSize="20sp"
         android:text="Next" />
