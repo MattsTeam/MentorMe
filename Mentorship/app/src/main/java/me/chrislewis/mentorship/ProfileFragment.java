@@ -42,6 +42,7 @@ public class ProfileFragment extends Fragment {
     Bitmap photoBitmap;
 
     User user;
+    User test;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,9 +60,7 @@ public class ProfileFragment extends Fragment {
         tvEdu = view.findViewById(R.id.tvEdu);
         ivProfile = view.findViewById(R.id.ivProfile);
 
-        user = new User();
-        user.setUser(ParseUser.getCurrentUser());
-
+        user = new User(ParseUser.getCurrentUser());
         populateInfo();
 
         bLogOut = view.findViewById(R.id.bLogOut);

@@ -2,7 +2,6 @@ package me.chrislewis.mentorship.models;
 
 import android.text.format.DateUtils;
 
-import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -10,22 +9,19 @@ import com.parse.ParseUser;
 import java.util.Collections;
 import java.util.List;
 
-@ParseClassName("User")
-public class User extends ParseUser {
-    final static String NAME_KEY = "name";
-    final static String JOB_KEY = "job";
-    final static String PROFILE_IMAGE_KEY = "profileImage";
-    final static String SKILLS_KEY = "skills";
-    final static String SUMMARY_KEY = "summary";
-    final static String EDUCATION_KEY = "education";
-    final static String FAVORITE_KEY = "favorites";
+public class User{
+    private final static String NAME_KEY = "name";
+    private final static String JOB_KEY = "job";
+    private final static String PROFILE_IMAGE_KEY = "profileImage";
+    private final static String SKILLS_KEY = "skills";
+    private final static String SUMMARY_KEY = "summary";
+    private final static String EDUCATION_KEY = "education";
+    private final static String FAVORITE_KEY = "favorites";
 
-    ParseUser user;
+    private ParseUser user;
 
-    boolean liked;
-
-    public void User() {
-
+    public User(ParseUser user) {
+        this.user = user;
     }
 
     public void setUser(ParseUser user) {
@@ -95,7 +91,7 @@ public class User extends ParseUser {
 
     public String getRelativeTimeAgo() {
         String relativeDate;
-        long dateMillis = getCreatedAt().getTime();
+        long dateMillis = user.getCreatedAt().getTime();
         relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
         return relativeDate;
