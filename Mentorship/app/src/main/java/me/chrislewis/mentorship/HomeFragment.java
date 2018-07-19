@@ -18,10 +18,10 @@ import android.widget.ProgressBar;
 
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import java.util.Collections;
-import java.util.Comparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -92,6 +92,7 @@ public class HomeFragment extends Fragment {
 
     public void getUsers() {
         pb.setVisibility(ProgressBar.VISIBLE);
+        gridAdapter.clear();
         ParseUser.getCurrentUser().fetchInBackground();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("isMentor", true);
