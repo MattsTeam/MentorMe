@@ -21,17 +21,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
 
 import java.io.File;
-import java.util.List;
+
+import me.chrislewis.mentorship.models.User;
 
 public class ProfileFragment extends Fragment {
-
-    final static String NAME_KEY = "name";
-    final static String JOB_KEY = "job";
-    final static String PROFILE_IMAGE_KEY = "profileImage";
-    final static String SKILLS_KEY = "skills";
-    final static String SUMMARY_KEY = "summary";
-    final static String EDUCATION_KEY = "education";
-    final static String FAVORITE_KEY = "favorites";
 
     FavoritesAdapter adapter;
     RecyclerView rvFavorites;
@@ -48,7 +41,7 @@ public class ProfileFragment extends Fragment {
     File photoFile;
     Bitmap photoBitmap;
 
-    ParseUser user;
+    User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,8 +59,10 @@ public class ProfileFragment extends Fragment {
         tvEdu = view.findViewById(R.id.tvEdu);
         ivProfile = view.findViewById(R.id.ivProfile);
 
-        user = ParseUser.getCurrentUser();
-        populateInfo(user);
+        user = new User();
+        user.setUser(ParseUser.getCurrentUser());
+
+        populateInfo();
 
         bLogOut = view.findViewById(R.id.bLogOut);
         bLogOut.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +93,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        adapter = new FavoritesAdapter(view.getContext(), "test", (List<ParseUser>) user.get(FAVORITE_KEY));
+        adapter = new FavoritesAdapter(view.getContext(), "test", user.getFavorites());
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -117,24 +112,24 @@ public class ProfileFragment extends Fragment {
         Glide.with(this).load(takenImage).into(ivProfile);
     }
 
-    private void populateInfo(ParseUser user) {
-        tvName.setText(user.getString(NAME_KEY));
-        if (user.getString(JOB_KEY) != null ) {
-            tvJob.setText(String.format("Job: %s", user.getString(JOB_KEY)));
+    private void populateInfo() {
+        tvName.setText(user.getName());
+        if (user.getJob() != null ) {
+            tvJob.setText(String.format("Job: %s", user.getJob()));
         }
-        if (user.getString(SKILLS_KEY) != null ) {
-            tvSkills.setText(String.format("Skills: %s", user.getString(SKILLS_KEY)));
+        if (user.getSkills() != null ) {
+            tvSkills.setText(String.format("Skills: %s", user.getSkills()));
         }
-        if (user.getString(SUMMARY_KEY) != null ) {
-            tvSummary.setText(String.format("Summary: %s", user.getString(SUMMARY_KEY)));
+        if (user.getSummary() != null ) {
+            tvSummary.setText(String.format("Summary: %s", user.getSummary()));
         }
-        if (user.getString(EDUCATION_KEY) != null ) {
-            tvEdu.setText(String.format("Education: %s", user.getString(EDUCATION_KEY)));
+        if (user.getEducation() != null ) {
+            tvEdu.setText(String.format("Education: %s", user.getEducation()));
         }
 
-        if (user.getParseFile(PROFILE_IMAGE_KEY) != null) {
+        if (user.getProfileImage() != null) {
             Glide.with(getContext())
-                    .load(user.getParseFile(PROFILE_IMAGE_KEY).getUrl())
+                    .load(user.getProfileImage().getUrl())
                     .apply(new RequestOptions().circleCrop())
                     .into(ivProfile);
         }

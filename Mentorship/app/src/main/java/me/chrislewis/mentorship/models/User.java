@@ -20,69 +20,77 @@ public class User extends ParseUser {
     final static String EDUCATION_KEY = "education";
     final static String FAVORITE_KEY = "favorites";
 
+    ParseUser user;
+
     boolean liked;
 
-    public void Post() {
+    public void User() {
+
     }
 
+    public void setUser(ParseUser user) {
+        this.user = user;
+    }
+
+
     public String getName() {
-        return getString(NAME_KEY);
+        return user.getString(NAME_KEY);
     }
 
     public void setName(String name) {
-        put(NAME_KEY, name);
+        user.put(NAME_KEY, name);
     }
 
     public String getJob() {
-        return getString(JOB_KEY);
+        return user.getString(JOB_KEY);
     }
 
     public void setJob(String job) {
-        put(JOB_KEY, job);
+        user.put(JOB_KEY, job);
     }
 
     public ParseFile getProfileImage() {
-        return getParseFile(PROFILE_IMAGE_KEY);
+        return user.getParseFile(PROFILE_IMAGE_KEY);
     }
 
     public void setProfileImage(ParseFile file) {
-        put(PROFILE_IMAGE_KEY, file);
+        user.put(PROFILE_IMAGE_KEY, file);
     }
 
     public String getSkills() {
-        return getString(SKILLS_KEY);
+        return user.getString(SKILLS_KEY);
     }
 
     public void setSkills(String skills) {
-        put(SKILLS_KEY, skills);
+        user.put(SKILLS_KEY, skills);
     }
 
     public String getSummary() {
-        return getString(SUMMARY_KEY);
+        return user.getString(SUMMARY_KEY);
     }
 
     public void setSummary(String summary) {
-        put(SUMMARY_KEY, summary);
+        user.put(SUMMARY_KEY, summary);
     }
 
     public String getEducation() {
-        return getString(EDUCATION_KEY);
+        return user.getString(EDUCATION_KEY);
     }
 
     public void setEducation(String education) {
-        put(EDUCATION_KEY, education);
+        user.put(EDUCATION_KEY, education);
     }
 
     public List<ParseUser> getFavorites() {
-        return (List<ParseUser>) get(FAVORITE_KEY);
+        return (List<ParseUser>) user.get(FAVORITE_KEY);
     }
 
     public void addFavorite(ParseUser user) {
-        addUnique(FAVORITE_KEY, user);
+        this.user.addUnique(FAVORITE_KEY, user);
     }
 
     public void removeFavorite(ParseUser user) {
-        removeAll(FAVORITE_KEY, Collections.singleton(user));
+        this.user.removeAll(FAVORITE_KEY, Collections.singleton(user));
     }
 
     public String getRelativeTimeAgo() {

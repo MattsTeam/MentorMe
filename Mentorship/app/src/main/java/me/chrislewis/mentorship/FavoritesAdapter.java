@@ -52,7 +52,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public int getItemCount() {
-        return favorites.size();
+        if (favorites == null) {
+            return 0;
+        } else {
+            return favorites.size();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
