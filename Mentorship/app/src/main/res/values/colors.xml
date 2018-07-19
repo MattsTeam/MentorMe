@@ -11,4 +11,5 @@
     <color name="orange">#ff8000</color>
     <color name="darkOrange">#ff5800</color>
     <color name="papaya">#ffefd5</color>
+    <color name="black">#000000</color>
 </resources>

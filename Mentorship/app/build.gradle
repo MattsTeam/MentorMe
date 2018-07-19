@@ -73,4 +73,4 @@ dependencies {
     implementation 'com.parse:parse-fcm-android:1.17.3'
 }
 
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
