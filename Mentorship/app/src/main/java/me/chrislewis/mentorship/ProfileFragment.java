@@ -98,7 +98,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        adapter = new FavoritesAdapter(view.getContext(), "test", (List<ParseUser>) user.get("test"));
+        adapter = new FavoritesAdapter(view.getContext(), "test", (List<ParseUser>) user.get(FAVORITE_KEY));
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));

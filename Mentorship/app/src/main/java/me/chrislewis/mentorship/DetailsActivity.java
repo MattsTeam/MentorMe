@@ -81,11 +81,11 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("Details", "test");
                 if (!isFavorite) {
-                    currentUser.addUnique(FAVORITE_KEY, user.getObjectId());
+                    currentUser.addUnique(FAVORITE_KEY, user);
                     currentUser.saveInBackground();
                     isFavorite = true;
                 } else {
-                    currentUser.removeAll(FAVORITE_KEY, Collections.singleton(user.getObjectId()));
+                    currentUser.removeAll(FAVORITE_KEY, Collections.singleton(user));
                     currentUser.saveInBackground();
                     isFavorite = false;
                 }

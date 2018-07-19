@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     final CalendarFragment calendarFragment = new CalendarFragment();
     final MessageFragment messageFragment = new MessageFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
-    final FavoritesFragment favoritesFragment = new FavoritesFragment();
 
     public String photoFileName = "photo.jpg";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -55,10 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
-                    return true;
-                case R.id.navigation_favorites:
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
                     return true;
                 case R.id.navigation_messages:
                     fragmentTransaction = fragmentManager.beginTransaction();

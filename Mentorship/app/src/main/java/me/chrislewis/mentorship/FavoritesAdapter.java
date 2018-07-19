@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -38,11 +39,15 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ParseUser user = favorites.get(i);
-        user.fetchInBackground();
-        viewHolder.tvName.setText(user.getString("username"));
-        Glide.with(mContext)
-                .load(user.getParseFile("profileImage").getUrl())
-                .into(viewHolder.ivProfile);
+        try {
+            user.fetch();
+            viewHolder.tvName.setText(user.getString("username"));
+            Glide.with(mContext)
+                    .load(user.getParseFile("profileImage").getUrl())
+                    .into(viewHolder.ivProfile);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
