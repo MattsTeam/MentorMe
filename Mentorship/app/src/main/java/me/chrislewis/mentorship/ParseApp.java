@@ -3,6 +3,7 @@ package me.chrislewis.mentorship;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
 import me.chrislewis.mentorship.models.Event;
@@ -26,5 +27,19 @@ public class ParseApp extends Application{
                 .build();
         Parse.initialize(configuration);
 
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("GCMSenderId", "976064185196");
+        installation.saveInBackground();
+        /*
+        FileInputStream serviceAccount =
+                new FileInputStream("firebase-adminsdk-dpita@mentorship-ee041.iam.gserviceaccount.com.json");
+
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setDatabaseUrl("https://mentorship-ee041.firebaseio.com")
+                .build();
+
+        FirebaseApp.initializeApp(options);
+        */
     }
 }

@@ -29,6 +29,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
+
+    //private FirebaseAuth firebaseAuth;
+
+
     private FragmentTransaction fragmentTransaction;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final HomeFragment homeFragment = new HomeFragment();
@@ -114,14 +118,23 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
 
             return;
-
-            /*
-            public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-            }
-             */
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+
+        /*
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Registered Successfully.", Toast.LENGTH_LONG);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Could not register", Toast.LENGTH_LONG);
+                }
+
+            }
+        });
+        */
 
     }
 
