@@ -102,8 +102,6 @@ public class HomeFragment extends Fragment {
             List<ParseUser> sameCategoryUsers = query.find();
             for(int i = 0; i < sameCategoryUsers.size(); i++) {
                 ParseUser user = sameCategoryUsers.get(i);
-                user.put("rank", calculateRank(user));
-                //user.saveInBackground();
             }
             Collections.sort(sameCategoryUsers, new Comparator<ParseUser>() {
                 @Override

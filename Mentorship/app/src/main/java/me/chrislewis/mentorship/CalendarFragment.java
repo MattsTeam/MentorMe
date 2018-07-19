@@ -116,4 +116,64 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
         return 0xFF000000 | Red | Green | Blue;
     }
+
+    // adding event into Google Calendar
+    /*
+    //add an event to calendar
+    private void addEvent() {
+        ContentValues l_event = new ContentValues();
+        l_event.put("calendar_id", m_selectedCalendarId);
+        l_event.put("title", "roman10 calendar tutorial test");
+        l_event.put("description", "This is a simple test for calendar api");
+        l_event.put("eventLocation", "@home");
+        l_event.put("dtstart", System.currentTimeMillis());
+        l_event.put("dtend", System.currentTimeMillis() + 1800*1000);
+        l_event.put("allDay", 0);
+        //status: 0~ tentative; 1~ confirmed; 2~ canceled
+        l_event.put("eventStatus", 1);
+        //0~ default; 1~ confidential; 2~ private; 3~ public
+        l_event.put("visibility", 0);
+        //0~ opaque, no timing conflict is allowed; 1~ transparency, allow overlap of scheduling
+        l_event.put("transparency", 0);
+        //0~ false; 1~ true
+        l_event.put("hasAlarm", 1);
+        Uri l_eventUri;
+        if (Build.VERSION.SDK_INT >= 8 ) {
+            l_eventUri = Uri.parse("content://com.android.calendar/events");
+        } else {
+            l_eventUri = Uri.parse("content://calendar/events");
+        }
+        Uri l_uri = this.getContentResolver().insert(l_eventUri, l_event);
+        Log.v("++++++test", l_uri.toString());
+    }
+     */
+
+    // adding event through intent, doesn't require any permissions
+    /*
+    private void addEvent2() {
+        Intent l_intent = new Intent(Intent.ACTION_EDIT);
+        l_intent.setType("vnd.android.cursor.item/event");
+        //l_intent.putExtra("calendar_id", m_selectedCalendarId);  //this doesn't work
+        l_intent.putExtra("title", "roman10 calendar tutorial test");
+        l_intent.putExtra("description", "This is a simple test for calendar api");
+        l_intent.putExtra("eventLocation", "@home");
+        l_intent.putExtra("beginTime", System.currentTimeMillis());
+        l_intent.putExtra("endTime", System.currentTimeMillis() + 1800*1000);
+        l_intent.putExtra("allDay", 0);
+        //status: 0~ tentative; 1~ confirmed; 2~ canceled
+        l_intent.putExtra("eventStatus", 1);
+        //0~ default; 1~ confidential; 2~ private; 3~ public
+        l_intent.putExtra("visibility", 0);
+        //0~ opaque, no timing conflict is allowed; 1~ transparency, allow overlap of scheduling
+        l_intent.putExtra("transparency", 0);
+        //0~ false; 1~ true
+        l_intent.putExtra("hasAlarm", 1);
+        try {
+            startActivity(l_intent);
+        } catch (Exception e) {
+            Toast.makeText(this.getApplicationContext(), "Sorry, no compatible calendar is found!", Toast.LENGTH_LONG).show();
+        }
+    }
+    */
+
 }
