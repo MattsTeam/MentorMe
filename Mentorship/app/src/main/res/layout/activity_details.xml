@@ -68,12 +68,12 @@
         android:layout_alignParentEnd="true"
         android:text="@string/title_messages" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btFav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/btMessage"
-        android:text="@string/title_favorites" />
+        android:layout_toStartOf="@+id/btFav"
+        android:background="@drawable/favorite_save" />
 
 </RelativeLayout>

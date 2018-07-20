@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,12 +19,13 @@ import com.parse.ParseUser;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.Collections;
 import java.util.List;
+
+import me.chrislewis.mentorship.models.User;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    ParseUser currentUser;
+    User currentUser;
     ParseUser user;
     String userId;
     TextView tvName;
@@ -31,7 +33,7 @@ public class DetailsActivity extends AppCompatActivity {
     TextView tvSkills;
     TextView tvSummary;
     TextView tvEdu;
-    Button btFav;
+    ImageButton btFav;
     Button btMessage;
     ImageView ivProfile;
 
@@ -59,7 +61,7 @@ public class DetailsActivity extends AppCompatActivity {
         btMessage = findViewById(R.id.btMessage);
         ivProfile = findViewById(R.id.ivProfile);
 
-        currentUser = ParseUser.getCurrentUser();
+        currentUser = new User (ParseUser.getCurrentUser());
 
 
         userId = getIntent().getStringExtra("UserObjectId");
@@ -81,12 +83,14 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("Details", "test");
                 if (!isFavorite) {
-                    currentUser.addUnique(FAVORITE_KEY, user);
+                    currentUser.addFavorite(user);
                     currentUser.saveInBackground();
+                    btFav.setBackgroundResource(R.drawable.favorite_save_active);
                     isFavorite = true;
                 } else {
-                    currentUser.removeAll(FAVORITE_KEY, Collections.singleton(user));
+                    currentUser.removeFavorite(user);
                     currentUser.saveInBackground();
+                    btFav.setBackgroundResource(R.drawable.favorite_save);
                     isFavorite = false;
                 }
             }
@@ -111,14 +115,18 @@ public class DetailsActivity extends AppCompatActivity {
         if (favArray != null) {
             for (int i = 0; i < favArray.length(); i++) {
                 try {
-                    if ((user.getObjectId()).equals(favArray.getString(i))) {
+                    if ((userId).equals(favArray.getJSONObject(i).getString("objectId"))) {
                         isFavorite = true;
-                        btFav.setText("FAVORITED");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+        }
+        if (isFavorite) {
+            btFav.setBackgroundResource(R.drawable.favorite_save_active);
+        } else {
+            btFav.setBackgroundResource(R.drawable.favorite_save);
         }
         Glide.with(getApplicationContext())
                 .load(user.getParseFile(PROFILE_IMAGE_KEY).getUrl())
