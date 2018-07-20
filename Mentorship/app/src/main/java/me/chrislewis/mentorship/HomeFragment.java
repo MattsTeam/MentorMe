@@ -54,7 +54,6 @@ public class HomeFragment extends Fragment {
         Menu menu = navigationView.getMenu();
         MenuItem cat_1 = menu.findItem(R.id.cat_1);
 
-
         currentCategory = currentUser.getCategory();
         cat_1.setTitle(currentCategory);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -62,29 +61,26 @@ public class HomeFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
-                // swap fragment here...
                 return true;
             }
         });
 
-        rvUsers = (RecyclerView) view.findViewById(R.id.rvGrid);
+        rvUsers = view.findViewById(R.id.rvGrid);
 
-        users = new ArrayList<ParseUser>();
+        users = new ArrayList<>();
         gridAdapter = new GridAdapter(users);
-        pb = (ProgressBar) view.findViewById(R.id.pbLoading);
+        pb = view.findViewById(R.id.pbLoading);
 
         rvUsers.setLayoutManager(new GridLayoutManager(this.getActivity(), 2));
         rvUsers.setAdapter(gridAdapter);
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getUsers();
             }
         });
-
-        // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
