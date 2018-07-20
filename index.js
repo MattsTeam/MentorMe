@@ -14,7 +14,7 @@ if (!databaseUri) {
 var pushConfig = {};
 
 if (process.env.FCM_API_KEY) {
-    pushConfig['android'] = { apiKey: process.env.FCM_API_KEY || ''};
+    pushConfig['android'] = { apiKey: process.env.FCM_API_KEY || 'AIzaSyAZxYlRSZJ4i2JsmnIFC_uEl1h6mdvIkKE'};
 }
 
 var filesAdapter = null;  // enable Gridstore to be the default
