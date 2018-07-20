@@ -8,7 +8,6 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,8 +36,6 @@ public class User{
     public String location;
     public String distance;
     public String relativeDistance;
-
-    ArrayList<User> favorites;
 
     private ParseUser user;
 
@@ -124,10 +121,9 @@ public class User{
 
     public void addFavorite(ParseUser user) {
         this.user.addUnique(FAVORITE_KEY, user);
-        favorites.add(new User(user));
     }
 
-    public void removeFavorite(User user) {
+    public void removeFavorite(ParseUser user) {
         this.user.removeAll(FAVORITE_KEY, Collections.singleton(user));
     }
 
