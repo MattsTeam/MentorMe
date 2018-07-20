@@ -31,10 +31,7 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'TeamMatt',
   masterKey: process.env.MASTER_KEY || 'TeamMatt', //Add your master key here. Keep it secret!
-  push: {
-    android: {
-      apiKey: 'AAAA0raVTkg:APA91bEZ7E57VJ8GXzysjlem8WkI2OMH1LOrxlp1l3tkJkq5zgSCHgWRKhY4qdchk3KBDzXWjhSLz7tKZbu3oZR1WLFftTCkmWaaAKOTGeIlH49V4Aenkd2R_1WzJlXQVJ1ze6bllBvBZclBHA3Zr2cB3eGvb4v_Ww'
-    },
+  push: pushConfig,
   serverURL: process.env.SERVER_URL || 'http://teammatt-fbu-mentorship.herokuapp.com/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
