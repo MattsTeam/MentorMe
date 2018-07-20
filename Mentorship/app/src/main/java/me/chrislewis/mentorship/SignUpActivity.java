@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -43,9 +43,12 @@ public class SignUpActivity extends AppCompatActivity {
                         if(e == null) {
                             Log.d("SignUpActivity", "Successfully registered new user!");
                             Intent intent = new Intent(SignUpActivity.this, SignUpDetailsActivity.class);
+                            Bundle loginInfo = new Bundle();
+                            loginInfo.putString("username", usernameInput.getText().toString());
+                            loginInfo.putString("password", passwordInput.getText().toString());
+                            intent.putExtras(loginInfo);
                             startActivity(intent);
                             finish();
-                            //login(usernameInput.getText().toString(), passwordInput.getText().toString());
                         }
                         else {
                             Log.d("SignUpActivity", "Failed to register new user.");
@@ -62,23 +65,13 @@ public class SignUpActivity extends AppCompatActivity {
         newUser.setPassword(passwordInput.getText().toString());
         newUser.setEmail(emailInput.getText().toString());
         newUser.put("name", nameInput.getText().toString());
+        newUser.put("education", "N/A");
+        newUser.put("organization", "N/A");
+        newUser.put("relativeDistance", 10);
+        newUser.put("location", new ParseGeoPoint());
+        newUser.put("job", "N/A");
+        newUser.put("description", "N/A");
+        newUser.saveInBackground();
     }
 
-    private void login(String username, String password) {
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if(e == null) {
-                    Log.d("SignUpActivity", "Log in successful!");
-                    final Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else {
-                    Log.d("SignUpActivity", "Login failure.");
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 }
