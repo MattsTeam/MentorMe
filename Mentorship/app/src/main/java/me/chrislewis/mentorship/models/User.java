@@ -20,6 +20,9 @@ public class User{
     private final static String SUMMARY_KEY = "summary";
     private final static String EDUCATION_KEY = "education";
     private final static String DESCRIPTION_KEY = "description";
+    private final static String CATEGORY_KEY = "category";
+    private final static String ORGANIZATION_KEY = "organization";
+    private final static String RANK_KEY = "rank";
     private final static String FAVORITE_KEY = "favorites";
     private final static String LOCATION_KEY = "location";
     private final static String DISTANCE_KEY = "distance";
@@ -113,6 +116,30 @@ public class User{
 
     public void setDescription(String description) {
         user.put(DESCRIPTION_KEY, description);
+    }
+
+    public String getCategory() {
+        return user.getString(CATEGORY_KEY);
+    }
+
+    public void setCategory(String category) {
+        user.put(CATEGORY_KEY, category);
+    }
+
+    public String getOrganization() {
+        return user.getString(ORGANIZATION_KEY);
+    }
+
+    public void setOrganization(String organization) {
+        user.put(ORGANIZATION_KEY, organization);
+    }
+
+    public double getRank() {
+        return user.getDouble(RANK_KEY);
+    }
+
+    public void setRank(double rank) {
+        user.put(RANK_KEY, rank);
     }
 
     public List<ParseUser> getFavorites() {

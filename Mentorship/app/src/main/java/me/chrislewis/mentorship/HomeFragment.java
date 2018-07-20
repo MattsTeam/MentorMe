@@ -24,8 +24,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.User;
+
 public class HomeFragment extends Fragment {
-    private ParseUser currentUser;
+
+    private User currentUser;
+
     private String currentCategory;
     private GridAdapter gridAdapter;
     private ArrayList<ParseUser> users;
@@ -43,7 +47,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ParseUser.getCurrentUser().fetchInBackground();
-        currentUser = ParseUser.getCurrentUser();
+        currentUser = new User(ParseUser.getCurrentUser());
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = view.findViewById(R.id.drawer_view);
@@ -51,7 +55,7 @@ public class HomeFragment extends Fragment {
         MenuItem cat_1 = menu.findItem(R.id.cat_1);
 
 
-        currentCategory = currentUser.getString("category");
+        currentCategory = currentUser.getCategory();
         cat_1.setTitle(currentCategory);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -97,13 +101,13 @@ public class HomeFragment extends Fragment {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("isMentor", true);
         query.whereNotEqualTo("objectId", currentUser.getObjectId());
-        currentCategory = currentUser.getString("category");
+        currentCategory = currentUser.getCategory();
         query.whereEqualTo("category", currentCategory);
         try {
             List<ParseUser> sameCategoryUsers = query.find();
             for(int i = 0; i < sameCategoryUsers.size(); i++) {
-                ParseUser user = sameCategoryUsers.get(i);
-                user.put("rank", calculateRank(user));
+                User user = new User (sameCategoryUsers.get(i));
+                user.setRank(calculateRank(user));
             }
             Collections.sort(sameCategoryUsers, new Comparator<ParseUser>() {
                 @Override
@@ -126,15 +130,15 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public double calculateRank(ParseUser user) {
+    public double calculateRank(User user) {
         double distanceRank = 0;
         double organizationRank = 0;
         double educationRank = 0;
-        distanceRank = 10 * user.getDouble("relativeDistance");
-        if(!user.getString("organization").equals(currentUser.getString("organization"))) {
+        distanceRank = 10 * user.getRelDistance();
+        if(!user.getOrganization().equals(currentUser.getOrganization())) {
             organizationRank = 4;
         }
-        if(!user.getString("education").equals(currentUser.getString("education"))) {
+        if(!user.getEducation().equals(currentUser.getOrganization())) {
             educationRank = 5;
         }
         Log.d("UserRank", " username: " + user.getUsername());

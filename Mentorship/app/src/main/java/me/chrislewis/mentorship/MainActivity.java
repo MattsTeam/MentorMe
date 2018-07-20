@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
     //private FirebaseAuth firebaseAuth;
 
-
     private FragmentTransaction fragmentTransaction;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final HomeFragment homeFragment = new HomeFragment();
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+
 
     }
 
