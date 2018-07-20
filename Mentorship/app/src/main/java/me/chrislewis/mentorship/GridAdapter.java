@@ -18,11 +18,13 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+import me.chrislewis.mentorship.models.User;
+
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
     private List<ParseUser> mUsers;
     private Context context;
-    private ParseUser currentUser;
+    private User currentUser;
     private Location currentLocation = new Location("currentLocation");
 
 
@@ -36,8 +38,8 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext(); // context is UserFragment
         ParseUser.getCurrentUser().fetchInBackground();
-        currentUser = ParseUser.getCurrentUser();
-        ParseGeoPoint ParseCurrentLocation = currentUser.getParseGeoPoint("location");
+        currentUser = new User(ParseUser.getCurrentUser());
+        ParseGeoPoint ParseCurrentLocation = currentUser.getCurrentLoction();
         currentLocation.setLatitude(ParseCurrentLocation.getLatitude());
         currentLocation.setLongitude(ParseCurrentLocation.getLongitude());
 
@@ -49,14 +51,14 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull GridAdapter.ViewHolder holder, int position) {
-        ParseUser user = mUsers.get(position);
-        holder.tvUsername.setText(user.getString("username"));
-        holder.tvDescription.setText(user.getString("description"));
-        if(user.getParseFile("profileImage") != null) {
-            Glide.with(context).load(user.getParseFile("profileImage").getUrl()).into(holder.ivProfileImage);
+        User user = new User(mUsers.get(position));
+        holder.tvUsername.setText(user.getUsername());
+        holder.tvDescription.setText(user.getDescription());
+        if(user.getProfileImage() != null) {
+            Glide.with(context).load(user.getProfileImage().getUrl()).into(holder.ivProfileImage);
         }
 
-        ParseGeoPoint ParseLocation = user.getParseGeoPoint("location");
+        ParseGeoPoint ParseLocation = user.getCurrentLoction();
         Location location = new Location("location");
         location.setLongitude(ParseLocation.getLongitude());
         location.setLatitude(ParseLocation.getLatitude());
@@ -66,8 +68,8 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
         holder.tvDistance.setText(Double.toString(distance) + " miles away");
 
-        user.put("distance", Double.toString(distance));
-        user.put("relativeDistance", distance);
+        user.setDistance(Double.toString(distance));
+        user.setRelDistance(distance);
         user.saveInBackground();
         currentUser.saveInBackground();
     }
