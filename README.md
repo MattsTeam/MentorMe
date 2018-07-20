@@ -54,3 +54,8 @@ Application to match mentors and mentees based on shared interests, goals, avail
 * User: goals, skills, location, profile picture, current mentors/mentees
 * Meeting: time, location
 * Calendar: meetings
+
+# Week 1 GIF
+Here's a walkthrough of implemented user stories:
+<img src='Mentorship/week1GIF.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
