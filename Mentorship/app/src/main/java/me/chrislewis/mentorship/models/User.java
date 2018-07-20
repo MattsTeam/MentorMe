@@ -43,8 +43,8 @@ public class User{
         this.user = user;
     }
 
-    public void setUser(ParseUser user) {
-        this.user = user;
+    public ParseUser getParseUser() {
+        return user;
     }
 
     public String getObjectId() {
