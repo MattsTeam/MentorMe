@@ -18,10 +18,10 @@ import android.widget.ProgressBar;
 
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import java.util.Collections;
-import java.util.Comparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = ParseUser.getCurrentUser();
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
@@ -91,7 +90,9 @@ public class HomeFragment extends Fragment {
     }
 
     public void getUsers() {
+        Log.d("HomeFragment", "Refreshed feed");
         pb.setVisibility(ProgressBar.VISIBLE);
+        gridAdapter.clear();
         ParseUser.getCurrentUser().fetchInBackground();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("isMentor", true);
@@ -102,6 +103,7 @@ public class HomeFragment extends Fragment {
             List<ParseUser> sameCategoryUsers = query.find();
             for(int i = 0; i < sameCategoryUsers.size(); i++) {
                 ParseUser user = sameCategoryUsers.get(i);
+                user.put("rank", calculateRank(user));
             }
             Collections.sort(sameCategoryUsers, new Comparator<ParseUser>() {
                 @Override
@@ -135,10 +137,11 @@ public class HomeFragment extends Fragment {
         if(!user.getString("education").equals(currentUser.getString("education"))) {
             educationRank = 5;
         }
-        /*Log.d("UserRank", user.getUsername());
-        Log.d("UserRank", Double.toString(distanceRank));
-        Log.d("UserRank", Double.toString(organizationRank));
-        Log.d("UserRank", Double.toString(educationRank));*/
+        Log.d("UserRank", " username: " + user.getUsername());
+        Log.d("UserRank", "distance rank: " + Double.toString(distanceRank));
+        Log.d("UserRank", "organization rank: " + Double.toString(organizationRank));
+        Log.d("UserRank", "education rank: " + Double.toString(educationRank));
+        Log.d("UserRank", "total points: " + Double.toString(distanceRank + organizationRank + educationRank));
         return distanceRank + organizationRank + educationRank;
     }
 

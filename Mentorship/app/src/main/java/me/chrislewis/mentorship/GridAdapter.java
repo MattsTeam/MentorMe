@@ -52,7 +52,9 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         ParseUser user = mUsers.get(position);
         holder.tvUsername.setText(user.getString("username"));
         holder.tvDescription.setText(user.getString("description"));
-        Glide.with(context).load(user.getParseFile("profileImage").getUrl()).into(holder.ivProfileImage);
+        if(user.getParseFile("profileImage") != null) {
+            Glide.with(context).load(user.getParseFile("profileImage").getUrl()).into(holder.ivProfileImage);
+        }
 
         ParseGeoPoint ParseLocation = user.getParseGeoPoint("location");
         Location location = new Location("location");

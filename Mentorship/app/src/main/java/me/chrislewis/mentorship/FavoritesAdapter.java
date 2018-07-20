@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private String favoriteKey;
     private List<ParseUser> favorites;
 
-    public FavoritesAdapter(Context context, String favoriteKey, List<ParseUser> favorites) {
+    public FavoritesAdapter(Context context, List<ParseUser> favorites) {
         mContext = context;
         this.favoriteKey = favoriteKey;
         this.favorites = favorites;
@@ -37,17 +39,19 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        ParseUser user = favorites.get(i);
-        try {
-            user.fetch();
-            viewHolder.tvName.setText(user.getString("username"));
-            Glide.with(mContext)
-                    .load(user.getParseFile("profileImage").getUrl())
-                    .into(viewHolder.ivProfile);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+        final ParseUser user = favorites.get(i);
+        user.fetchInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                viewHolder.tvName.setText(user.getUsername());
+                Glide.with(mContext)
+                        .load(user.getParseFile("profileImage").getUrl())
+                        .into(viewHolder.ivProfile);
+            }
+        });
+
+
     }
 
     @Override
