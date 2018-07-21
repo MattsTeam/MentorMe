@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+ext {
+    parseVersion = "1.17.3"
+}
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -74,6 +77,7 @@ dependencies {
 
 
     implementation 'com.parse:parse-fcm-android:1.17.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
 /*    implementation 'com.google.android.gms:play-services:10.2.0'
     implementation 'com.google.apis:google-api-services-calendar:v3-rev260-1.23.0' exclude module: 'httpclient'

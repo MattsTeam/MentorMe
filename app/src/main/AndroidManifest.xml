@@ -30,10 +30,11 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
 
-        <meta-data android:name="com.parse.push.gcm_976064185196"
-            android:value="id:976064185196" />
+        <meta-data android:name="com.parse.push.gcm_sender_id"
+            android:value="id:905006370376" />
         <meta-data android:name="com.google.android.gms.vision"
             android:value="@integer/google_play_services_version"></meta-data>
+
 
 
         <activity
@@ -80,6 +81,9 @@
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
 
