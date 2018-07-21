@@ -167,21 +167,19 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     payload.put("sender", ParseInstallation.getCurrentInstallation().getInstallationId());
-                    payload.put("alert", "my data");
+                    payload.put("alert", "what i want to show up");
+                    // TODO why does push data depend on what's specified in main.js instead of the payload.put field?
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 HashMap<String, String> data = new HashMap<>();
-                data.put("alert", "hi again");
-                data.put("message", "testing");
                 data.put("customData", payload.toString());
 
                 ParseCloud.callFunctionInBackground("pingReply", data);
-                Toast.makeText(MainActivity.this, "called function in background", Toast.LENGTH_LONG).show();
 
-                Toast.makeText(MainActivity.this, "tried this too", Toast.LENGTH_SHORT).show();
 
+                // TODO why does the following never get sent?
                 ParsePush parsePush = new ParsePush();
                 ParseQuery<ParseInstallation> installationParseQuery = ParseQuery.getQuery(ParseInstallation.class);
                 installationParseQuery.whereEqualTo("enable", true);
