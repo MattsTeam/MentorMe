@@ -32,6 +32,8 @@ import android.widget.Toast;
 import com.parse.ParseCloud;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 HashMap<String, String> data = new HashMap<>();
+                data.put("alert", "hi again");
                 data.put("message", "testing");
                 data.put("customData", payload.toString());
 
@@ -178,6 +181,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "called function in background", Toast.LENGTH_LONG).show();
 
                 Toast.makeText(MainActivity.this, "tried this too", Toast.LENGTH_SHORT).show();
+
+                ParsePush parsePush = new ParsePush();
+                ParseQuery<ParseInstallation> installationParseQuery = ParseQuery.getQuery(ParseInstallation.class);
+                installationParseQuery.whereEqualTo("enable", true);
+                parsePush.setMessage("a direct push from from Main Activity");
+
+                parsePush.sendInBackground();
+
             }
         });
 
