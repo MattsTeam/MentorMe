@@ -18,7 +18,7 @@ public class ParseApp extends Application{
     public static final String MY_APP_ID = "TeamMatt";
     public static String SERVER = "http://teammatt-fbu-mentorship.herokuapp.com/parse";
     public static String CLIENT_KEY = "TeamMatt";
-    public static final String CHANNEL_NAME = "abcd";
+    public static final String CHANNEL_NAME = "hi";
 
 
     @Override
@@ -59,7 +59,9 @@ public class ParseApp extends Application{
         testObject.saveInBackground();
 
 
+
         ParsePush.subscribeInBackground(CHANNEL_NAME);
+
 
 
 

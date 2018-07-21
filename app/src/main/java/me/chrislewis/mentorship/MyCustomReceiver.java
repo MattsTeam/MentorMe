@@ -16,7 +16,7 @@ import java.util.Iterator;
 public class MyCustomReceiver extends BroadcastReceiver {
     private static final String TAG = "MyCustomReceiver";
     public static final String intentAction = "com.parse.push.intent.RECEIVE";
-    public static final String CHANNEL_ID = "abcd";
+    public static final String CHANNEL_ID = "hi";
 
     @Override
     public void onReceive(Context context, Intent intent) {

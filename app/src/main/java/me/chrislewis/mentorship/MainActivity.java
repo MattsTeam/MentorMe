@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     payload.put("sender", ParseInstallation.getCurrentInstallation().getInstallationId());
-                    payload.put("alert", "testing");
+                    payload.put("alert", "my data");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -176,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
 
                 ParseCloud.callFunctionInBackground("pingReply", data);
                 Toast.makeText(MainActivity.this, "called function in background", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(MainActivity.this, "tried this too", Toast.LENGTH_SHORT).show();
             }
         });
 
