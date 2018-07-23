@@ -1,6 +1,8 @@
 package me.chrislewis.mentorship;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,16 +25,33 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.parse.ParseCloud;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     //private FirebaseAuth firebaseAuth;
+    private Button push;
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(getApplicationContext(), "onReceive invoked", Toast.LENGTH_LONG).show();
+        }
+    };
 
     private FragmentTransaction fragmentTransaction;
     final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -139,6 +158,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+        push = findViewById(R.id.btnPush);
+
+        push.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONObject payload = new JSONObject();
+
+                try {
+                    payload.put("sender", ParseInstallation.getCurrentInstallation().getInstallationId());
+                    payload.put("alert", "what i want to show up");
+                    // TODO why does push data depend on what's specified in main.js instead of the payload.put field?
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                HashMap<String, String> data = new HashMap<>();
+                data.put("customData", payload.toString());
+
+                ParseCloud.callFunctionInBackground("pingReply", data);
+
+
+                // TODO why does the following never get sent?
+                ParsePush parsePush = new ParsePush();
+                ParseQuery<ParseInstallation> installationParseQuery = ParseQuery.getQuery(ParseInstallation.class);
+                installationParseQuery.whereEqualTo("enable", true);
+                parsePush.setMessage("a direct push from from Main Activity");
+
+                parsePush.sendInBackground();
+
+            }
+        });
 
 
     }
@@ -225,4 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
         return file;
     }
+
+
 }

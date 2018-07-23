@@ -14,15 +14,18 @@ if (!databaseUri) {
 var pushConfig = {};
 
 if (process.env.FCM_API_KEY) {
-    pushConfig['android'] = { apiKey: process.env.FCM_API_KEY || ''};
+    pushConfig['android'] = { 
+      apiKey: process.env.FCM_API_KEY || '',
+      senderId: process.env.SENDER_ID || '905006370376'
+    };
 
 }
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  appId: process.env.APP_ID || 'TeamMatt',
+  masterKey: process.env.MASTER_KEY || 'TeamMatt', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   push: pushConfig,
   liveQuery: {

@@ -3,23 +3,37 @@ package me.chrislewis.mentorship;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 
 import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.Message;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class ParseApp extends Application{
 
     public static final String MY_APP_ID = "TeamMatt";
     public static String SERVER = "http://teammatt-fbu-mentorship.herokuapp.com/parse";
     public static String CLIENT_KEY = "TeamMatt";
+    public static final String CHANNEL_NAME = "hi";
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.networkInterceptors().add(httpLoggingInterceptor);
+
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(Event.class);
+
+        Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
                 .applicationId(MY_APP_ID)
                 .clientKey(CLIENT_KEY)
@@ -28,18 +42,29 @@ public class ParseApp extends Application{
         Parse.initialize(configuration);
 
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-        installation.put("GCMSenderId", "976064185196");
+        installation.put("GCMSenderId", "905006370376");
+
+        //installation.getDeviceToken();
         installation.saveInBackground();
-        /*
-        FileInputStream serviceAccount =
-                new FileInputStream("firebase-adminsdk-dpita@mentorship-ee041.iam.gserviceaccount.com.json");
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://mentorship-ee041.firebaseio.com")
-                .build();
+        ParseACL defaultACL = new ParseACL();
+        defaultACL.setPublicReadAccess(true);
+        defaultACL.setPublicWriteAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
 
-        FirebaseApp.initializeApp(options);
-        */
+
+
+        ParseObject testObject = new ParseObject("Test Object");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
+
+
+        ParsePush.subscribeInBackground(CHANNEL_NAME);
+
+
+
+
+
     }
 }

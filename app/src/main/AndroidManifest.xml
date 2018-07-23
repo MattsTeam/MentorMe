@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+    <uses-permission android:name="me.chrislewis.mentorship.permission.C2D_MESSAGE" />
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
@@ -30,10 +32,20 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
 
-        <meta-data android:name="com.parse.push.gcm_976064185196"
-            android:value="id:976064185196" />
+        <meta-data android:name="com.parse.push.gcm_sender_id"
+            android:value="id:905006370376" />
         <meta-data android:name="com.google.android.gms.vision"
             android:value="@integer/google_play_services_version"></meta-data>
+
+        <meta-data
+            android:name="com.parse.SERVER_URL"
+            android:value="@string/parse_server_url" />
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="@string/parse_app_id" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/parse_client_key" />
 
 
         <activity
@@ -80,6 +92,9 @@
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
 
