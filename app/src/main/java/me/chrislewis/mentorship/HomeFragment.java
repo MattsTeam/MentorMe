@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
 
     private User currentUser;
 
-    private String currentCategory;
+    private List<String> currentCategories;
     private GridAdapter gridAdapter;
     private ArrayList<ParseUser> users;
     private RecyclerView rvUsers;
@@ -54,8 +54,8 @@ public class HomeFragment extends Fragment {
         Menu menu = navigationView.getMenu();
         MenuItem cat_1 = menu.findItem(R.id.cat_1);
 
-        currentCategory = currentUser.getCategory();
-        cat_1.setTitle(currentCategory);
+        currentCategories = currentUser.getCategories();
+        cat_1.setTitle(currentCategories.get(0));
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -97,10 +97,26 @@ public class HomeFragment extends Fragment {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("isMentor", true);
         query.whereNotEqualTo("objectId", currentUser.getObjectId());
-        currentCategory = currentUser.getCategory();
-        query.whereEqualTo("category", currentCategory);
+
+
         try {
-            List<ParseUser> sameCategoryUsers = query.find();
+            List<ParseUser> users = query.find();
+            List<ParseUser> sameCategoryUsers = new ArrayList<>(users);
+
+            Log.i("size", "size of users is" + String.valueOf(sameCategoryUsers.size()));
+
+            for (ParseUser user : users) {
+                User mUser = new User(user);
+                List<String> common = mUser.getCategories();
+                common.retainAll(currentUser.getCategories());
+
+                if (common.size() == 0) {
+                    sameCategoryUsers.remove(user);
+                    Log.i("common", "Common is null");
+                }
+            }
+
+
             for(int i = 0; i < sameCategoryUsers.size(); i++) {
                 User user = new User (sameCategoryUsers.get(i));
                 user.setRank(calculateRank(user));
@@ -111,12 +127,8 @@ public class HomeFragment extends Fragment {
                     return (int)(o1.getDouble("rank") - (o2.getDouble("rank")));
                 }
             });
-            for(int i = 0; i < sameCategoryUsers.size(); i++) {
-                ParseUser user = sameCategoryUsers.get(i);
-                Log.d("UserRank", user.getUsername() + " " + user.getDouble("rank"));
-                users.add(user);
-                gridAdapter.notifyItemInserted(i);
-            }
+            gridAdapter.addAll(sameCategoryUsers);
+
         }
         catch (com.parse.ParseException e) {
             e.printStackTrace();

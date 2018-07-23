@@ -13,6 +13,8 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import me.chrislewis.mentorship.models.User;
+
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText usernameInput;
@@ -21,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText nameInput;
     private Button registerButton;
     private ParseUser newUser;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +64,20 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void registerUser() {
         newUser = new ParseUser();
-        newUser.setUsername(usernameInput.getText().toString());
-        newUser.setPassword(passwordInput.getText().toString());
-        newUser.setEmail(emailInput.getText().toString());
-        newUser.put("name", nameInput.getText().toString());
-        newUser.put("education", "N/A");
-        newUser.put("organization", "N/A");
-        newUser.put("relativeDistance", 10);
-        newUser.put("location", new ParseGeoPoint());
-        newUser.put("job", "N/A");
-        newUser.put("description", "N/A");
-        newUser.saveInBackground();
+        user = new User(newUser);
+
+        user.setUsername(usernameInput.getText().toString());
+        user.setPassword(passwordInput.getText().toString());
+        user.setEmail(emailInput.getText().toString());
+        user.setName(nameInput.getText().toString());
+        user.setEducation("N/A");
+        user.setOrganization("N/A");
+        user.setRelDistance(10.0);
+        user.setLocation(new ParseGeoPoint());
+        user.setJob("N/A");
+        user.setDescription("N/A");
+        user.saveInBackground();
+
     }
 
 }

@@ -27,6 +27,9 @@ public class User{
     private final static String LOCATION_KEY = "location";
     private final static String DISTANCE_KEY = "distance";
     private final static String REL_DISTANCE_KEY = "relativeDistance";
+    private final static String CATEGORIES_KEY = "categories";
+    private final static String PASSWORD_KEY = "password";
+    private final static String EMAIL_KEY = "email";
 
     public String name;
     public String username;
@@ -69,6 +72,20 @@ public class User{
     public void setName(String name) {
         user.put(NAME_KEY, name);
     }
+
+    public String getPassword() { return user.getString(PASSWORD_KEY); }
+
+    public void setPassword(String password) {
+        user.put(PASSWORD_KEY, password);
+    }
+
+    public String getEmail() { return user.getString(EMAIL_KEY); }
+
+    public void setEmail(String email) {
+        user.put(EMAIL_KEY, email);
+    }
+
+
 
     public String getJob() {
         return user.getString(JOB_KEY);
@@ -118,14 +135,6 @@ public class User{
         user.put(DESCRIPTION_KEY, description);
     }
 
-    public String getCategory() {
-        return user.getString(CATEGORY_KEY);
-    }
-
-    public void setCategory(String category) {
-        user.put(CATEGORY_KEY, category);
-    }
-
     public String getOrganization() {
         return user.getString(ORGANIZATION_KEY);
     }
@@ -154,8 +163,19 @@ public class User{
         this.user.removeAll(FAVORITE_KEY, Collections.singleton(user));
     }
 
-    public ParseGeoPoint getCurrentLoction() {
+
+    public List<String> getCategories() {
+        return (List<String>) user.get(CATEGORIES_KEY);
+    }
+    public void addCategory(String category) {this.user.addUnique(CATEGORIES_KEY, category);}
+
+    public ParseGeoPoint getCurrentLocation() {
         return user.getParseGeoPoint(LOCATION_KEY);
+    }
+
+
+    public void setLocation(ParseGeoPoint location) {
+        user.put(LOCATION_KEY, location);
     }
 
     public String getDistance() {

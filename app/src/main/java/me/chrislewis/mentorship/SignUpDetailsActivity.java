@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
 
+import me.chrislewis.mentorship.models.User;
+
 public class SignUpDetailsActivity extends AppCompatActivity {
 
     private ImageButton languagesButton;
@@ -181,25 +183,28 @@ public class SignUpDetailsActivity extends AppCompatActivity {
 
     private void saveCategoryInfo() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        User newUser = new User(currentUser);
+
         if(artButton.isSelected()) {
-            currentUser.put("category", "art");
+            newUser.addCategory("art");
+
         }
         if(sportsButton.isSelected()) {
-            currentUser.put("category", "sports");
+            newUser.addCategory("sports");
         }
         if(humanitiesButton.isSelected()) {
-            currentUser.put("category", "humanities");
+            newUser.addCategory("sports");
         }
         if(languagesButton.isSelected()) {
-            currentUser.put("category", "languages");
+            newUser.addCategory("languages");
         }
         if(engineeringButton.isSelected()) {
-            currentUser.put("category", "engineering");
+            newUser.addCategory("engineering");
         }
         if(sciencesButton.isSelected()) {
-            currentUser.put("category", "sciences");
+            newUser.addCategory("sciences");
         }
-        currentUser.saveInBackground();
+        newUser.saveInBackground();
     }
 
     private void login(String username, String password) {

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.User;
@@ -27,7 +28,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     private Location currentLocation = new Location("currentLocation");
 
 
-    public GridAdapter(List<ParseUser> users) {
+    public GridAdapter(ArrayList<ParseUser> users) {
         mUsers = users;
     }
 
@@ -38,7 +39,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         context = parent.getContext();
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
-        ParseGeoPoint ParseCurrentLocation = currentUser.getCurrentLoction();
+        ParseGeoPoint ParseCurrentLocation = currentUser.getCurrentLocation();
         currentLocation.setLatitude(ParseCurrentLocation.getLatitude());
         currentLocation.setLongitude(ParseCurrentLocation.getLongitude());
 
@@ -64,7 +65,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
             Glide.with(context).load(user.getProfileImage().getUrl()).into(holder.ivProfileImage);
         }
 
-        ParseGeoPoint ParseLocation = user.getCurrentLoction();
+        ParseGeoPoint ParseLocation = user.getCurrentLocation();
         if (ParseLocation != null) {
             Location location = new Location("location");
             location.setLongitude(ParseLocation.getLongitude());
@@ -76,6 +77,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
             holder.tvDistance.setText(Double.toString(distance) + " miles away");
             user.setDistance(Double.toString(distance));
             user.setRelDistance(distance);
+        }
+
+        String categoriesText = user.getCategories().toString();
+        if (categoriesText != null) {
+            holder.tvCategories.setText(categoriesText);
         }
         user.saveInBackground();
         currentUser.saveInBackground();
@@ -91,6 +97,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         public TextView tvUsername;
         public TextView tvDistance;
         public TextView tvDescription;
+        public TextView tvCategories;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +105,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvDistance = (TextView) itemView.findViewById(R.id.tvDistance);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
+            tvCategories = (TextView) itemView.findViewById(R.id.tvCategories);
             itemView.setOnClickListener(this);
         }
 
