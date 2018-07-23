@@ -3,6 +3,7 @@ package me.chrislewis.mentorship.models;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 @ParseClassName("Message")
 public class Message extends ParseObject{
@@ -20,12 +21,12 @@ public class Message extends ParseObject{
         put(BODY_KEY, body);
     }
 
-    public String getUserId() {
-        return getString(USER_ID_KEY);
+    public ParseUser getUser() {
+        return getParseUser(USER_KEY);
     }
 
-    public void setUserIdKey(String userId) {
-        put(USER_ID_KEY, userId);
+    public void setUser(ParseUser user) {
+        put(USER_KEY, user);
     }
 
     public static class Query extends ParseQuery<Message> {

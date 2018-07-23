@@ -10,18 +10,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.parse.ParseUser;
+
 import java.util.List;
 
 import me.chrislewis.mentorship.models.Message;
+import me.chrislewis.mentorship.models.User;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private List<Message> mMessages;
     private Context mContext;
-    private String mUserId;
+    private User mUser;
 
-    public MessageAdapter(Context context, String userId, List<Message> messages) {
+    public MessageAdapter(Context context, ParseUser user, List<Message> messages) {
         mContext = context;
-        this.mUserId = userId;
+        this.mUser = new User(user);
         mMessages = messages;
     }
     @NonNull
@@ -37,17 +42,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Message message = mMessages.get(i);
-        final boolean isMe = message.getUserId() != null && message.getUserId().equals(mUserId);
+        User user = new User(message.getUser());
+        final boolean isMe =
+                user.getObjectId() != null &&
+                user.getObjectId().equals(mUser.getObjectId());
 
         if (isMe) {
             viewHolder.imageMe.setVisibility(View.VISIBLE);
             viewHolder.imageOther.setVisibility(View.GONE);
             viewHolder.body.setGravity(Gravity.END);
+
+            Glide.with(mContext)
+                    .load(mUser.getProfileImage().getUrl())
+                    .apply(new RequestOptions().circleCrop())
+                    .into(viewHolder.imageMe);
         }
         else {
             viewHolder.imageMe.setVisibility(View.GONE);
             viewHolder.imageOther.setVisibility(View.VISIBLE);
             viewHolder.body.setGravity(Gravity.START);
+
+            Glide.with(mContext)
+                    .load(user.getProfileImage().getUrl())
+                    .apply(new RequestOptions().circleCrop())
+                    .into(viewHolder.imageOther);
         }
         viewHolder.body.setText(message.getBody());
     }
