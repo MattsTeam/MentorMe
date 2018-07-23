@@ -2,6 +2,7 @@ package me.chrislewis.mentorship;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,14 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     Context context;
     List<ParseUser> users;
     User user;
+    SharedViewModel model;
+    MessageFragment messageFragment = new MessageFragment();
 
-    public PeopleAdapter(Context context, List<ParseUser> users, User mUser) {
+
+    public PeopleAdapter(Context context, List<ParseUser> users, SharedViewModel model) {
         this.context = context;
         this.users = users;
-        this.user = user;
+        this.model = model;
     }
 
     @NonNull
@@ -71,7 +75,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView ivProfileImage;
         TextView tvName;
 
@@ -79,6 +83,20 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvName = itemView.findViewById(R.id.tvName);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                ParseUser user = users.get(position);
+                model.setUser(new User(user));
+                ((FragmentActivity) view.getContext()).getFragmentManager().beginTransaction()
+                        .replace(R.id.flContainer, messageFragment)
+                        .commit();
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
 package me.chrislewis.mentorship;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +26,7 @@ import java.util.List;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.User;
 
-public class MessageFragment extends Fragment {
+public class MessageFragment extends android.app.Fragment {
 
     boolean firstLoad = true;
 
@@ -57,6 +58,10 @@ public class MessageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        SharedViewModel model = ViewModelProviders.of((FragmentActivity) getActivity()).get(SharedViewModel.class);
+        User guser = model.getUser();
+
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
         rvMessages = view.findViewById(R.id.rvMessages);
@@ -66,7 +71,7 @@ public class MessageFragment extends Fragment {
         adapter = new MessageAdapter(view.getContext(), user.getParseUser(), mMessages);
         rvMessages.setAdapter(adapter);
 
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
 
