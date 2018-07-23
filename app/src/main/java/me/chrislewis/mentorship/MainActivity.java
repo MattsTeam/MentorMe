@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final HomeFragment homeFragment = new HomeFragment();
     final CalendarFragment calendarFragment = new CalendarFragment();
-    final MessageFragment messageFragment = new MessageFragment();
+    final MessageListFragment messageFragment = new MessageListFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
 
     public String photoFileName = "photo.jpg";
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
