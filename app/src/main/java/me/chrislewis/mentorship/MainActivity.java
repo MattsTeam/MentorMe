@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -20,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -43,10 +45,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
-    //private FirebaseAuth firebaseAuth;
     private Button push;
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+
+    private BroadcastReceiver mBroadcastReceiver = new MyCustomReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(getApplicationContext(), "onReceive invoked", Toast.LENGTH_LONG).show();
@@ -144,39 +145,22 @@ public class MainActivity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
 
-        /*
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Registered Successfully.", Toast.LENGTH_LONG);
-                }
-                else {
-                    Toast.makeText(MainActivity.this, "Could not register", Toast.LENGTH_LONG);
-                }
-
-            }
-        });
-        */
         push = findViewById(R.id.btnPush);
 
         push.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 JSONObject payload = new JSONObject();
-
                 try {
-                    payload.put("sender", ParseInstallation.getCurrentInstallation().getInstallationId());
-                    payload.put("alert", "what i want to show up");
-                    // TODO why does push data depend on what's specified in main.js instead of the payload.put field?
+                    payload.put("alert", "new notification");
+                    HashMap<String, String> data = new HashMap<>();
+                    data.put("customData", payload.toString());
+                    // data.put("customData", "hiii"); TODO why do regular strings not work?
+                    ParseCloud.callFunctionInBackground("pingReply", data);
+                    Toast.makeText(MainActivity.this, "passed message to cloud", Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                HashMap<String, String> data = new HashMap<>();
-                data.put("customData", payload.toString());
-
-                ParseCloud.callFunctionInBackground("pingReply", data);
 
 
                 // TODO why does the following never get sent?
@@ -189,8 +173,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(MyCustomReceiver.intentAction));
     }
 
     @Override
@@ -223,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String imageString = photoFile.getAbsolutePath();
                 profileFragment.processImageString(imageString);
-            } else { // Result was a failure
+            } else {
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
@@ -235,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 } catch (IOException e) {
-                    Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Picture wasn't chosen!", Toast.LENGTH_SHORT).show();
                 }
                 profileFragment.processImageBitmap(bitmap);
 

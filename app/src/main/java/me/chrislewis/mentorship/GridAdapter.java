@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +35,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext(); // context is UserFragment
+        context = parent.getContext();
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
         ParseGeoPoint ParseCurrentLocation = currentUser.getCurrentLoction();
@@ -52,24 +51,32 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull GridAdapter.ViewHolder holder, int position) {
         User user = new User(mUsers.get(position));
-        holder.tvUsername.setText(user.getUsername());
-        holder.tvDescription.setText(user.getDescription());
+        String username = user.getUsername();
+        if (username != null) {
+            holder.tvUsername.setText(username);
+        }
+        String description = user.getDescription();
+        if (username != null) {
+            holder.tvDescription.setText(description);
+        }
+
         if(user.getProfileImage() != null) {
             Glide.with(context).load(user.getProfileImage().getUrl()).into(holder.ivProfileImage);
         }
 
         ParseGeoPoint ParseLocation = user.getCurrentLoction();
-        Location location = new Location("location");
-        location.setLongitude(ParseLocation.getLongitude());
-        location.setLatitude(ParseLocation.getLatitude());
-        double distanceInMeters = currentLocation.distanceTo(location);
-        double distanceInMiles = distanceInMeters * 0.000621371192;
-        double distance = Math.round(distanceInMiles*10)/10;
+        if (ParseLocation != null) {
+            Location location = new Location("location");
+            location.setLongitude(ParseLocation.getLongitude());
+            location.setLatitude(ParseLocation.getLatitude());
+            double distanceInMeters = currentLocation.distanceTo(location);
+            double distanceInMiles = distanceInMeters * 0.000621371192;
+            double distance = Math.round(distanceInMiles * 10) / 10;
 
-        holder.tvDistance.setText(Double.toString(distance) + " miles away");
-
-        user.setDistance(Double.toString(distance));
-        user.setRelDistance(distance);
+            holder.tvDistance.setText(Double.toString(distance) + " miles away");
+            user.setDistance(Double.toString(distance));
+            user.setRelDistance(distance);
+        }
         user.saveInBackground();
         currentUser.saveInBackground();
     }
@@ -84,7 +91,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         public TextView tvUsername;
         public TextView tvDistance;
         public TextView tvDescription;
-        public Button btnProfile;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,7 +113,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
         }
     }
-
 
     public void clear() {
         mUsers.clear();
