@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -40,19 +43,32 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PeopleAdapter.ViewHolder viewHolder, int i) {
-        User person = new User(users.get(i));
+    public void onBindViewHolder(@NonNull final PeopleAdapter.ViewHolder viewHolder, int i) {
+        final User person = new User(users.get(i));
+        try {
+            person.fetchInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject object, ParseException e) {
+                    viewHolder.tvName.setText(person.getName());
+                    Glide.with(context)
+                            .load(person.getProfileImage().getUrl())
+                            .apply(new RequestOptions().circleCrop())
+                            .into(viewHolder.ivProfileImage);
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        viewHolder.tvName.setText(person.getName());
-        Glide.with(context)
-                .load(user.getProfileImage().getUrl())
-                .apply(new RequestOptions().circleCrop())
-                .into(viewHolder.ivProfileImage);
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        if (users == null) {
+            return 0;
+        } else {
+            return users.size();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -2,9 +2,11 @@ package me.chrislewis.mentorship.models;
 
 import android.text.format.DateUtils;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -178,7 +180,7 @@ public class User{
         user.saveInBackground();
     }
 
-    public void fetch() throws ParseException { user.fetch(); }
+    public void fetchInBackground(GetCallback<ParseObject> callback) throws ParseException { user.fetchInBackground(callback); }
 
     public String getRelativeTimeAgo() {
         String relativeDate;
