@@ -16,7 +16,6 @@ import android.widget.EditText;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -35,16 +34,12 @@ public class MessageFragment extends Fragment {
     MessageAdapter adapter;
 
     User user;
-    ParseQuery<Message> parseQuery;
-
-    static final String USER_ID_KEY = "userId";
-    static final String BODY_KEY = "body";
 
     EditText etMessage;
     Button bSend;
 
-    static final int POLL_INTERVAL = 1000; // milliseconds
-    Handler myHandler = new Handler();  // android.os.Handler
+    static final int POLL_INTERVAL = 1000;
+    Handler myHandler = new Handler();
     Runnable mRefreshMessagesRunnable = new Runnable() {
         @Override
         public void run() {
@@ -53,15 +48,11 @@ public class MessageFragment extends Fragment {
         }
     };
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -78,24 +69,7 @@ public class MessageFragment extends Fragment {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
-//        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
-//        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
-//        SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
-//        subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new
-//                SubscriptionHandling.HandleEventCallback<Message>() {
-//                    @Override
-//                    public void onEvent(ParseQuery<Message> query, Message object) {
-//                        mMessages.add(0, object);
-//                        Log.d("Messages", "Sent");
-//                        getActivity().runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                adapter.notifyDataSetChanged();
-//                                rvMessages.scrollToPosition(0);
-//                            }
-//                        });
-//                    }
-//                });
+
         bSend = view.findViewById(R.id.bSend);
         bSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +108,6 @@ public class MessageFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                     if (firstLoad) {
                         rvMessages.scrollToPosition(0);
-                        Log.d("MessageFragment", "is scrolling");
                         firstLoad = false;
                     }
                 } else {
