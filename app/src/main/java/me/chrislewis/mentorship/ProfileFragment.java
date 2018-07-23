@@ -98,7 +98,6 @@ public class ProfileFragment extends Fragment {
         rvFavorites.setAdapter(adapter);
     }
 
-    // method that takes a string file path
     public void processImageString(String uri) {
         Bitmap takenImage = BitmapFactory.decodeFile(uri);
         photoFile = new File(uri);

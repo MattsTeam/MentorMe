@@ -8,6 +8,8 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 
+import java.util.LinkedList;
+
 import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.Message;
 import okhttp3.OkHttpClient;
@@ -41,10 +43,14 @@ public class ParseApp extends Application{
                 .build();
         Parse.initialize(configuration);
 
+
+        LinkedList<String> channels = new LinkedList<String>();
+        channels.push("channelName");
+
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
         installation.put("GCMSenderId", "905006370376");
-
-        //installation.getDeviceToken();
+        //TODO how to get device token for mobile, why not installation.getDeviceToken();
+        installation.put("channels", channels);
         installation.saveInBackground();
 
         ParseACL defaultACL = new ParseACL();
@@ -58,13 +64,6 @@ public class ParseApp extends Application{
         testObject.put("foo", "bar");
         testObject.saveInBackground();
 
-
-
         ParsePush.subscribeInBackground(CHANNEL_NAME);
-
-
-
-
-
     }
 }

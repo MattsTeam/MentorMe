@@ -14,6 +14,7 @@ Parse.Cloud.define('pingReply', function(request, response) {
 
 
   Parse.Push.send({
+  channels: ["channelName"],
   where: query,
   // Parse.Push requires a dictionary, not a string.
   data: {"alert": customData},
