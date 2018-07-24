@@ -176,11 +176,6 @@ public class HomeFragment extends Fragment {
         if(!user.getEducation().equals(currentUser.getOrganization())) {
             educationRank = 5;
         }
-        Log.d("UserRank", " username: " + user.getUsername());
-        Log.d("UserRank", "distance rank: " + Double.toString(distanceRank));
-        Log.d("UserRank", "organization rank: " + Double.toString(organizationRank));
-        Log.d("UserRank", "education rank: " + Double.toString(educationRank));
-        Log.d("UserRank", "total points: " + Double.toString(distanceRank + organizationRank + educationRank));
         return distanceRank + organizationRank + educationRank;
     }
 
@@ -199,24 +194,31 @@ public class HomeFragment extends Fragment {
             List<ParseUser> users = query.find();
             sameCategoryUsers = new ArrayList<>(users);
 
-            for(int i = 0; i < sameCategoryUsers.size(); i++) {
-                User user = new User (sameCategoryUsers.get(i));
-                user.setRank(calculateRank(user));
-            }
-            Collections.sort(sameCategoryUsers, new Comparator<ParseUser>() {
-                @Override
-                public int compare(ParseUser o1, ParseUser o2) {
-                    return (int)(o1.getDouble("rank") - (o2.getDouble("rank")));
+            int numUsers = sameCategoryUsers.size();
+            if (numUsers > 0) {
+                for (int i = 0; i < numUsers; i++) {
+                    User user = new User(sameCategoryUsers.get(i));
+                    user.setRank(calculateRank(user));
                 }
-            });
-            gridAdapter.addAll(sameCategoryUsers);
-
+                Collections.sort(sameCategoryUsers, new Comparator<ParseUser>() {
+                    @Override
+                    public int compare(ParseUser o1, ParseUser o2) {
+                        return (int) (o1.getDouble("rank") - (o2.getDouble("rank")));
+                    }
+                });
+                gridAdapter.addAll(sameCategoryUsers);
+            }
+            else {
+                Toast.makeText(getActivity(), "There are no mentors in this category", Toast.LENGTH_LONG).show();
+            }
         }
         catch (com.parse.ParseException e) {
             e.printStackTrace();
         }
         pb.setVisibility(ProgressBar.INVISIBLE);
         swipeContainer.setRefreshing(false);
+
+
 
     }
 

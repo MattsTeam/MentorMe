@@ -52,12 +52,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull GridAdapter.ViewHolder holder, int position) {
         User user = new User(mUsers.get(position));
-        String username = user.getUsername();
-        if (username != null) {
-            holder.tvUsername.setText(username);
+        String name = user.getName();
+        if (name != null) {
+            holder.tvName.setText(name);
         }
         String description = user.getDescription();
-        if (username != null) {
+        if (description != null) {
             holder.tvDescription.setText(description);
         }
 
@@ -94,7 +94,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivProfileImage;
-        public TextView tvUsername;
+        public TextView tvName;
         public TextView tvDistance;
         public TextView tvDescription;
         public TextView tvCategories;
@@ -102,7 +102,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfile);
-            tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
+            tvName = (TextView) itemView.findViewById(R.id.tvName);
             tvDistance = (TextView) itemView.findViewById(R.id.tvDistance);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             tvCategories = (TextView) itemView.findViewById(R.id.tvCategories);
