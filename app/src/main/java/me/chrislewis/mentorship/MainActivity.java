@@ -139,7 +139,13 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
+        Intent getI = getIntent();
+        if (getI.hasExtra("fromSignUp")){
+            fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
+        }
+        else {
+            fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
+        }
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {

@@ -16,7 +16,6 @@ import com.parse.ParseUser;
 import me.chrislewis.mentorship.models.User;
 
 public class SignUpDetailsActivity extends AppCompatActivity {
-
     private ImageButton languagesButton;
     private ImageView ivLanguages;
     private ImageButton artButton;
@@ -223,6 +222,7 @@ public class SignUpDetailsActivity extends AppCompatActivity {
                     saveCategoryInfo();
                     currentUser.saveInBackground();
                     Intent intent = new Intent(SignUpDetailsActivity.this, MainActivity.class);
+                    intent.putExtra("fromSignUp", "signUp");
                     startActivity(intent);
                     finish();
                 }
