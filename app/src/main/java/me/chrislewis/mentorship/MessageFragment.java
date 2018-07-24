@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,7 @@ public class MessageFragment extends android.app.Fragment {
     MessageAdapter adapter;
 
     User user;
+    ArrayList<String> recipients = new ArrayList<>();
 
     EditText etMessage;
     Button bSend;
@@ -59,15 +59,18 @@ public class MessageFragment extends android.app.Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        user = new User(ParseUser.getCurrentUser());
+
         SharedViewModel model = ViewModelProviders.of((FragmentActivity) getActivity()).get(SharedViewModel.class);
-        User guser = model.getUser();
+        recipients.add(user.getObjectId());
+        recipients.add(model.getUserId());
 
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
         rvMessages = view.findViewById(R.id.rvMessages);
         mMessages = new ArrayList<>();
 
-        user = new User(ParseUser.getCurrentUser());
         adapter = new MessageAdapter(view.getContext(), user.getParseUser(), mMessages);
         rvMessages.setAdapter(adapter);
 
@@ -84,6 +87,7 @@ public class MessageFragment extends android.app.Fragment {
                     Message message = new Message();
                     message.setBody(data);
                     message.setUser(user.getParseUser());
+                    message.addRecipient(recipients);
                     message.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -105,6 +109,7 @@ public class MessageFragment extends android.app.Fragment {
         Message.Query query = new Message.Query();
         query.getTop();
         query.withUser();
+        query.recipients(recipients);
         query.findInBackground(new FindCallback<Message>() {
             public void done(List<Message> messages, ParseException e) {
                 if (e == null) {
@@ -116,7 +121,7 @@ public class MessageFragment extends android.app.Fragment {
                         firstLoad = false;
                     }
                 } else {
-                    Log.e("message", "Error Loading Messages" + e);
+                    Log.e("message", "Error Loading Messages " + e);
                 }
             }
         });
