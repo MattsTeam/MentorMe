@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/btnOpenDrawer"
-        android:icon="@drawable/menu_lines"
-        app:showAsAction="ifRoom"
-        android:title="Open Drawer">
-    </item>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <item
+            android:id="@+id/btnOpenDrawer"
+            android:icon="@drawable/menu_lines"
+
+            app:showAsAction="always"
+            android:title="Open Drawer"></item>
+        <item
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Title"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:title="Title">
+
+        </item>
+    </RelativeLayout>
+
+
 </menu>

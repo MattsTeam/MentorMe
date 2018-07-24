@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private Button push;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     private BroadcastReceiver mBroadcastReceiver = new MyCustomReceiver() {
         @Override
@@ -202,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
         // Handle presses on the action bar items
         switch(item.getItemId()) {
             case R.id.btnOpenDrawer:
-                //logout;
                 Toast.makeText(this, "Open Drawer", Toast.LENGTH_LONG).show();
                 return true;
             default:
@@ -271,5 +272,5 @@ public class MainActivity extends AppCompatActivity {
         return file;
     }
 
-
 }
+

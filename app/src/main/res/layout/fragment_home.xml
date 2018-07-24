@@ -7,14 +7,16 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false">
 
+    <FrameLayout
+        android:id="@+id/main_home_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+        <android.support.v4.widget.SwipeRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvGrid"
                     android:layout_width="match_parent"
@@ -32,10 +34,12 @@
 
                 </ProgressBar>
         </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/drawer_view"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
@@ -43,4 +47,13 @@
 
     </android.support.design.widget.NavigationView>
 
+    <!--
+
+    <ListView
+        android:id="@+id/navList"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start">
+    </ListView>
+    -->
 </android.support.v4.widget.DrawerLayout>
