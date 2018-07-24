@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,11 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -40,9 +41,8 @@ public class HomeFragment extends Fragment {
     private ProgressBar pb;
     private SwipeRefreshLayout swipeContainer;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ArrayAdapter<String> drawerAdapter;
     private List<ParseUser> sameCategoryUsers;
+    private Button btnOpenDrawer;
 
 
     @Override
@@ -68,19 +68,24 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "All Categories");
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 menuItem.setChecked(true);
                 uncheckOtherItems(menuItem, menu);
-                Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_LONG).show();
-                filterByCategory(menuItem.toString());
-                switch (menuItem.getItemId()) {
-                    case 0:
-                        Toast.makeText(getActivity(), "Showing mentors for" + menuItem, Toast.LENGTH_LONG).show();
-                    case 1:
-                        Toast.makeText(getActivity(), "art", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
+
+                String category = menuItem.toString();
+                if (category == "All Categories") {
+                    getAllUsers();
                 }
+                else {
+                    filterByCategory(category);
+                }
+                mDrawerLayout.closeDrawers();
+
                 return true;
             }
         });
@@ -107,6 +112,12 @@ public class HomeFragment extends Fragment {
                 android.R.color.holo_red_light);
 
         getAllUsers();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public void getAllUsers() {
@@ -215,5 +226,9 @@ public class HomeFragment extends Fragment {
                 menu.getItem(i).setChecked(false);
             }
         }
+    }
+
+    public void openDrawer() {
+        mDrawerLayout.openDrawer(GravityCompat.START);
     }
 }

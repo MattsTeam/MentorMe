@@ -47,13 +47,4 @@
 
     </android.support.design.widget.NavigationView>
 
-    <!--
-
-    <ListView
-        android:id="@+id/navList"
-        android:layout_width="120dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start">
-    </ListView>
-    -->
 </android.support.v4.widget.DrawerLayout>

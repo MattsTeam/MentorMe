@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:label=""
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:contentInsetStart="5dp">
+    app:contentInsetStart="10dp">
 
 </menu>

@@ -15,10 +15,13 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:title=""
         android:background="@color/orange"
-        app:menu="@menu/menu_toolbar">
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
 
+        <!--
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -39,9 +42,8 @@
                 android:textColor="@color/white"
                 android:layout_toRightOf="@id/btnOpenDrawer"/>
         </RelativeLayout>
+        -->
 
-        <!--app:title="Mentorship"
-        app:titleTextColor="@color/white"-->
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
@@ -60,7 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="92dp"
         android:text="Push" />
 
     <android.support.design.widget.BottomNavigationView
