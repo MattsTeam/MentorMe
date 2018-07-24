@@ -1,6 +1,6 @@
 package me.chrislewis.mentorship;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -15,7 +15,7 @@ import me.chrislewis.mentorship.models.Message;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-public class ParseApp extends Application{
+public class ParseApp extends MultiDexApplication {
 
     public static final String MY_APP_ID = "TeamMatt";
     public static String SERVER = "http://teammatt-fbu-mentorship.herokuapp.com/parse";

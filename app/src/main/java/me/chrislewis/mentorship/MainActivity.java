@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_calendar:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.flContainer, calendarFragment).commit();
+                    fragmentTransaction.add(R.id.flContainer, calendarFragment, "CalendarFragment").commit();
                     return true;
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
