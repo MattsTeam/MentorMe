@@ -16,6 +16,10 @@ public class SharedViewModel extends ViewModel{
         this.user = user;
     }
 
+    public String getUserId() {
+        return user.getObjectId();
+    }
+
     public User getCurrentUser() {
         return currentUser;
     }
