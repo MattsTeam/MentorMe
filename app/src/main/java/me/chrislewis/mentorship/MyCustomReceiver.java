@@ -1,9 +1,11 @@
 package me.chrislewis.mentorship;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -46,12 +48,6 @@ public class MyCustomReceiver extends BroadcastReceiver {
                     if (key.equals("customdata")) {
                         // create a local notification
                         createNotification(context, value);
-                    } else if (key.equals("launch")) {
-                        // Handle push notification by invoking activity directly
-                        launchSomeActivity(context, value);
-                    } else if (key.equals("broadcast")) {
-                        // OR trigger a broadcast to activity
-                        triggerBroadcastToActivity(context, value);
                     }
                 }
             } catch (JSONException ex) {
@@ -68,6 +64,11 @@ public class MyCustomReceiver extends BroadcastReceiver {
                 R.drawable.ic_launcher_background).setContentTitle("Notification: " + datavalue).setContentText("Pushed!");
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "General Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            mNotificationManager.createNotificationChannel(channel);
+        }
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
