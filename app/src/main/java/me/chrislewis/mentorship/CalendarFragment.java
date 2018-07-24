@@ -1,5 +1,12 @@
 package me.chrislewis.mentorship;
 
+import android.accounts.AccountManager;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -8,73 +15,134 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.CalendarScopes;
 import com.parse.FindCallback;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
 import me.chrislewis.mentorship.models.Event;
+import me.chrislewis.mentorship.models.GoogleDayDecorator;
 
-public class CalendarFragment extends Fragment implements OnDateSelectedListener{
+import static android.app.Activity.RESULT_OK;
+
+public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse{
 
     SimpleDateFormat todayFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     ArrayList<Event> days = new ArrayList<>();
-    ArrayList<Event> todayList = new ArrayList<>();
+    ArrayList<com.google.api.services.calendar.model.Event> googleEvents = new ArrayList<>();
+    ArrayList<Event> googleDays = new ArrayList<>();
+    int orange = getIntFromColor(255, 128, 0);
+    int black = getIntFromColor(0,0,0);
     MaterialCalendarView calendarView;
     Calendar calendar;
     TextView todayText;
 
+    Button permissionButton;
+    com.google.api.services.calendar.Calendar mService;
+    GoogleAccountCredential credential;
+    HttpTransport transport;
+    JsonFactory jsonFactory;
+    SharedPreferences settings;
+    Boolean allowSync;
+    static final int REQUEST_ACCOUNT_PICKER = 1000;
+    static final int REQUEST_AUTHORIZATION = 1001;
+    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY, CalendarScopes.CALENDAR};
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calendar, parent, false);
-
     }
 
-
-    public static Date parseDate(String date) {
+    /*public static Date parseDate(String date) {
         try {
             return new SimpleDateFormat("yyyy-MM-dd").parse(date);
         } catch (ParseException e) {
             return null;
         }
-    }
+    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         refreshEvents();
+        permissionButton = view.findViewById(R.id.permissionButton);
         calendarView = view.findViewById(R.id.calendarView);
         todayText = view.findViewById(R.id.tvCurrentDay);
         calendar = Calendar.getInstance();
         calendarView.setDateSelected(calendar.getTime(), true);
         todayText.setText(todayFormat.format(calendar.getTime()));
         calendarView.setOnDateChangedListener(this);
-        int eventColor = getIntFromColor(255, 128, 0);
-        calendarView.addDecorators(new CurrentDayDecorator(eventColor, days));
+        calendarView.addDecorators(new CurrentDayDecorator(orange, days));
+
+        transport = AndroidHttp.newCompatibleTransport();
+        jsonFactory = GsonFactory.getDefaultInstance();
+        settings = getActivity().getPreferences(Context.MODE_PRIVATE);
+        allowSync = ParseUser.getCurrentUser().getBoolean("allowSync");
+        authorize();
+        permissionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.getCurrentUser().put("allowSync", true);
+                ParseUser.getCurrentUser().saveInBackground();
+                authorize();
+            }
+        });
+    }
+
+
+    public void authorize() {
+        if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
+            Log.d("CalendarFragment", "Setting up oAuth");
+            credential = GoogleAccountCredential.usingOAuth2(
+                    getActivity(), Arrays.asList(SCOPES))
+                    .setBackOff(new ExponentialBackOff())
+                    .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+
+            mService = new com.google.api.services.calendar.Calendar.Builder(
+                    transport, jsonFactory, credential)
+                    .setApplicationName("Google Calendar API Android Quickstart")
+                    .build();
+            if(isGooglePlayServicesAvailable()) {
+                refreshResults();
+            }
+        }
     }
 
     public void refreshEvents() {
         ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
         query.setLimit(15);
         try {
+            Log.d("CalendarFragment", "Refreshed from parse");
             days.clear();
             List<Event> events = query.find();
             days.addAll(events);
 
         } catch (com.parse.ParseException e) {
+            Log.d("CalendarFragment", "Failed to refresh from parse");
             e.printStackTrace();
         }
     }
@@ -83,7 +151,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay calendarDay, boolean b) {
         ParseQuery<Event> selectedDayQuery = new Event.Query();
         String selectedDate = dateFormat.format(calendarDay.getDate());
-        Log.d("CalendarFragment", selectedDate);
         selectedDayQuery.whereEqualTo("dateString", selectedDate);
         selectedDayQuery.findInBackground(new FindCallback<Event>() {
             @Override
@@ -102,78 +169,141 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         });
     }
 
-    private void showEventDialog() {
-        FragmentManager fragmentManager = getFragmentManager();
-        EventDialogFragment editNameDialogFragment = EventDialogFragment.newInstance();
-        editNameDialogFragment.show(fragmentManager, "event_dialog_fragment");
-    }
-
-
     public int getIntFromColor(int Red, int Green, int Blue){
         Red = (Red << 16) & 0x00FF0000;
         Green = (Green << 8) & 0x0000FF00;
         Blue = Blue & 0x000000FF;
-
         return 0xFF000000 | Red | Green | Blue;
     }
 
-    // adding event into Google Calendar
-    /*
-    //add an event to calendar
-    private void addEvent() {
-        ContentValues l_event = new ContentValues();
-        l_event.put("calendar_id", m_selectedCalendarId);
-        l_event.put("title", "roman10 calendar tutorial test");
-        l_event.put("description", "This is a simple test for calendar api");
-        l_event.put("eventLocation", "@home");
-        l_event.put("dtstart", System.currentTimeMillis());
-        l_event.put("dtend", System.currentTimeMillis() + 1800*1000);
-        l_event.put("allDay", 0);
-        //status: 0~ tentative; 1~ confirmed; 2~ canceled
-        l_event.put("eventStatus", 1);
-        //0~ default; 1~ confidential; 2~ private; 3~ public
-        l_event.put("visibility", 0);
-        //0~ opaque, no timing conflict is allowed; 1~ transparency, allow overlap of scheduling
-        l_event.put("transparency", 0);
-        //0~ false; 1~ true
-        l_event.put("hasAlarm", 1);
-        Uri l_eventUri;
-        if (Build.VERSION.SDK_INT >= 8 ) {
-            l_eventUri = Uri.parse("content://com.android.calendar/events");
-        } else {
-            l_eventUri = Uri.parse("content://calendar/events");
-        }
-        Uri l_uri = this.getContentResolver().insert(l_eventUri, l_event);
-        Log.v("++++++test", l_uri.toString());
+    public void addCalendarEvent() {
+        new CreateEvent(mService).execute();
     }
-     */
 
-    // adding event through intent, doesn't require any permissions
-    /*
-    private void addEvent2() {
-        Intent l_intent = new Intent(Intent.ACTION_EDIT);
-        l_intent.setType("vnd.android.cursor.item/event");
-        //l_intent.putExtra("calendar_id", m_selectedCalendarId);  //this doesn't work
-        l_intent.putExtra("title", "roman10 calendar tutorial test");
-        l_intent.putExtra("description", "This is a simple test for calendar api");
-        l_intent.putExtra("eventLocation", "@home");
-        l_intent.putExtra("beginTime", System.currentTimeMillis());
-        l_intent.putExtra("endTime", System.currentTimeMillis() + 1800*1000);
-        l_intent.putExtra("allDay", 0);
-        //status: 0~ tentative; 1~ confirmed; 2~ canceled
-        l_intent.putExtra("eventStatus", 1);
-        //0~ default; 1~ confidential; 2~ private; 3~ public
-        l_intent.putExtra("visibility", 0);
-        //0~ opaque, no timing conflict is allowed; 1~ transparency, allow overlap of scheduling
-        l_intent.putExtra("transparency", 0);
-        //0~ false; 1~ true
-        l_intent.putExtra("hasAlarm", 1);
-        try {
-            startActivity(l_intent);
-        } catch (Exception e) {
-            Toast.makeText(this.getApplicationContext(), "Sorry, no compatible calendar is found!", Toast.LENGTH_LONG).show();
+    /*@Override
+    public void onResume() {
+        super.onResume();
+        if (isGooglePlayServicesAvailable() && allowSync) {
+            Log.d("CalendarFragment", "Google play services is available");
+            refreshResults();
+        }
+        else {
+            Log.d("CalendarFragment", "Google play services is not available");
+        }
+    }*/
+
+    //Attempts to get data from Google Calendar API
+    private void refreshResults() {
+        Log.d("CalendarFragment", "Refreshing results");
+        if (credential.getSelectedAccountName() == null) {
+            chooseAccount();
+        }
+        else {
+            if (isDeviceOnline()) {
+                Log.d("CalendarFragment", "Device is online.");
+                new ApiAsyncTask(getActivity(), new ApiAsyncTask.AsyncResponse() {
+                    @Override
+                    public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
+                        googleEvents.clear();
+                        googleDays.clear();
+                        for(int i = 0; i < output.size(); i++) {
+                            googleEvents.add(output.get(i));
+                        }
+                        calendarView.addDecorators(new GoogleDayDecorator(black, googleEvents));
+                    }
+                }).execute();
+            }
+            else {
+                Log.d("CalendarFragment", "No network connection.");
+            }
         }
     }
-    */
 
+    private void chooseAccount() {
+        Log.d("CalendarFragment", "Choosing account.");
+        startActivityForResult(
+                credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+    }
+
+    private boolean isDeviceOnline() {
+        Log.d("CalendarFragment", "Is device online");
+        ConnectivityManager connMgr =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    private boolean isGooglePlayServicesAvailable() {
+        final int connectionStatusCode =
+                GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
+        if (GooglePlayServicesUtil.isUserRecoverableError(connectionStatusCode)) {
+            Log.d("CalendarFragment", "No Google play services.");
+            showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
+            return false;
+        } else if (connectionStatusCode != ConnectionResult.SUCCESS) {
+            Log.d("CalendarFragment", "No Google play services 2.");
+            return false;
+        }
+        Log.d("CalendarFragment", "Google play services is available.");
+        return true;
+    }
+
+    public void showGooglePlayServicesAvailabilityErrorDialog(
+            final int connectionStatusCode) {
+        Log.d("CalendarFragment", "Showing Google play services error");
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Dialog dialog = GooglePlayServicesUtil.getErrorDialog(
+                        connectionStatusCode,
+                        getActivity(),
+                        REQUEST_GOOGLE_PLAY_SERVICES);
+                dialog.show();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("CalendarFragment", "OnActivityResult");
+        if(requestCode == REQUEST_GOOGLE_PLAY_SERVICES) {
+            Log.d("CalendarFragment", "Request Google play services");
+            if (resultCode != RESULT_OK) {
+                isGooglePlayServicesAvailable();
+            }
+        }
+
+        else if(requestCode == REQUEST_ACCOUNT_PICKER) {
+            Log.d("CalendarFragment", "Request account picker");
+            if (resultCode == RESULT_OK && data != null &&
+                    data.getExtras() != null) {
+                Log.d("CalendarFragment", "Got account name");
+                String accountName =
+                        data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                refreshResults();
+                if (accountName != null) {
+                    Log.d("CalendarFragment", "Selected account name");
+                    credential.setSelectedAccountName(accountName);
+                    SharedPreferences settings =
+                            getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString(PREF_ACCOUNT_NAME, accountName);
+                    editor.commit();
+                    refreshResults();
+                }
+            }
+        }
+
+        /*else if(requestCode == REQUEST_AUTHORIZATION) {
+            Log.d("CalendarFragment", "Request authorization");
+            if (resultCode != RESULT_OK) {
+                chooseAccount();
+            }
+        }*/
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
+    }
 }

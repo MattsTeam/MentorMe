@@ -40,6 +40,7 @@ public class ProfileFragment extends Fragment {
     Button bTakePhoto;
     File photoFile;
     Bitmap photoBitmap;
+    CalendarFragment calendarFragment;
 
     User user;
 
@@ -58,6 +59,7 @@ public class ProfileFragment extends Fragment {
         tvSummary = view.findViewById(R.id.tvSummary);
         tvEdu = view.findViewById(R.id.tvEdu);
         ivProfile = view.findViewById(R.id.ivProfile);
+        calendarFragment = (CalendarFragment) getActivity().getSupportFragmentManager().findFragmentByTag("CalendarFragment");
 
         user = new User(ParseUser.getCurrentUser());
         populateInfo();
@@ -67,6 +69,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ParseUser.logOut();
+                //TODO revoke gmail credentials
+                //calendarFragment.mService = null;
                 Intent intent = new Intent(view.getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

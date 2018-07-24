@@ -1,7 +1,6 @@
 package me.chrislewis.mentorship.models;
 
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -19,14 +18,12 @@ import java.util.HashSet;
 
 public class CurrentDayDecorator implements DayViewDecorator {
 
-    private Drawable drawable;
     private final HashSet<CalendarDay> dates;
     private final int color;
     private CalendarDay calendarDay;
     private String dateString;
     private Date calendarDate;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 
     public CurrentDayDecorator(int color, ArrayList<Event> events) {
         this.color = color;
@@ -47,6 +44,24 @@ public class CurrentDayDecorator implements DayViewDecorator {
         this.dates = new HashSet<>(dates);
     }
 
+/*    public CurrentDayDecorator(int color, ArrayList<com.google.api.services.calendar.model.Event> events) {
+        this.color = color;
+        Collection<CalendarDay> dates = new ArrayList<>();
+        for(int i = 0; i < events.size(); i++) {
+            googleDate = events.get(i).getStart();
+            Log.d("DayDecorator", dateString);
+            try {
+                Log.d("DayDecorator", "Parsed date string!");
+                calendarDate = dateFormat.parse(dateString);
+                calendarDay = CalendarDay.from(calendarDate);
+            } catch (ParseException e) {
+                Log.d("DayDecorator", "Unable to parse date string.");
+                e.printStackTrace();
+            }
+            dates.add(calendarDay);
+        }
+        this.dates = new HashSet<>(dates);
+    }*/
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
