@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "905006370376",
+    "firebase_url": "https://mentorship-team-matt.firebaseio.com",
+    "project_id": "mentorship-team-matt",
+    "storage_bucket": "mentorship-team-matt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905006370376:android:4379d936bf321e18",
+        "android_client_info": {
+          "package_name": "me.chrislewis.mentorship"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905006370376-bkigg04fo8vsm6jm1c6i4avillahd58r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.chrislewis.mentorship",
+            "certificate_hash": "86b466b37bb2f3795e733c46f20297dae9379fe8"
+          }
+        },
+        {
+          "client_id": "905006370376-v243fj3mse812uj7mh459tifn1kp624h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBAqWZJkkHZq8O_0NB9bQWZSwDCIHiDX8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905006370376-v243fj3mse812uj7mh459tifn1kp624h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
