@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ApiAsyncTask extends AsyncTask<Void, Void, List<String>> {
+public class ApiAsyncTask extends AsyncTask<Void, Void, List<Event>> {
     private FragmentActivity mActivity;
     private CalendarFragment calendarFragment;
     public AsyncResponse response = null;
@@ -28,25 +28,23 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, List<String>> {
     }
 
     public interface AsyncResponse {
-        void processFinish(List<String> output);
+        void processFinish(List<Event> output);
     }
 
     @Override
-    protected void onPostExecute(List<String> result) {
+    protected void onPostExecute(List<Event> result) {
         response.processFinish(result);
     }
 
     @Override
-    protected List<String> doInBackground(Void... params) {
-        List<String> ApiData = new ArrayList<>();
+    protected List<Event> doInBackground(Void... params) {
+        List<Event> ApiData = new ArrayList<>();
         try {
             Log.d("ApiAsyncTask", "Getting data from API");
             ApiData = getDataFromApi();
 
         } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
             Log.d("ApiAsyncTask", "Google play service availability exception");
-            /*calendarFragment.showGooglePlayServicesAvailabilityErrorDialog(
-                    availabilityException.getConnectionStatusCode());*/
 
         } catch (UserRecoverableAuthIOException userRecoverableException) {
             Log.d("ApiAsyncTask", "User auth exception");
@@ -61,29 +59,19 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, List<String>> {
         return ApiData;
     }
 
-    private List<String> getDataFromApi() throws IOException {
-        // List the next 10 events from the primary calendar.
+    private List<Event> getDataFromApi() throws IOException {
         DateTime now = new DateTime(System.currentTimeMillis());
         List<String> eventStrings = new ArrayList<String>();
-        Log.d("ApiAsyncTask", "Starting to get API data");
         Events events = calendarFragment.mService.events().list("primary")
                 /*.setMaxResults(10)
                 .setTimeMin(now)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)*/
                 .execute();
+        Log.d("ApiAsyncTask", "Finished getting API data");
+        Log.d("ApiAsyncTask", "size: " + Integer.toString(events.size()));
         List<Event> items = events.getItems();
-        Log.d("ApiAsyncTask", "Number of events: " + Integer.toString(items.size()));
-
-        for (Event event : items) {
-            DateTime start = event.getStart().getDateTime();
-            if (start == null) {
-                start = event.getStart().getDate();
-            }
-            eventStrings.add(
-                    String.format("%s (%s)", event.getSummary(), start));
-        }
-        return eventStrings;
+        return items;
     }
 
 }

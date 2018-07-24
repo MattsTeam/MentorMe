@@ -43,6 +43,7 @@ import java.util.List;
 
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
 import me.chrislewis.mentorship.models.Event;
+import me.chrislewis.mentorship.models.GoogleDayDecorator;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -50,8 +51,11 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     SimpleDateFormat todayFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     ArrayList<Event> days = new ArrayList<>();
+    ArrayList<com.google.api.services.calendar.model.Event> googleEvents = new ArrayList<>();
+    ArrayList<Event> googleDays = new ArrayList<>();
+    int orange = getIntFromColor(255, 128, 0);
+    int black = getIntFromColor(0,0,0);
     MaterialCalendarView calendarView;
     Calendar calendar;
     TextView todayText;
@@ -92,8 +96,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         calendarView.setDateSelected(calendar.getTime(), true);
         todayText.setText(todayFormat.format(calendar.getTime()));
         calendarView.setOnDateChangedListener(this);
-        int eventColor = getIntFromColor(255, 128, 0);
-        calendarView.addDecorators(new CurrentDayDecorator(eventColor, days));
+        calendarView.addDecorators(new CurrentDayDecorator(orange, days));
 
         transport = AndroidHttp.newCompatibleTransport();
         jsonFactory = GsonFactory.getDefaultInstance();
@@ -112,7 +115,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
 
     public void authorize() {
-        Log.d("CalendarFragment", "Current boolean 2: " + Boolean.toString(ParseUser.getCurrentUser().getBoolean("allowSync")));
         if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
             Log.d("CalendarFragment", "Setting up oAuth");
             credential = GoogleAccountCredential.usingOAuth2(
@@ -149,7 +151,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay calendarDay, boolean b) {
         ParseQuery<Event> selectedDayQuery = new Event.Query();
         String selectedDate = dateFormat.format(calendarDay.getDate());
-        Log.d("CalendarFragment", selectedDate);
         selectedDayQuery.whereEqualTo("dateString", selectedDate);
         selectedDayQuery.findInBackground(new FindCallback<Event>() {
             @Override
@@ -172,7 +173,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         Red = (Red << 16) & 0x00FF0000;
         Green = (Green << 8) & 0x0000FF00;
         Blue = Blue & 0x000000FF;
-
         return 0xFF000000 | Red | Green | Blue;
     }
 
@@ -180,8 +180,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         new CreateEvent(mService).execute();
     }
 
-    /*//Called after onCreate
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
         if (isGooglePlayServicesAvailable() && allowSync) {
@@ -204,10 +203,13 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 Log.d("CalendarFragment", "Device is online.");
                 new ApiAsyncTask(getActivity(), new ApiAsyncTask.AsyncResponse() {
                     @Override
-                    public void processFinish(List<String> output) {
+                    public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
+                        googleEvents.clear();
+                        googleDays.clear();
                         for(int i = 0; i < output.size(); i++) {
-                            Log.d("CalendarFragment", output.get(i));
+                            googleEvents.add(output.get(i));
                         }
+                        calendarView.addDecorators(new GoogleDayDecorator(black, googleEvents));
                     }
                 }).execute();
             }
@@ -217,37 +219,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         }
     }
 
-
-    //Called from background threads and async tasks, populates calendar with API data
-    public void updateResultsText(final List<String> dataStrings) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (dataStrings == null) {
-                    Log.d("CalendarFragment", "Updating calendar: error retrieving data");
-                }
-                else if (dataStrings.size() == 0) {
-                    Log.d("CalendarFragment", "Updating calendar: no data found");
-                }
-                else {
-                    //mResultsText.setText(TextUtils.join("\n\n", dataStrings));
-                    Log.d("CalendarFragment", "Updating calendar: data retrieved");
-                }
-            }
-        });
-    }
-
-
-    public void updateStatus(final String message) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("CalendarFragment", "Updating status: " + message);
-            }
-        });
-    }
-
-    //Starts activity in Google Play services so user can pick email account
     private void chooseAccount() {
         Log.d("CalendarFragment", "Choosing account.");
         startActivityForResult(
@@ -323,17 +294,16 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             }
         }
 
-        else if(requestCode == REQUEST_AUTHORIZATION) {
+        /*else if(requestCode == REQUEST_AUTHORIZATION) {
             Log.d("CalendarFragment", "Request authorization");
             if (resultCode != RESULT_OK) {
                 chooseAccount();
             }
-        }
+        }*/
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void processFinish(List<String> output) {
-
+    public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
     }
 }

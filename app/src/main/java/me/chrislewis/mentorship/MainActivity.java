@@ -1,10 +1,12 @@
 package me.chrislewis.mentorship;
 
 import android.Manifest;
+import android.accounts.AccountManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -31,6 +33,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.parse.ParseCloud;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
@@ -44,6 +51,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static me.chrislewis.mentorship.CalendarFragment.REQUEST_ACCOUNT_PICKER;
+
 public class MainActivity extends AppCompatActivity {
     private Button push;
 
@@ -54,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    GoogleAccountCredential credential;
+    final HttpTransport transport = AndroidHttp.newCompatibleTransport();
+    final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
     private FragmentTransaction fragmentTransaction;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final HomeFragment homeFragment = new HomeFragment();
@@ -64,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     public String photoFileName = "photo.jpg";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_IMAGE_REQUEST = 1;
+    private static final String PREF_ACCOUNT_NAME = "accountName";
     File photoFile;
 
     ParseGeoPoint ParseLocation;
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_calendar:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(R.id.flContainer, calendarFragment, "CalendarFragment").commit();
+                    fragmentTransaction.add(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
@@ -236,6 +249,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+
+        else if(requestCode == REQUEST_ACCOUNT_PICKER) {
+            Log.d("MainActivity", "Request account picker");
+            if (resultCode == RESULT_OK && data != null &&
+                    data.getExtras() != null) {
+                String accountName =
+                        data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                if (accountName != null) {
+                    credential.setSelectedAccountName(accountName);
+                    SharedPreferences settings =
+                            getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString(PREF_ACCOUNT_NAME, accountName);
+                    editor.commit();
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void launchPhotos() {
