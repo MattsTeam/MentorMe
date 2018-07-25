@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
         model.setFragmentManager(fragmentManager);
         model.setFragmentTransaction(fragmentTransaction);
-        model.setUser(new User(ParseUser.getCurrentUser()));
+        model.setCurrentUser(new User(ParseUser.getCurrentUser()));
 
         Intent getI = getIntent();
         if (getI.hasExtra("fromSignUp")){
