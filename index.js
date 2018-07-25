@@ -22,12 +22,12 @@ if (process.env.FCM_API_KEY) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'https://test-livequery.herokuapp.com/parse',
+  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'TeamMatt',
   masterKey: process.env.MASTER_KEY || 'TeamMatt',
   verbose: true,
-  serverURL: process.env.SERVER_URL || 'https://test-livequery.herokuapp.com/parse',
+  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse'',
   push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
