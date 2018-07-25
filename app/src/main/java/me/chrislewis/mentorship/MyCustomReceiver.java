@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,8 +25,8 @@ public class MyCustomReceiver extends BroadcastReceiver {
         if (intent == null) {
             Log.d(TAG, "Receiver intent null");
         } else {
-            // Parse push message and handle accordingly
             processPush(context, intent);
+            Toast.makeText(context, "received message from cloud", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -44,8 +44,7 @@ public class MyCustomReceiver extends BroadcastReceiver {
                     String key = (String) itr.next();
                     String value = json.getString(key);
                     Log.d(TAG, "..." + key + " => " + value);
-                    // Extract custom push data
-                    if (key.equals("customdata")) {
+                    if (key.equals("customData")) {
                         // create a local notification
                         createNotification(context, value);
                     }
@@ -60,8 +59,6 @@ public class MyCustomReceiver extends BroadcastReceiver {
     // Create a local dashboard notification to tell user about the event
     // See: http://guides.codepath.com/android/Notifications
     private void createNotification(Context context, String datavalue) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(
-                R.drawable.ic_launcher_background).setContentTitle("Notification: " + datavalue).setContentText("Pushed!");
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -69,24 +66,9 @@ public class MyCustomReceiver extends BroadcastReceiver {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "General Channel", NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationManager.createNotificationChannel(channel);
         }
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(
+                R.drawable.ic_launcher_background).setContentTitle("Notification: " + datavalue).setContentText("Pushed!");
+
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    }
-
-    // Handle push notification by invoking activity directly
-    // See: http://guides.codepath.com/android/Using-Intents-to-Create-Flows
-    private void launchSomeActivity(Context context, String datavalue) {
-        Intent pupInt = new Intent(context, ShowPopUp.class);
-        pupInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        pupInt.putExtra("data", datavalue);
-        context.getApplicationContext().startActivity(pupInt);
-    }
-
-    // Handle push notification by sending a local broadcast
-    // to which the activity subscribes to
-    // See: http://guides.codepath.com/android/Starting-Background-Services#communicating-with-a-broadcastreceiver
-    private void triggerBroadcastToActivity(Context context, String datavalue) {
-        Intent intent = new Intent(intentAction);
-        intent.putExtra("data", datavalue);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 }

@@ -23,6 +23,7 @@
     <uses-permission android:name="android.permission.READ_CALENDAR"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_CALENDAR"></uses-permission>
 
+
     <application
         android:name=".ParseApp"
         android:allowBackup="true"
@@ -91,12 +92,19 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
-                <category android:name="me.chrislewis.mentorship"/>
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="me.chrislewis.mentorship.MyCustomReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="me.chrislewis.mentorship.UPDATE_STATUS" />
             </intent-filter>
         </receiver>
 

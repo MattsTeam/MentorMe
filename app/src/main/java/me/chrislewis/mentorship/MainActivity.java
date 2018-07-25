@@ -44,12 +44,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.parse.ParseCloud;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParseQuery;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -184,29 +178,14 @@ public class MainActivity extends AppCompatActivity {
         push.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject payload = new JSONObject();
-                try {
-                    payload.put("alert", "new notification");
-                    HashMap<String, String> data = new HashMap<>();
-                    data.put("customData", payload.toString());
-                    // data.put("customData", "hiii"); TODO why do regular strings not work?
-                    ParseCloud.callFunctionInBackground("pingReply", data);
-                    Toast.makeText(MainActivity.this, "passed message to cloud", Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                // TODO why does the following never get sent?
-                ParsePush parsePush = new ParsePush();
-                ParseQuery<ParseInstallation> installationParseQuery = ParseQuery.getQuery(ParseInstallation.class);
-                installationParseQuery.whereEqualTo("enable", true);
-                parsePush.setMessage("a direct push from from Main Activity");
-
-                parsePush.sendInBackground();
-
+            HashMap<String, String> payload = new HashMap<>();
+            payload.put("customData", "new notification");
+            ParseCloud.callFunctionInBackground("pingReply", payload);
+            Toast.makeText(MainActivity.this, "passed message to cloud", Toast.LENGTH_LONG).show();
             }
         });
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(MyCustomReceiver.intentAction));
     }
 
     @Override

@@ -11,15 +11,15 @@
     },
     "APP_ID": {
       "description": "A unique identifier for your app.",
-      "value": "myAppId"
+      "value": "TeamMatt"
     },
     "MASTER_KEY": {
       "description": "A key that overrides all permissions. Keep this secret.",
-      "value": "myMasterKey"
+      "value": "TeamMatt"
     },
     "SERVER_URL": {
       "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
-      "value": "http://yourappname.herokuapp.com/parse"
+      "value": "http://teammatt-fbu-mentorship.herokuapp.com/parse"
     }
   },
   "image": "heroku/nodejs",

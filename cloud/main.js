@@ -10,7 +10,7 @@ Parse.Cloud.define('pingReply', function(request, response) {
 
 
   var query = new Parse.Query(Parse.Installation);
-  // if (receiver) {query.equalTo("currentUserId", receiver...
+  // if (receiver) {query.equalTo("currentUserId", receiver); console.log(receiver); else pushQuery.equalTo("deviceType...
   query.equalTo("deviceType", "android");
 
   var payload = {};
@@ -21,7 +21,6 @@ Parse.Cloud.define('pingReply', function(request, response) {
 
 
   Parse.Push.send({
-  channels: ["channelName"],
   where: query,
   // Parse.Push requires a dictionary, not a string.
   data: payload,
