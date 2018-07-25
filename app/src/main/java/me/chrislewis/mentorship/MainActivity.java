@@ -2,6 +2,7 @@ package me.chrislewis.mentorship;
 
 import android.Manifest;
 import android.accounts.AccountManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "onReceive invoked", Toast.LENGTH_LONG).show();
         }
     };
+
+    SharedViewModel model;
 
     GoogleAccountCredential credential;
     final HttpTransport transport = AndroidHttp.newCompatibleTransport();
@@ -133,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         fragmentTransaction = fragmentManager.beginTransaction();
+
+        model = ViewModelProviders.of(this).get(SharedViewModel.class);
+        model.setFragmentManager(fragmentManager);
+        model.setFragmentTransaction(fragmentTransaction);
+
         Intent getI = getIntent();
         if (getI.hasExtra("fromSignUp")){
             fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();

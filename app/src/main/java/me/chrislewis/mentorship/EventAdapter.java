@@ -33,6 +33,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Event event = mEvents.get(position);
+        //holder.tvTime.setText(event.eventTime);
+        //holder.tvDescription.setText(event.description);
         holder.tvTime.setText(event.getEventTime());
         holder.tvDescription.setText(event.getEventDescription());
     }

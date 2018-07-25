@@ -75,9 +75,10 @@ public class ProfileFragment extends Fragment {
         bLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //ParseUser.getCurrentUser().put("allowSync", false);
+                //ParseUser.getCurrentUser().saveInBackground();
                 ParseUser.logOut();
                 //TODO revoke gmail credentials
-                //calendarFragment.mService = null;
                 Intent intent = new Intent(view.getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

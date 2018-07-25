@@ -2,7 +2,7 @@ package me.chrislewis.mentorship;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,9 +93,10 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             if (position != RecyclerView.NO_POSITION) {
                 ParseUser user = users.get(position);
                 model.setUser(new User(user));
-                ((FragmentActivity) view.getContext()).getFragmentManager().beginTransaction()
-                        .replace(R.id.flContainer, messageFragment)
-                        .commit();
+
+                FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
+                fragmentTransaction = model.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
             }
         }
     }

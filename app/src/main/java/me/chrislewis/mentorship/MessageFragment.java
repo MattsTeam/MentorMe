@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +27,7 @@ import java.util.List;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.User;
 
-public class MessageFragment extends android.app.Fragment {
+public class MessageFragment extends Fragment {
 
     boolean firstLoad = true;
 
