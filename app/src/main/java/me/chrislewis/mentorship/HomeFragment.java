@@ -1,5 +1,6 @@
 package me.chrislewis.mentorship;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -33,6 +34,8 @@ import me.chrislewis.mentorship.models.User;
 public class HomeFragment extends Fragment {
 
     private User currentUser;
+
+    private SharedViewModel model;
 
     private List<String> currentCategories;
     private GridAdapter gridAdapter;
@@ -90,10 +93,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+
         rvUsers = view.findViewById(R.id.rvGrid);
 
         users = new ArrayList<>();
-        gridAdapter = new GridAdapter(users);
+        gridAdapter = new GridAdapter(users, model);
         pb = view.findViewById(R.id.pbLoading);
 
         rvUsers.setLayoutManager(new GridLayoutManager(this.getActivity(), 2));
