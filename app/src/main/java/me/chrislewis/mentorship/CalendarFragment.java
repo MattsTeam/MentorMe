@@ -60,6 +60,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     MaterialCalendarView calendarView;
     Calendar calendar;
     TextView todayText;
+    ImageButton addEventButton;
 
     ImageButton permissionButton;
     com.google.api.services.calendar.Calendar mService;
@@ -83,6 +84,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
         refreshEvents();
         permissionButton = view.findViewById(R.id.permissionButton);
+        addEventButton = view.findViewById(R.id.addEventButton);
         calendarView = view.findViewById(R.id.calendarView);
         todayText = view.findViewById(R.id.tvCurrentDay);
         calendar = Calendar.getInstance();
@@ -96,12 +98,20 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         settings = getActivity().getPreferences(Context.MODE_PRIVATE);
         allowSync = ParseUser.getCurrentUser().getBoolean("allowSync");
         authorize();
+
         permissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ParseUser.getCurrentUser().put("allowSync", true);
                 ParseUser.getCurrentUser().saveInBackground();
                 authorize();
+            }
+        });
+
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }

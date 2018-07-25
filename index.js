@@ -15,18 +15,20 @@ var pushConfig = {};
 
 if (process.env.FCM_API_KEY) {
     pushConfig['android'] = { 
-      apiKey: process.env.FCM_API_KEY || '',
-      senderId: process.env.SENDER_ID || '905006370376'
+      apiKey: process.env.FCM_API_KEY || 'AIzaSyAP5GAlho1vjLnBs7xN-T3UtNpkME4Mfaw',
+      //senderId: process.env.SENDER_ID || '905006370376'
     };
 
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  //databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'http://teammatt-fbu-mentorship.herokuapp.com/parse',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'TeamMatt',
   masterKey: process.env.MASTER_KEY || 'TeamMatt', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  //serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  serverURL: process.env.SERVER_URL || 'http://teammatt-fbu-mentorship.herokuapp.com/parse'
   push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
