@@ -111,7 +111,14 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AddEventDialogFragment addEventFragment = AddEventDialogFragment.newInstance();
+                addEventFragment.show(getFragmentManager(), null);
+                if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
+                    //add event to google calendar
+                }
+                else {
+                    //add event to parse server
+                }
             }
         });
     }

@@ -100,9 +100,11 @@
             </intent-filter>
         </receiver>
 
+
         <receiver android:name="me.chrislewis.mentorship.MyCustomReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="me.chrislewis.mentorship.INTERCEPT" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="me.chrislewis.mentorship.UPDATE_STATUS" />
             </intent-filter>
