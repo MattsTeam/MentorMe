@@ -3,7 +3,6 @@ package me.chrislewis.mentorship.models;
 import android.text.format.DateUtils;
 
 import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -165,16 +164,15 @@ public class User{
         this.user.removeAll(FAVORITE_KEY, Collections.singleton(user));
     }
 
-
     public List<String> getCategories() {
         return (List<String>) user.get(CATEGORIES_KEY);
     }
+
     public void addCategory(String category) {this.user.addUnique(CATEGORIES_KEY, category);}
 
     public ParseGeoPoint getCurrentLocation() {
         return user.getParseGeoPoint(LOCATION_KEY);
     }
-
 
     public void setLocation(ParseGeoPoint location) {
         user.put(LOCATION_KEY, location);
@@ -200,7 +198,9 @@ public class User{
         user.saveInBackground();
     }
 
-    public void fetchInBackground(GetCallback<ParseObject> callback) throws ParseException { user.fetchInBackground(callback); }
+    public void fetchInBackground(GetCallback<ParseObject> callback) {
+        user.fetchInBackground(callback);
+    }
 
     public String getRelativeTimeAgo() {
         String relativeDate;
@@ -213,6 +213,11 @@ public class User{
     public static class Query extends ParseQuery<ParseUser> {
         public Query() {
             super(ParseUser.class);
+        }
+
+        public Query getUser(String objectId){
+            whereEqualTo("objectId", objectId);
+            return this;
         }
 
     }
