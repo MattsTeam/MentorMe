@@ -10,6 +10,7 @@ import com.parse.ParsePush;
 
 import java.util.LinkedList;
 
+import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.Message;
 import okhttp3.OkHttpClient;
@@ -34,6 +35,7 @@ public class ParseApp extends MultiDexApplication {
 
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(Event.class);
+        ParseObject.registerSubclass(Chat.class);
 
         Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
