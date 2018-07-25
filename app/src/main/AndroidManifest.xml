@@ -104,6 +104,7 @@
         <!--<receiver android:name="me.chrislewis.mentorship.MyCustomReceiver" >-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+                <!--&lt;!&ndash;<action android:name="me.chrislewis.mentorship.INTERCEPT" />&ndash;&gt;-->
                 <!--<action android:name="android.intent.action.USER_PRESENT" />-->
                 <!--<action android:name="me.chrislewis.mentorship.UPDATE_STATUS" />-->
             <!--</intent-filter>-->
