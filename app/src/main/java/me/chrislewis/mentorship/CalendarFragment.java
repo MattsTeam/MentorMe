@@ -61,6 +61,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     Calendar calendar;
     TextView todayText;
     ImageButton addEventButton;
+    String selectedDate = "";
 
     ImageButton permissionButton;
     com.google.api.services.calendar.Calendar mService;
@@ -83,6 +84,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         refreshEvents();
+        //get stuff from bundle in addeventdialogfragment
         permissionButton = view.findViewById(R.id.permissionButton);
         addEventButton = view.findViewById(R.id.addEventButton);
         calendarView = view.findViewById(R.id.calendarView);
@@ -112,9 +114,11 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             @Override
             public void onClick(View view) {
                 AddEventDialogFragment addEventFragment = AddEventDialogFragment.newInstance();
-                Bundle isSynced = new Bundle();
-                isSynced.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
-                addEventFragment.setArguments(isSynced);
+                Bundle addEventBundle = new Bundle();
+                addEventBundle.putString("dateSelected", selectedDate);
+                addEventBundle.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
+                //addEventBundle.putSerializable("calendarObject", (Serializable) mService);
+                addEventFragment.setArguments(addEventBundle);
                 addEventFragment.show(getFragmentManager(), null);
             }
         });
@@ -160,7 +164,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay calendarDay, boolean b) {
-        String selectedDate = dateFormat.format(calendarDay.getDate());
+        selectedDate = dateFormat.format(calendarDay.getDate());
         Log.d("CalendarFragment", selectedDate);
         googleTodayEvents.clear();
         for(int i = 0; i < googleEvents.size(); i++) {
@@ -207,7 +211,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     }
 
     public void addCalendarEvent() {
-        new CreateEvent(mService).execute();
+        //new CreateEvent(mService).execute();
     }
 
     /*@Override

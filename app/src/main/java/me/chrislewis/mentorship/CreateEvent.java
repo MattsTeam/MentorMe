@@ -11,35 +11,46 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class CreateEvent extends AsyncTask<Void, Void, Void> {
     Calendar mService;
+    String eventDay;
+    String eventTime;
+    String description;
+    Date eventDate;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    CreateEvent(Calendar mService) {
+    CreateEvent(Calendar mService, String date, String time, String description) throws ParseException {
         this.mService = mService;
+        this.description = description;
+        eventDay = date;
+        eventTime = time;
+        eventDate = dateFormat.parse(eventDay + " " + eventTime);
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         addCalendarEvent();
-
         return null;
     }
 
     public void addCalendarEvent() {
         Event event = new Event()
-                .setSummary("Google I/O 2015")
-                .setLocation("800 Howard St., San Francisco, CA 94103")
-                .setDescription("A chance to hear more about Google's developer products.");
+                .setSummary(description)
+                .setLocation("Not specified")
+                .setDescription("");
 
-        DateTime startDateTime = new DateTime("2015-10-14T09:00:00-07:00");
+        DateTime startDateTime = new DateTime(eventDate);
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
                 .setTimeZone("America/Los_Angeles");
         event.setStart(start);
 
-        DateTime endDateTime = new DateTime("2015-10-15T17:00:00-07:00");
+        DateTime endDateTime = new DateTime(eventDate);
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
                 .setTimeZone("America/Los_Angeles");
@@ -50,7 +61,7 @@ public class CreateEvent extends AsyncTask<Void, Void, Void> {
 
         EventAttendee[] attendees = new EventAttendee[]{
                 new EventAttendee().setEmail("test@example.com"),
-                new EventAttendee().setEmail("sbrin@example.com"),
+                new EventAttendee().setEmail("test2@example.com"),
         };
         event.setAttendees(Arrays.asList(attendees));
 
