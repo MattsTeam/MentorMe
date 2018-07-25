@@ -87,28 +87,27 @@
             </intent-filter>
         </service>
 
-        <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name="com.parse.ParsePushBroadcastReceiver"-->
+            <!--android:exported="false">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.parse.push.intent.RECEIVE" />-->
+                <!--<action android:name="com.parse.push.intent.DELETE" />-->
+                <!--<action android:name="com.parse.push.intent.OPEN" />-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+                <!--<action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />-->
+                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
 
-        <receiver android:name="me.chrislewis.mentorship.MyCustomReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="me.chrislewis.mentorship.INTERCEPT" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="me.chrislewis.mentorship.UPDATE_STATUS" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name="me.chrislewis.mentorship.MyCustomReceiver" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
+                <!--<action android:name="me.chrislewis.mentorship.UPDATE_STATUS" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
 
         <activity android:name=".SignUpDetailsActivity"></activity>
