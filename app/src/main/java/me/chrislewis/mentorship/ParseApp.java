@@ -50,7 +50,8 @@ public class ParseApp extends MultiDexApplication {
         ParseACL.setDefaultACL(defaultACL, true);
 
         FirebaseApp.initializeApp(this); //TODO should not need this
-
+    }
+}
 
 
         /*
@@ -72,5 +73,4 @@ public class ParseApp extends MultiDexApplication {
 
         ParsePush.subscribeInBackground(CHANNEL_NAME);
         */
-    }
-}
+
