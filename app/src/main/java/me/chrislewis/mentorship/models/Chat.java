@@ -4,8 +4,6 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 
 @ParseClassName("Chat")
@@ -13,14 +11,24 @@ public class Chat extends ParseObject{
 
     private final static String USERS_KEY = "users";
 
-    ArrayList<User> users;
+    User recipient;
 
-    public JSONArray getUsers() {
-        return (JSONArray) get(USERS_KEY);
+    public User getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
+    }
+
+    public ArrayList<String> getUsers() {
+        return (ArrayList<String>) get(USERS_KEY);
     }
 
     public void setUsers(ArrayList<User> users) {
-        addAllUnique(USERS_KEY, users);
+        for(User i : users) {
+            addUnique(USERS_KEY, i.getObjectId());
+        }
     }
 
     public static class Query extends ParseQuery<Chat> {
