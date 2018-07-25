@@ -112,13 +112,10 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             @Override
             public void onClick(View view) {
                 AddEventDialogFragment addEventFragment = AddEventDialogFragment.newInstance();
+                Bundle isSynced = new Bundle();
+                isSynced.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
+                addEventFragment.setArguments(isSynced);
                 addEventFragment.show(getFragmentManager(), null);
-                if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
-                    //add event to google calendar
-                }
-                else {
-                    //add event to parse server
-                }
             }
         });
     }
@@ -171,6 +168,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             if(selectedDate.equals(dateTimeDate(googleDateString))) {
                 googleTodayEvents.add(googleEvents.get(i));
             }
+            Log.d("CalendarFragment", "googleObjects: " + Integer.toString(googleTodayEvents.size()));
         }
         Bundle googleBundle = new Bundle();
         googleBundle.putSerializable("todayGoogleEvents", (Serializable) googleTodayEvents);

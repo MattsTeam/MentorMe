@@ -185,23 +185,23 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         User newUser = new User(currentUser);
 
         if(artButton.isSelected()) {
-            newUser.addCategory("art");
+            newUser.addCategory("Art");
 
         }
         if(sportsButton.isSelected()) {
-            newUser.addCategory("sports");
+            newUser.addCategory("Sports");
         }
         if(humanitiesButton.isSelected()) {
-            newUser.addCategory("sports");
+            newUser.addCategory("Humanities");
         }
         if(languagesButton.isSelected()) {
-            newUser.addCategory("languages");
+            newUser.addCategory("Languages");
         }
         if(engineeringButton.isSelected()) {
-            newUser.addCategory("engineering");
+            newUser.addCategory("Engineering");
         }
         if(sciencesButton.isSelected()) {
-            newUser.addCategory("sciences");
+            newUser.addCategory("Sciences");
         }
         newUser.saveInBackground();
     }
