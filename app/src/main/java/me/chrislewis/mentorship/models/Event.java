@@ -6,7 +6,6 @@ import com.parse.ParseQuery;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -19,21 +18,26 @@ public class Event extends ParseObject implements Serializable {
     private final static String DESCRIPTION_KEY = "description";
     private final static String DATE_STRING_KEY = "dateString";
     private final static String TIME_KEY = "timeString";
-    //private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private final static DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    private final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    private final static DateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
 
-    public Event event;
     public String googleDescription;
     public String googleDateString;
     public Date googleDate;
+    public String eventTime;
+    public String eventDate;
+    public String eventDescription;
 
     public Event() { }
 
-    public Event(com.google.api.services.calendar.model.Event googleEvent) throws ParseException {
+    /*public Event(com.google.api.services.calendar.model.Event googleEvent) throws ParseException {
         this.googleDescription = googleEvent.getSummary();
         this.googleDateString = googleEvent.getStart().getDateTime().toString();
-        this.googleDate = format.parse(googleDateString);
-    }
+        this.googleDate = dateFormat.parse(googleDateString);
+        //this.eventDescription = googleEvent.getSummary();
+        //this.eventDate = ;
+        //this.eventTime = ;
+    }*/
 
     public String getDateString() { return getString(DATE_STRING_KEY); }
 

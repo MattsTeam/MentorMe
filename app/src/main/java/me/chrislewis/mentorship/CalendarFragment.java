@@ -15,7 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,7 +27,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
-import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -52,15 +52,16 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     SimpleDateFormat todayFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     ArrayList<Event> days = new ArrayList<>();
+    List<com.google.api.services.calendar.model.Event> googleTodayEvents = new ArrayList<>();
     ArrayList<com.google.api.services.calendar.model.Event> googleEvents = new ArrayList<>();
-    ArrayList<Event> googleDays = new ArrayList<>();
+    com.google.api.services.calendar.model.Event googleToday;
     int orange = getIntFromColor(255, 128, 0);
     int black = getIntFromColor(0,0,0);
     MaterialCalendarView calendarView;
     Calendar calendar;
     TextView todayText;
 
-    Button permissionButton;
+    ImageButton permissionButton;
     com.google.api.services.calendar.Calendar mService;
     GoogleAccountCredential credential;
     HttpTransport transport;
@@ -77,14 +78,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calendar, parent, false);
     }
-
-    /*public static Date parseDate(String date) {
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        } catch (ParseException e) {
-            return null;
-        }
-    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -147,26 +140,48 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         }
     }
 
+    public String dateTimeDate(String dateTime) {
+        return dateTime.substring(0,10);
+    }
+
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay calendarDay, boolean b) {
-        ParseQuery<Event> selectedDayQuery = new Event.Query();
         String selectedDate = dateFormat.format(calendarDay.getDate());
-        selectedDayQuery.whereEqualTo("dateString", selectedDate);
-        selectedDayQuery.findInBackground(new FindCallback<Event>() {
-            @Override
-            public void done(List<Event> objects, com.parse.ParseException e) {
-                if(e == null && objects.size() > 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("todayEvents", (Serializable) objects);
-
-                    //Show events for today in modal overlay
-                    FragmentManager fragmentManager = getFragmentManager();
-                    EventDialogFragment fragment = EventDialogFragment.newInstance();
-                    fragment.setArguments(bundle);
-                    fragment.show(fragmentManager, "event_dialog_fragment");
-                }
+        Log.d("CalendarFragment", selectedDate);
+        googleTodayEvents.clear();
+        for(int i = 0; i < googleEvents.size(); i++) {
+            String googleDateString = googleEvents.get(i).getStart().getDateTime().toString();
+            if(selectedDate.equals(dateTimeDate(googleDateString))) {
+                googleTodayEvents.add(googleEvents.get(i));
             }
-        });
+        }
+        Bundle googleBundle = new Bundle();
+        googleBundle.putSerializable("todayGoogleEvents", (Serializable) googleTodayEvents);
+        final FragmentManager fragmentManager = getFragmentManager();
+        final EventDialogFragment fragment = EventDialogFragment.newInstance();
+
+        final List<Event> todayEvents = new ArrayList<>();
+        ParseQuery<Event> selectedDayQuery = new Event.Query();
+        selectedDayQuery.whereEqualTo("dateString", selectedDate);
+        todayEvents.clear();
+        try {
+            todayEvents.addAll(selectedDayQuery.find());
+            Log.d("CalendarFragment", "objects: " + Integer.toString(todayEvents.size()));
+        }
+        catch (ParseException e) {
+            Log.d("CalendarFragment", "Selected day does not have events on Parse");
+            e.printStackTrace();
+        }
+        if(todayEvents.size() > 0 || googleTodayEvents.size() > 0) {
+            Bundle mainBundle = new Bundle();
+            Bundle parseBundle = new Bundle();
+            parseBundle.putSerializable("todayEvents", (Serializable) todayEvents);
+            mainBundle.putBundle("googleBundle", googleBundle);
+            mainBundle.putBundle("parseBundle", parseBundle);
+            fragment.setArguments(mainBundle);
+            fragment.show(fragmentManager, "event_dialog_fragment");
+        }
+
     }
 
     public int getIntFromColor(int Red, int Green, int Blue){
@@ -204,8 +219,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 new ApiAsyncTask(getActivity(), new ApiAsyncTask.AsyncResponse() {
                     @Override
                     public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
-                        googleEvents.clear();
-                        googleDays.clear();
                         for(int i = 0; i < output.size(); i++) {
                             googleEvents.add(output.get(i));
                         }

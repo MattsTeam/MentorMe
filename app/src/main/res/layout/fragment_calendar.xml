@@ -36,13 +36,15 @@
         android:textStyle="bold"
         android:text="TextView" />
 
-    <Button
+    <ImageButton
         android:id="@+id/permissionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="37dp"
-        android:layout_above="@+id/calendarHeader"
-        android:layout_centerHorizontal="true"
-        android:text="Sync with Gmail" />
+        android:layout_width="53dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_sync_mail" />
 
     <ImageButton
         android:id="@+id/addEventButton"
