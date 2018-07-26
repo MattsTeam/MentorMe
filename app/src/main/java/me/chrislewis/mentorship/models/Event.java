@@ -18,28 +18,16 @@ public class Event extends ParseObject implements Serializable {
     private final static String DESCRIPTION_KEY = "description";
     private final static String DATE_STRING_KEY = "dateString";
     private final static String TIME_KEY = "timeString";
+    private final static String DATE_STRING = "dateString";
     private final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private final static DateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
 
-    public String googleDescription;
-    public String googleDateString;
-    public Date googleDate;
-    public String eventTime;
-    public String eventDate;
-    public String eventDescription;
 
     public Event() { }
 
-    /*public Event(com.google.api.services.calendar.model.Event googleEvent) throws ParseException {
-        this.googleDescription = googleEvent.getSummary();
-        this.googleDateString = googleEvent.getStart().getDateTime().toString();
-        this.googleDate = dateFormat.parse(googleDateString);
-        //this.eventDescription = googleEvent.getSummary();
-        //this.eventDate = ;
-        //this.eventTime = ;
-    }*/
-
     public String getDateString() { return getString(DATE_STRING_KEY); }
+
+    public void setDateString(String eventDate) { put(DATE_STRING_KEY, eventDate);}
 
     public Date getEventDate() { return (Date) get(DATE_KEY); }
 
