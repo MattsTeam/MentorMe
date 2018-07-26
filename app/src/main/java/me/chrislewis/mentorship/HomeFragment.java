@@ -111,14 +111,18 @@ public class HomeFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                String category = checkedItem.toString();
-                if (category == "All Categories") {
+                if (checkedItem == null) {
                     getAllUsers();
                 }
                 else {
-                    filterByCategory(category);
+                    String category = checkedItem.toString();
+                    if (category == "All Categories") {
+                        getAllUsers();
+                    }
+                    else {
+                        filterByCategory(category);
+                    }
                 }
-
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,

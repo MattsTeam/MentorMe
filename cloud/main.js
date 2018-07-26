@@ -10,8 +10,13 @@ Parse.Cloud.define('pingReply', function(request, response) {
 
 
   var query = new Parse.Query(Parse.Installation);
-  // if (receiver) {query.equalTo("currentUserId", receiver); console.log(receiver); else pushQuery.equalTo("deviceType...
-  query.equalTo("deviceType", "android");
+  if (receiver) {
+    query.equalTo("currentUserId", receiver);
+    console.log(receiver);
+  }
+  else {
+    query.equalTo("deviceType", "android");
+  }
 
   var payload = {};
   if (customData) {
