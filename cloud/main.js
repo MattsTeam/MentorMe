@@ -16,16 +16,16 @@ Parse.Cloud.define('pingReply', function(request, response) {
   var payload = {};
   if (customData) {
     payload.alert = customData;
-
+    //payload.customData = customData;
   }
 
 
   Parse.Push.send({
   where: query,
   // Parse.Push requires a dictionary, not a string.
+  //data: {"alert": "try this"
   data: payload,
   }, {
-  useMasterKey: true,
   success: function() {
      console.log("#### PUSH OK");
   }, error: function(error) {
