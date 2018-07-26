@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +16,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
 
 import static com.parse.Parse.getApplicationContext;
@@ -31,7 +32,6 @@ public class DetailsFragment extends Fragment {
 
     User currentUser;
     User user;
-    String userId;
     TextView tvName;
     TextView tvJob;
     TextView tvSkills;
@@ -43,15 +43,9 @@ public class DetailsFragment extends Fragment {
 
     boolean isFavorite;
 
-    public DetailsFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details, container, false);
     }
 
@@ -70,21 +64,9 @@ public class DetailsFragment extends Fragment {
 
         currentUser = new User (ParseUser.getCurrentUser());
 
-        SharedViewModel model = ViewModelProviders.of((FragmentActivity) getActivity()).get(SharedViewModel.class);
-
-        userId = model.getUserId();
-        ParseQuery<ParseUser> query = ParseUser.getQuery().whereEqualTo("objectId", userId);
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e == null) {
-                    user = new User (objects.get(0));
-                    populateInfo(user);
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
+        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        user = model.getUser();
+        populateInfo(user);
 
         btFav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +82,27 @@ public class DetailsFragment extends Fragment {
                     btFav.setBackgroundResource(R.drawable.favorite_save);
                     isFavorite = false;
                 }
+            }
+        });
+
+        btMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Chat chat = new Chat();
+                ArrayList<User> users = new ArrayList<>();
+                users.add(currentUser);
+                users.add(user);
+                chat.setUsers(users);
+                chat.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Log.d("Details", "Working");
+                        } else {
+                            Log.d("Details", "Failure " + e);
+                        }
+                    }
+                });
             }
         });
     }
@@ -121,7 +124,7 @@ public class DetailsFragment extends Fragment {
         List<ParseUser> favUsers = currentUser.getFavorites();
         if (favUsers != null) {
             for (int i = 0; i < favUsers.size(); i++) {
-                if ((userId).equals(favUsers.get(i).getObjectId())) {
+                if ((user.getObjectId()).equals(favUsers.get(i).getObjectId())) {
                     isFavorite = true;
                 }
             }
