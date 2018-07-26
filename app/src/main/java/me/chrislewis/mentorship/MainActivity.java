@@ -45,10 +45,13 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.parse.ParseCloud;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+
+import me.chrislewis.mentorship.models.User;
 
 import static me.chrislewis.mentorship.CalendarFragment.REQUEST_ACCOUNT_PICKER;
 
@@ -142,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
         model.setFragmentManager(fragmentManager);
         model.setFragmentTransaction(fragmentTransaction);
+        model.setCurrentUser(new User(ParseUser.getCurrentUser()));
 
         Intent getI = getIntent();
         if (getI.hasExtra("fromSignUp")){
