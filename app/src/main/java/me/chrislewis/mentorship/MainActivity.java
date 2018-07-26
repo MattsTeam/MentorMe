@@ -201,20 +201,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*
-    @Override
-    public void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(MyCustomReceiver.intentAction));
-    }
-    */
-
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         super.onCreateOptionsMenu(menu);
