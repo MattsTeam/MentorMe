@@ -46,6 +46,7 @@ public class ProfileFragment extends Fragment {
     Button bTakePhoto;
     File photoFile;
     Bitmap photoBitmap;
+    Button bEdit;
     Button bSave;
     CalendarFragment calendarFragment;
 
@@ -61,22 +62,41 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         etName = view.findViewById(R.id.etName);
+        etName.setEnabled(false);
         etJob = view.findViewById(R.id.etJob);
+        etJob.setEnabled(false);
         etSkills = view.findViewById(R.id.etSkills);
+        etSkills.setEnabled(false);
         etSummary = view.findViewById(R.id.etSummary);
+        etSummary.setEnabled(false);
         etEdu = view.findViewById(R.id.etEdu);
+        etEdu.setEnabled(false);
         ivProfile = view.findViewById(R.id.ivProfile);
         calendarFragment = (CalendarFragment) getActivity().getSupportFragmentManager().findFragmentByTag("CalendarFragment");
 
         user = new User(ParseUser.getCurrentUser());
         populateInfo();
 
+
+        bEdit = view.findViewById(R.id.bEdit);
+
+        bEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                etName.setEnabled(true);
+                etJob.setEnabled(true);
+                etSkills.setEnabled(true);
+                etSummary.setEnabled(true);
+                etEdu.setEnabled(true);
+            }
+        });
+
+
         bLogOut = view.findViewById(R.id.bLogOut);
         bLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ParseUser.getCurrentUser().put("allowSync", false);
-                //ParseUser.getCurrentUser().saveInBackground();
                 ParseUser.logOut();
                 //TODO revoke gmail credentials
                 Intent intent = new Intent(view.getContext(), LoginActivity.class);

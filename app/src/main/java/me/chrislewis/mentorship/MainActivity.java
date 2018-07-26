@@ -55,6 +55,7 @@ import static me.chrislewis.mentorship.CalendarFragment.REQUEST_ACCOUNT_PICKER;
 public class MainActivity extends AppCompatActivity {
     private Button push;
     private ActionBarDrawerToggle mDrawerToggle;
+    private int REQUEST_LOCATION = 10;
 
     private BroadcastReceiver mBroadcastReceiver = new MyCustomReceiver() {
         @Override
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-    private int REQUEST_LOCATION = 10;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,14 +188,13 @@ public class MainActivity extends AppCompatActivity {
         push.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            HashMap<String, String> payload = new HashMap<>();
-            payload.put("customData", "new notification");
-            ParseCloud.callFunctionInBackground("pingReply", payload);
-            Toast.makeText(MainActivity.this, "passed message to cloud", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "pushing", Toast.LENGTH_LONG).show();
+                HashMap<String, String> payload = new HashMap<>();
+                payload.put("customData", "ok");
+                ParseCloud.callFunctionInBackground("pingReply", payload);
+                Toast.makeText(MainActivity.this, "passed message to cloud", Toast.LENGTH_LONG).show();
             }
         });
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(MyCustomReceiver.intentAction));
     }
 
     @Override
@@ -311,6 +311,28 @@ public class MainActivity extends AppCompatActivity {
 
         return file;
     }
+
+    /*
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 10: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    return;
+                } else {
+                    Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+    */
 
 }
 

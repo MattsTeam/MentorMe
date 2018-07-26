@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,11 +21,13 @@ public class MyCustomReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "Entered into onReceive");
         if (intent == null) {
             Log.d(TAG, "Receiver intent null");
         } else {
-            processPush(context, intent);
-            Toast.makeText(context, "received message from cloud", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "entered into onReceive");
+            //processPush(context, intent);
+
         }
     }
 

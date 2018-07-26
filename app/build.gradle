@@ -74,8 +74,7 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
 
-    //google calendar
-    //implementation 'com.google.android.gms:play-services:15.0.1'
+
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.android.gms:play-services-base:15.0.1'
     implementation 'com.android.support:multidex:1.0.3'
@@ -88,6 +87,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:11.6.2'
     implementation 'com.google.firebase:firebase-analytics:11.6.2'
     implementation 'com.google.firebase:firebase-core:11.6.2'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
 
 
 }

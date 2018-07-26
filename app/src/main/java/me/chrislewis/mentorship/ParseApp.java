@@ -49,6 +49,7 @@ public class ParseApp extends MultiDexApplication {
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 
+        //PushService.setDefaultPushCallback(this, MainActivity.class)
         FirebaseApp.initializeApp(this); //TODO should not need this
     }
 }
