@@ -47,7 +47,7 @@ import me.chrislewis.mentorship.models.GoogleDayDecorator;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse{
+public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse, AddEventDialogFragment.OnReceivedData{
 
     SimpleDateFormat todayFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -117,7 +117,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 Bundle addEventBundle = new Bundle();
                 addEventBundle.putString("dateSelected", selectedDate);
                 addEventBundle.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
-                //addEventBundle.putSerializable("calendarObject", (Serializable) mService);
                 addEventFragment.setArguments(addEventBundle);
                 addEventFragment.show(getFragmentManager(), null);
             }
@@ -172,8 +171,8 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             if(selectedDate.equals(dateTimeDate(googleDateString))) {
                 googleTodayEvents.add(googleEvents.get(i));
             }
-            Log.d("CalendarFragment", "googleObjects: " + Integer.toString(googleTodayEvents.size()));
         }
+        Log.d("CalendarFragment", "googleObjects: " + Integer.toString(googleTodayEvents.size()));
         Bundle googleBundle = new Bundle();
         googleBundle.putSerializable("todayGoogleEvents", (Serializable) googleTodayEvents);
         final FragmentManager fragmentManager = getFragmentManager();
@@ -337,5 +336,10 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
+    }
+
+    @Override
+    public void passNewEvent(String description) {
+
     }
 }

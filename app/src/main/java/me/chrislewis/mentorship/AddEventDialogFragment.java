@@ -13,13 +13,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+
 public class AddEventDialogFragment extends DialogFragment {
+
+    public interface OnReceivedData {
+        public void passNewEvent(String description);
+    }
 
     private Button addEventButton;
     private TimePicker timePicker;
     private EditText eventDescription;
     private Boolean isSynced;
     private String todayString;
+    private OnReceivedData mData;
 
     public AddEventDialogFragment() { }
 
@@ -43,6 +49,7 @@ public class AddEventDialogFragment extends DialogFragment {
     @TargetApi(Build.VERSION_CODES.M)
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mData = (OnReceivedData) getActivity();
         timePicker = view.findViewById(R.id.simpleTimePicker);
         eventDescription = view.findViewById(R.id.editDetails);
         addEventButton = view.findViewById(R.id.doneButton);
@@ -59,6 +66,7 @@ public class AddEventDialogFragment extends DialogFragment {
                     Bundle addBundle = new Bundle();
                     addBundle.putString("eventTime", time);
                     addBundle.putString("eventDecription", description);
+                    //sendEvent(description);
                     dismiss();
                 }
                 else {
@@ -66,6 +74,10 @@ public class AddEventDialogFragment extends DialogFragment {
                 }
             }
         });
+    }
+
+    private void sendEvent(String description) {
+        mData.passNewEvent(description);
     }
 
 }

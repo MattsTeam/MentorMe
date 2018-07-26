@@ -105,18 +105,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_messages:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
-
                     return true;
                 case R.id.navigation_calendar:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.flContainer, calendarFragment).commit();
-                    //fragmentTransaction.add(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
-
+                    fragmentTransaction.replace(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
-
                     return true;
             }
             return false;
