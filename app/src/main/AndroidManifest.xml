@@ -17,6 +17,7 @@
     <permission android:name="me.chrislewis.mentorship.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="me.chrislewis.mentorship.permission.C2D_MESSAGE" />
 
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
@@ -94,11 +95,9 @@
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
 
 
         <!--<receiver android:name="me.chrislewis.mentorship.MyCustomReceiver" >-->

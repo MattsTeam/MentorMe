@@ -1,4 +1,4 @@
-package me.chrislewis.mentorship;
+/*package me.chrislewis.mentorship;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -73,3 +73,4 @@ public class MyCustomReceiver extends BroadcastReceiver {
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }
+*/

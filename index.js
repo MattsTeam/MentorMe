@@ -15,14 +15,14 @@ var pushConfig = {};
 
 if (process.env.FCM_API_KEY) {
     pushConfig['android'] = { 
-      apiKey: process.env.FCM_API_KEY || '',
+      apiKey: process.env.FCM_API_KEY || 'AIzaSyAP5GAlho1vjLnBs7xN-T3UtNpkME4Mfaw',
       senderId: process.env.SENDER_ID || '905006370376'
     };
 
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'https://teammatt-fbu-mentorship.herokuapp.com/parse',
+  databaseURI: databaseUri || 'mongodb://heroku_kngxzq0v:uucvg7kabfructu9vq4eii0i0d@ds137651.mlab.com:37651/heroku_kngxzq0v',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'TeamMatt',
   masterKey: process.env.MASTER_KEY || 'TeamMatt',

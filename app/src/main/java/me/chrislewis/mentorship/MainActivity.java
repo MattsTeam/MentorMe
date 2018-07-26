@@ -60,12 +60,14 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private int REQUEST_LOCATION = 10;
 
+    /*
     private BroadcastReceiver mBroadcastReceiver = new MyCustomReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(getApplicationContext(), "onReceive invoked", Toast.LENGTH_LONG).show();
         }
     };
+    */
 
     SharedViewModel model;
 
@@ -183,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+
             return;
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
@@ -193,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "pushing", Toast.LENGTH_LONG).show();
+
                 HashMap<String, String> payload = new HashMap<>();
                 payload.put("customData", "ok");
                 ParseCloud.callFunctionInBackground("pingReply", payload);
@@ -201,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
     @Override
     public void onPause() {
         super.onPause();
@@ -212,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(MyCustomReceiver.intentAction));
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
@@ -316,7 +322,8 @@ public class MainActivity extends AppCompatActivity {
         return file;
     }
 
-    /*
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -336,7 +343,8 @@ public class MainActivity extends AppCompatActivity {
             // permissions this app might request.
         }
     }
-    */
+
+
 
 }
 

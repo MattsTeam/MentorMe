@@ -15,7 +15,7 @@ Parse.Cloud.define('pingReply', function(request, response) {
 
   var payload = {};
   if (customData) {
-    payload.customData = customData;
+    payload.alert = customData;
 
   }
 
