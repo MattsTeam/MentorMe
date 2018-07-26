@@ -17,7 +17,7 @@ import android.widget.TimePicker;
 public class AddEventDialogFragment extends DialogFragment {
 
     public interface OnReceivedData {
-        public void passNewEvent(String description);
+        public void passNewEvent(String date, String time, String description);
     }
 
     private Button addEventButton;
@@ -28,6 +28,10 @@ public class AddEventDialogFragment extends DialogFragment {
     private OnReceivedData mData;
 
     public AddEventDialogFragment() { }
+
+    public void setUp(OnReceivedData data) {
+        mData = data;
+    }
 
     public static AddEventDialogFragment newInstance() {
         AddEventDialogFragment frag = new AddEventDialogFragment();
@@ -49,35 +53,30 @@ public class AddEventDialogFragment extends DialogFragment {
     @TargetApi(Build.VERSION_CODES.M)
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mData = (OnReceivedData) getActivity();
         timePicker = view.findViewById(R.id.simpleTimePicker);
         eventDescription = view.findViewById(R.id.editDetails);
         addEventButton = view.findViewById(R.id.doneButton);
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String time = timePicker.getHour() + ":" + timePicker.getMinute();
+                String hour = Integer.toString(timePicker.getHour());
+                if(hour.length() == 1) {
+                    hour = "0" + hour;
+                }
+                String minute = Integer.toString(timePicker.getMinute());
+                if(minute.length() == 1) {
+                    minute = "0" + minute;
+                }
+                String time = hour + ":" + minute;
                 String description = eventDescription.getText().toString();
-                if(time.length() == 4) {
-                    time = "0" + time;
-                }
-                Log.d("AddEventDialogFragment", "Time: " + time);
-                if(isSynced) {
-                    Bundle addBundle = new Bundle();
-                    addBundle.putString("eventTime", time);
-                    addBundle.putString("eventDecription", description);
-                    //sendEvent(description);
-                    dismiss();
-                }
-                else {
-                    //add to parse calendar
-                }
+                sendEvent(todayString, time, description);
+                dismiss();
             }
         });
     }
 
-    private void sendEvent(String description) {
-        mData.passNewEvent(description);
+    private void sendEvent(String date, String time, String description) {
+        mData.passNewEvent(date, time, description);
     }
 
 }

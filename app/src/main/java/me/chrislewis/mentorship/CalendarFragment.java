@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
@@ -50,6 +51,7 @@ import static android.app.Activity.RESULT_OK;
 public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse, AddEventDialogFragment.OnReceivedData{
 
     SimpleDateFormat todayFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
+    SimpleDateFormat newEventFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     ArrayList<Event> days = new ArrayList<>();
     List<com.google.api.services.calendar.model.Event> googleTodayEvents = new ArrayList<>();
@@ -76,6 +78,10 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY, CalendarScopes.CALENDAR};
 
+    String newEventDate;
+    String newEventTime;
+    String newEventDescription;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calendar, parent, false);
@@ -83,7 +89,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        refreshEvents();
         //get stuff from bundle in addeventdialogfragment
         permissionButton = view.findViewById(R.id.permissionButton);
         addEventButton = view.findViewById(R.id.addEventButton);
@@ -93,12 +98,12 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         calendarView.setDateSelected(calendar.getTime(), true);
         todayText.setText(todayFormat.format(calendar.getTime()));
         calendarView.setOnDateChangedListener(this);
-        calendarView.addDecorators(new CurrentDayDecorator(orange, days));
 
         transport = AndroidHttp.newCompatibleTransport();
         jsonFactory = GsonFactory.getDefaultInstance();
         settings = getActivity().getPreferences(Context.MODE_PRIVATE);
         allowSync = ParseUser.getCurrentUser().getBoolean("allowSync");
+        refreshEvents();
         authorize();
 
         permissionButton.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +119,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             @Override
             public void onClick(View view) {
                 AddEventDialogFragment addEventFragment = AddEventDialogFragment.newInstance();
+                addEventFragment.setUp(CalendarFragment.this);
                 Bundle addEventBundle = new Bundle();
                 addEventBundle.putString("dateSelected", selectedDate);
                 addEventBundle.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
@@ -144,12 +150,14 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     public void refreshEvents() {
         ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
         query.setLimit(15);
         try {
             Log.d("CalendarFragment", "Refreshed from parse");
             days.clear();
             List<Event> events = query.find();
             days.addAll(events);
+            calendarView.addDecorators(new CurrentDayDecorator(orange, days));
 
         } catch (com.parse.ParseException e) {
             Log.d("CalendarFragment", "Failed to refresh from parse");
@@ -296,7 +304,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("CalendarFragment", "OnActivityResult");
         if(requestCode == REQUEST_GOOGLE_PLAY_SERVICES) {
             Log.d("CalendarFragment", "Request Google play services");
             if (resultCode != RESULT_OK) {
@@ -339,7 +346,36 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     }
 
     @Override
-    public void passNewEvent(String description) {
+    public void passNewEvent(String date, String time, String description) {
+        //Add new event to Google Calendar
+        if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
+            try {
+                new CreateEvent(mService, date, time, description).execute();
+                refreshResults();
+            }
+            catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        //Add new event to Parse
+        else {
+            Event newEvent = new Event();
+            newEvent.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
+            try {
+                Date newDate = newEventFormat.parse(date + " " + time);
+                newEvent.setEventDate(newDate);
+                newEvent.setEventDescription(description);
+                newEvent.setTime(time);
+                newEvent.setDateString(date);
+                newEvent.saveInBackground();
+                refreshEvents();
+                Log.d("CalendarFragment", "Saved new event to Parse");
+            }
+            catch (java.text.ParseException e) {
+                Log.d("CalendarFragment", "Failed to save new event to Parse");
+                e.printStackTrace();
+            }
 
+        }
     }
 }

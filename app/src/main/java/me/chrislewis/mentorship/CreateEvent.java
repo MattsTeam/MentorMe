@@ -56,8 +56,8 @@ public class CreateEvent extends AsyncTask<Void, Void, Void> {
                 .setTimeZone("America/Los_Angeles");
         event.setEnd(end);
 
-        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
-        event.setRecurrence(Arrays.asList(recurrence));
+        //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
+        //event.setRecurrence(Arrays.asList(recurrence));
 
         EventAttendee[] attendees = new EventAttendee[]{
                 new EventAttendee().setEmail("test@example.com"),
