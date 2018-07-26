@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -33,6 +35,10 @@ public class DetailsActivity extends AppCompatActivity {
     Button btMessage;
     ImageView ivProfile;
 
+    private RatingBar ratingBar;
+    private TextView tvRatingValue;
+    private Button btnSubmit;
+
     boolean isFavorite;
 
     @Override
@@ -48,6 +54,9 @@ public class DetailsActivity extends AppCompatActivity {
         btFav = findViewById(R.id.btFav);
         btMessage = findViewById(R.id.btMessage);
         ivProfile = findViewById(R.id.ivProfile);
+
+        ratingBar = findViewById(R.id.rb);
+        tvRatingValue = findViewById(R.id.tvRb);
 
         currentUser = new User (ParseUser.getCurrentUser());
 
@@ -65,6 +74,9 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        addListenerOnRatingBar();
+        addListenerOnButton();
 
         btFav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,5 +127,43 @@ public class DetailsActivity extends AppCompatActivity {
                 .load(user.getProfileImage().getUrl())
                 .apply(new RequestOptions().circleCrop())
                 .into(ivProfile);
+    }
+
+    public void addListenerOnRatingBar() {
+
+        ratingBar = (RatingBar) findViewById(R.id.rb);
+        tvRatingValue = (TextView) findViewById(R.id.tvRb);
+
+        //if rating value is changed,
+        //display the current rating value in the result (textview) automatically
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+
+                tvRatingValue.setText(String.valueOf(rating));
+
+            }
+        });
+    }
+
+    public void addListenerOnButton() {
+
+        ratingBar = (RatingBar) findViewById(R.id.rb);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+
+        //if click on me, then display the current rating value.
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(DetailsActivity.this,
+                        String.valueOf(ratingBar.getRating()),
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
     }
 }

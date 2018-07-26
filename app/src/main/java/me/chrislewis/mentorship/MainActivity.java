@@ -60,15 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private int REQUEST_LOCATION = 10;
 
-    /*
-    private BroadcastReceiver mBroadcastReceiver = new MyCustomReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Toast.makeText(getApplicationContext(), "onReceive invoked", Toast.LENGTH_LONG).show();
-        }
-    };
-    */
-
     SharedViewModel model;
 
     GoogleAccountCredential credential;
@@ -92,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationListener locationListener;
 
     public Toolbar toolbar;
+    private User currentUser = new User(ParseUser.getCurrentUser());
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -195,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
                 HashMap<String, String> payload = new HashMap<>();
                 payload.put("customData", "ok");
+
+                payload.put("receiver", currentUser.getObjectId());
                 ParseCloud.callFunctionInBackground("pingReply", payload);
                 Toast.makeText(MainActivity.this, "passed message to cloud", Toast.LENGTH_LONG).show();
             }

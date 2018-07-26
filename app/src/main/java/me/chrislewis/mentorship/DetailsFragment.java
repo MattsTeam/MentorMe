@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +16,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
 
 import static com.parse.Parse.getApplicationContext;
@@ -43,6 +46,13 @@ public class DetailsFragment extends Fragment {
     MessageFragment messageFragment = new MessageFragment();
 
     boolean isFavorite;
+    private RatingBar ratingBar;
+    private TextView tvRatingValue;
+    private Button btnSubmit;
+    float myRating;
+    private TextView tvOverallRating;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +75,7 @@ public class DetailsFragment extends Fragment {
 
         currentUser = new User (ParseUser.getCurrentUser());
 
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         user = model.getUser();
         populateInfo(user);
 
@@ -113,6 +123,11 @@ public class DetailsFragment extends Fragment {
         if (user.getEducation() != null ) {
             tvEdu.setText(String.format("Education: %s", user.getEducation()));
         }
+        String oRating = Double.toString(user.getOverallRating());
+        if (oRating != null) {
+            tvOverallRating.setText("Overall Rating " + oRating);
+        }
+
         List<ParseUser> favUsers = currentUser.getFavorites();
         if (favUsers != null) {
             for (int i = 0; i < favUsers.size(); i++) {
@@ -130,5 +145,42 @@ public class DetailsFragment extends Fragment {
                 .load(user.getProfileImage().getUrl())
                 .apply(new RequestOptions().circleCrop())
                 .into(ivProfile);
+    }
+
+    public void addListenerOnRatingBar() {
+
+        ratingBar = (RatingBar) getActivity().findViewById(R.id.rb);
+        tvRatingValue = (TextView) getActivity().findViewById(R.id.tvRb);
+
+        //if rating value is changed,
+        //display the current rating value in the result (textview) automatically
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
+                tvRatingValue.setText("You rated this mentor " + String.valueOf(rating));
+            }
+        });
+    }
+
+    public void addListenerOnButton() {
+
+        ratingBar = (RatingBar) getActivity().findViewById(R.id.rb);
+        btnSubmit = (Button) getActivity().findViewById(R.id.btnSubmit);
+
+        //if click on me, then display the current rating value.
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(getActivity(), "Submitted rating: " +
+                        String.valueOf(ratingBar.getRating()),
+                        Toast.LENGTH_SHORT).show();
+                btnSubmit.setVisibility(View.INVISIBLE);
+                //btnEditRating.setVisibility(View.VISIBLE);
+            }
+
+        });
+
     }
 }
