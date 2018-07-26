@@ -44,10 +44,16 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         user.fetchInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                viewHolder.tvName.setText(user.getUsername());
-                Glide.with(mContext)
-                        .load(user.getParseFile("profileImage").getUrl())
-                        .into(viewHolder.ivProfile);
+                try {
+                    ParseUser temp = user.fetchIfNeeded();
+                    viewHolder.tvName.setText(user.getUsername());
+                    Glide.with(mContext)
+                            .load(user.getParseFile("profileImage").getUrl())
+                            .into(viewHolder.ivProfile);
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+
             }
         });
 

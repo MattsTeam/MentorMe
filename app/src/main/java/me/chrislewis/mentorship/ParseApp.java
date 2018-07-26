@@ -2,7 +2,6 @@ package me.chrislewis.mentorship;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.google.firebase.FirebaseApp;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseInstallation;
@@ -49,7 +48,8 @@ public class ParseApp extends MultiDexApplication {
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 
-        FirebaseApp.initializeApp(this); //TODO should not need this
+        //PushService.setDefaultPushCallback(this, MainActivity.class)
+        //FirebaseApp.initializeApp(this); //TODO should not need this
     }
 }
 

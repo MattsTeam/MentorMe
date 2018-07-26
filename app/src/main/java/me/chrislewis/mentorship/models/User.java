@@ -178,9 +178,6 @@ public class User{
         user.put(LOCATION_KEY, location);
     }
 
-    public String getDistance() {
-        return user.getString(DISTANCE_KEY);
-    }
 
     public void setDistance(String distance) {
         user.put(DISTANCE_KEY, distance);

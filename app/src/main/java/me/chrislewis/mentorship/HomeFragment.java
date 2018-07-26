@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private List<ParseUser> sameCategoryUsers;
     private Button btnOpenDrawer;
+    MenuItem checkedItem;
 
 
     @Override
@@ -72,11 +73,13 @@ public class HomeFragment extends Fragment {
         }
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "All Categories");
+        menu.getItem(menu.size() - 1 ).setChecked(true);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 menuItem.setChecked(true);
+                checkedItem = menuItem;
                 uncheckOtherItems(menuItem, menu);
                 Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
 
@@ -108,7 +111,14 @@ public class HomeFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getAllUsers();
+                String category = checkedItem.toString();
+                if (category == "All Categories") {
+                    getAllUsers();
+                }
+                else {
+                    filterByCategory(category);
+                }
+
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
