@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -42,6 +44,13 @@ public class DetailsFragment extends Fragment {
     ImageView ivProfile;
 
     boolean isFavorite;
+    private RatingBar ratingBar;
+    private TextView tvRatingValue;
+    private Button btnSubmit;
+    float myRating;
+    private TextView tvOverallRating;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +72,14 @@ public class DetailsFragment extends Fragment {
         ivProfile = view.findViewById(R.id.ivProfile);
 
         currentUser = new User (ParseUser.getCurrentUser());
+
+        ratingBar = getActivity().findViewById(R.id.rb);
+        tvRatingValue = getActivity().findViewById(R.id.tvRb);
+        tvOverallRating = getActivity().findViewById(R.id.tvRating);
+
+        addListenerOnRatingBar();
+        addListenerOnButton();
+
 
         SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         user = model.getUser();
@@ -121,6 +138,11 @@ public class DetailsFragment extends Fragment {
         if (user.getEducation() != null ) {
             tvEdu.setText(String.format("Education: %s", user.getEducation()));
         }
+        String oRating = Double.toString(user.getOverallRating());
+        if (oRating != null) {
+            tvOverallRating.setText("Overall Rating " + oRating);
+        }
+
         List<ParseUser> favUsers = currentUser.getFavorites();
         if (favUsers != null) {
             for (int i = 0; i < favUsers.size(); i++) {
@@ -138,5 +160,42 @@ public class DetailsFragment extends Fragment {
                 .load(user.getProfileImage().getUrl())
                 .apply(new RequestOptions().circleCrop())
                 .into(ivProfile);
+    }
+
+    public void addListenerOnRatingBar() {
+
+        ratingBar = (RatingBar) getActivity().findViewById(R.id.rb);
+        tvRatingValue = (TextView) getActivity().findViewById(R.id.tvRb);
+
+        //if rating value is changed,
+        //display the current rating value in the result (textview) automatically
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
+                tvRatingValue.setText("You rated this mentor " + String.valueOf(rating));
+            }
+        });
+    }
+
+    public void addListenerOnButton() {
+
+        ratingBar = (RatingBar) getActivity().findViewById(R.id.rb);
+        btnSubmit = (Button) getActivity().findViewById(R.id.btnSubmit);
+
+        //if click on me, then display the current rating value.
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(getActivity(), "Submitted rating: " +
+                        String.valueOf(ratingBar.getRating()),
+                        Toast.LENGTH_SHORT).show();
+                btnSubmit.setVisibility(View.INVISIBLE);
+                //btnEditRating.setVisibility(View.VISIBLE);
+            }
+
+        });
+
     }
 }

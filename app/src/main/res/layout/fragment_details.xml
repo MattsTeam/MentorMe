@@ -18,28 +18,28 @@
     <ScrollView
         android:id="@+id/svInfo"
         android:layout_width="match_parent"
-        android:layout_height="302dp"
-        android:layout_below="@+id/ivProfile"
+        android:layout_height="340dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="TextView" />
+                android:text="Name" />
 
             <TextView
                 android:id="@+id/tvSkills"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_below="@id/tvName"
                 android:text="@string/skills_unlisted" />
 
             <TextView
@@ -47,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_below="@id/tvSkills"
                 android:text="@string/job_unlisted" />
 
             <TextView
@@ -54,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_below="@id/tvJob"
                 android:text="@string/summary_unlisted" />
 
             <TextView
@@ -61,24 +63,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_below="@id/tvSummary"
                 android:text="@string/education_unlisted" />
-        </LinearLayout>
+
+            <RatingBar
+                android:id="@+id/rb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvEdu"
+                android:numStars="5"
+                android:stepSize="1.0" />
+
+            <TextView
+                android:id="@+id/tvRb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rb"
+                android:layout_toEndOf="@id/tvRating"
+                android:layout_marginLeft="5dp"
+                android:text="Your Rating"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rb"
+                android:text="Overall Rating"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvRating"
+                android:text="Submit Rating" />
+        </RelativeLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/btMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="75dp"
         android:text="@string/title_messages" />
 
     <ImageButton
         android:id="@+id/btFav"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/btFav"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="11dp"
         android:background="@drawable/favorite_save" />
+
+
 
 </RelativeLayout>

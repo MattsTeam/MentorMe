@@ -31,6 +31,7 @@ public class User{
     private final static String CATEGORIES_KEY = "categories";
     private final static String PASSWORD_KEY = "password";
     private final static String EMAIL_KEY = "email";
+    private final static String OVERALL_RATING_KEY = "overallRating";
 
     public String name;
     public String username;
@@ -151,6 +152,9 @@ public class User{
     public void setRank(double rank) {
         user.put(RANK_KEY, rank);
     }
+
+    public double getOverallRating() {return user.getDouble(OVERALL_RATING_KEY);}
+    public void setRating(double rating) { user.put(OVERALL_RATING_KEY, rating); }
 
     public List<ParseUser> getFavorites() {
         return (List<ParseUser>) user.get(FAVORITE_KEY);
