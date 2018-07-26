@@ -5,25 +5,24 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
 
 import static com.parse.Parse.getApplicationContext;
@@ -72,10 +71,14 @@ public class DetailsFragment extends Fragment {
         btFav = view.findViewById(R.id.btFav);
         btMessage = view.findViewById(R.id.btMessage);
         ivProfile = view.findViewById(R.id.ivProfile);
+        tvOverallRating = view.findViewById(R.id.tvRating);
+
+        addListenerOnRatingBar();
+        addListenerOnButton();
 
         currentUser = new User (ParseUser.getCurrentUser());
 
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        final SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         user = model.getUser();
         populateInfo(user);
 

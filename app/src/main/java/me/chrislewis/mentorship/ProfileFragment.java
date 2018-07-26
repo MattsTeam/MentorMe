@@ -1,5 +1,6 @@
 package me.chrislewis.mentorship;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,6 +52,8 @@ public class ProfileFragment extends Fragment {
     CalendarFragment calendarFragment;
 
     User user;
+
+    private SharedViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,7 +150,9 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getActivity(), "Updated Profile", Toast.LENGTH_SHORT).show();
             }
         });
-        adapter = new FavoritesAdapter(view.getContext(), user.getFavorites());
+
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        adapter = new FavoritesAdapter(user.getFavorites(), model);
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));

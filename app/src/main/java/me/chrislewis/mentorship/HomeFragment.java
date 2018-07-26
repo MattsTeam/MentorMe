@@ -236,9 +236,6 @@ public class HomeFragment extends Fragment {
         }
         pb.setVisibility(ProgressBar.INVISIBLE);
         swipeContainer.setRefreshing(false);
-
-
-
     }
 
     public void uncheckOtherItems(MenuItem item, Menu menu) {
