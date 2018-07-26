@@ -2,6 +2,7 @@ package me.chrislewis.mentorship;
 
 import android.accounts.AccountManager;
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -78,6 +79,8 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY, CalendarScopes.CALENDAR};
 
+    SharedViewModel model;
+
     String newEventDate;
     String newEventTime;
     String newEventDescription;
@@ -89,6 +92,8 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+
         //get stuff from bundle in addeventdialogfragment
         permissionButton = view.findViewById(R.id.permissionButton);
         addEventButton = view.findViewById(R.id.addEventButton);
