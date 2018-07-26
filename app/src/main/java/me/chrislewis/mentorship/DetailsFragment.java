@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +16,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
 
 import static com.parse.Parse.getApplicationContext;
@@ -40,6 +37,10 @@ public class DetailsFragment extends Fragment {
     ImageButton btFav;
     Button btMessage;
     ImageView ivProfile;
+
+    SharedViewModel model;
+
+    MessageFragment messageFragment = new MessageFragment();
 
     boolean isFavorite;
 
@@ -64,7 +65,7 @@ public class DetailsFragment extends Fragment {
 
         currentUser = new User (ParseUser.getCurrentUser());
 
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         user = model.getUser();
         populateInfo(user);
 
@@ -88,21 +89,12 @@ public class DetailsFragment extends Fragment {
         btMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Chat chat = new Chat();
                 ArrayList<User> users = new ArrayList<>();
                 users.add(currentUser);
                 users.add(user);
-                chat.setUsers(users);
-                chat.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            Log.d("Details", "Working");
-                        } else {
-                            Log.d("Details", "Failure " + e);
-                        }
-                    }
-                });
+                model.setRecipients(users);
+                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
             }
         });
     }

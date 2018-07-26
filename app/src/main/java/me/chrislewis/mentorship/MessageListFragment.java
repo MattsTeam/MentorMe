@@ -62,6 +62,7 @@ public class MessageListFragment extends Fragment {
                 } else {
                     Log.e("message", "Error Loading Messages " + e);
                 }
+                model.getCurrentUser().setChats(objects);
             }
         });
     }

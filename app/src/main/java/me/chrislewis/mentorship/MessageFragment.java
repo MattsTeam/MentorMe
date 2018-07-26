@@ -18,18 +18,19 @@ import android.widget.EditText;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.User;
 
 public class MessageFragment extends Fragment {
 
     boolean firstLoad = true;
+    boolean firstMessage = true;
 
     RecyclerView rvMessages;
     ArrayList<Message> mMessages;
@@ -61,11 +62,13 @@ public class MessageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        user = new User(ParseUser.getCurrentUser());
+
 
         SharedViewModel model = ViewModelProviders.of((FragmentActivity) getActivity()).get(SharedViewModel.class);
-        recipients.add(user.getObjectId());
-        recipients.add(model.getUserId());
+        recipients = model.getRecipientIds();
+        user = model.getCurrentUser();
+
+        firstMessage = user.firstChat(recipients);
 
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
@@ -94,11 +97,16 @@ public class MessageFragment extends Fragment {
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("Messages", "Working");
+                                if(firstMessage) {
+                                    Chat chat = new Chat(recipients);
+                                    chat.saveInBackground();
+                                }
                             } else {
-                                Log.d("Messages", "Fail");
+                                Log.d("Messages", "Fail "+ e);
                             }
                         }
                     });
+
                     etMessage.setText(null);
                 }
             }

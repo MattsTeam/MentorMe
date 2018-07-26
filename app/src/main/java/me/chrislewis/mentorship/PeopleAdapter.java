@@ -51,26 +51,29 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final Chat chat = chats.get(i);
         ArrayList<String> users = chat.getUsers();
+        final ArrayList<User> recipients = new ArrayList<>();
         for(int j = 0; j < users.size(); j++){
             String holder = users.get(j);
-            if (user.getObjectId().equals(holder) == false) {
-                User.Query query = new User.Query();
-                query.getUser(holder);
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        User filler = new User(objects.get(0));
-                        chat.setRecipient(filler);
+
+            User.Query query = new User.Query();
+            query.getUser(holder);
+            query.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> objects, ParseException e) {
+                    User filler = new User(objects.get(0));
+                    if (user.getObjectId().equals(filler.getObjectId()) == false) {
                         viewHolder.tvName.setText(filler.getName());
                         Glide.with(context)
                                 .load(filler.getProfileImage().getUrl())
                                 .into(viewHolder.ivProfileImage);
                     }
-                });
-                break;
-            }
+                    recipients.add(filler);
+                }
+            });
 
         }
+        chat.setRecipients(recipients);
+        chat.setUsers(recipients);
 
     }
 
@@ -100,7 +103,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Chat chat = chats.get(position);
-                model.setUser(chat.getRecipient());
+                model.setRecipients(chat.getRecipients());
 
                 FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();

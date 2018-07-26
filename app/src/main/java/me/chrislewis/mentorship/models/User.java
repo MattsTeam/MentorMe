@@ -9,6 +9,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class User{
     public String relativeDistance;
 
     private ParseUser user;
+    public List<Chat> chats;
 
     public User(ParseUser user){
         this.user = user;
@@ -85,8 +87,6 @@ public class User{
     public void setEmail(String email) {
         user.put(EMAIL_KEY, email);
     }
-
-
 
     public String getJob() {
         return user.getString(JOB_KEY);
@@ -178,7 +178,6 @@ public class User{
         user.put(LOCATION_KEY, location);
     }
 
-
     public void setDistance(String distance) {
         user.put(DISTANCE_KEY, distance);
     }
@@ -189,6 +188,23 @@ public class User{
 
     public void setRelDistance(Double distance) {
         user.put(REL_DISTANCE_KEY, distance);
+    }
+
+    public boolean firstChat(ArrayList<String> users) {
+        for(Chat chat : chats) {
+            if(chat.getUsers().equals(users)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
     }
 
     public void saveInBackground() {
