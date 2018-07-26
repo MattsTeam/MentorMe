@@ -85,6 +85,7 @@ public class DetailsFragment extends Fragment {
         btFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "You favorited this mentor", Toast.LENGTH_SHORT).show();
                 if (!isFavorite) {
                     currentUser.addFavorite(user.getParseUser());
                     currentUser.saveInBackground();
@@ -155,8 +156,6 @@ public class DetailsFragment extends Fragment {
         ratingBar = (RatingBar) getActivity().findViewById(R.id.rb);
         tvRatingValue = (TextView) getActivity().findViewById(R.id.tvRb);
 
-        //if rating value is changed,
-        //display the current rating value in the result (textview) automatically
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
@@ -170,7 +169,6 @@ public class DetailsFragment extends Fragment {
         ratingBar = (RatingBar) getActivity().findViewById(R.id.rb);
         btnSubmit = (Button) getActivity().findViewById(R.id.btnSubmit);
 
-        //if click on me, then display the current rating value.
         btnSubmit.setOnClickListener(new View.OnClickListener() {
 
             @Override
