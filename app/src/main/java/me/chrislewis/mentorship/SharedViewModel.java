@@ -4,10 +4,14 @@ import android.arch.lifecycle.ViewModel;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.services.calendar.Calendar;
+
 import java.util.ArrayList;
 
 import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
+
 
 public class SharedViewModel extends ViewModel{
 
@@ -17,6 +21,24 @@ public class SharedViewModel extends ViewModel{
     Chat currentChat;
     FragmentTransaction fragmentTransaction;
     FragmentManager fragmentManager;
+    GoogleAccountCredential credential;
+    com.google.api.services.calendar.Calendar mService;
+
+    public Calendar getService() {
+        return mService;
+    }
+
+    public void setService(Calendar mService) {
+        this.mService = mService;
+    }
+
+    public GoogleAccountCredential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(GoogleAccountCredential credential) {
+        this.credential = credential;
+    }
 
     public ArrayList<User> getRecipients() {
         return recipients;
