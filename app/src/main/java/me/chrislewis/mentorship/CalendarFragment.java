@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -406,11 +407,12 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 newEvent.setTime(time);
                 newEvent.setDateString(date);
                 newEvent.saveInBackground();
-                Toast.makeText(getActivity(), "pushing new event", Toast.LENGTH_LONG).show();
                 HashMap<String, String> payload = new HashMap<>();
-                payload.put("customData", "new event");
-                ParseCloud.callFunctionInBackground("eventNotif", payload);
-                Toast.makeText(getActivity(), "passed message to cloud", Toast.LENGTH_LONG).show();
+                payload.put("customData", "New Event: " + description);
+                ParseCloud.callFunctionInBackground("pingReply", payload);
+                Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
+                toast.show();
                 refreshEvents();
                 Log.d("CalendarFragment", "Saved new event to Parse");
             }
