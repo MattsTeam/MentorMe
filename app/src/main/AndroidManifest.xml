@@ -65,7 +65,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".DetailsActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

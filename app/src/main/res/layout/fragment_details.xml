@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsActivity">
+    tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/ivProfile"
@@ -38,37 +38,37 @@
                 android:id="@+id/tvSkills"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_below="@id/tvName"
+                android:layout_marginLeft="10dp"
                 android:text="@string/skills_unlisted" />
 
             <TextView
                 android:id="@+id/tvJob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_below="@id/tvSkills"
+                android:layout_marginLeft="10dp"
                 android:text="@string/job_unlisted" />
 
             <TextView
                 android:id="@+id/tvSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_below="@id/tvJob"
+                android:layout_marginLeft="10dp"
                 android:text="@string/summary_unlisted" />
 
             <TextView
                 android:id="@+id/tvEdu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_below="@id/tvSummary"
+                android:layout_marginLeft="10dp"
                 android:text="@string/education_unlisted" />
 
             <RatingBar
                 android:id="@+id/rb"
-                android:layout_width="wrap_content"
+                android:layout_width="229dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvEdu"
                 android:numStars="5"
@@ -79,8 +79,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rb"
-                android:layout_toEndOf="@id/tvRating"
                 android:layout_marginLeft="5dp"
+                android:layout_toEndOf="@id/tvRating"
                 android:text="Your Rating"
                 android:textStyle="bold" />
 
@@ -98,6 +98,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvRating"
                 android:text="Submit Rating" />
+
+            <Button
+                android:id="@+id/btReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/rb"
+                android:layout_marginLeft="10dp"
+                android:text="See Reviews" />
         </RelativeLayout>
     </ScrollView>
 

@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.Chat;
@@ -61,8 +64,6 @@ public class MessageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
 
         SharedViewModel model = ViewModelProviders.of((FragmentActivity) getActivity()).get(SharedViewModel.class);
         recipients = model.getRecipientIds();
@@ -106,6 +107,11 @@ public class MessageFragment extends Fragment {
                             }
                         }
                     });
+
+                    HashMap<String, String> payload = new HashMap<>();
+                    payload.put("customData", "New message: " + data);
+                    ParseCloud.callFunctionInBackground("pingReply", payload);
+                    Toast.makeText(getActivity(), "A notification was sent to your mentor", Toast.LENGTH_LONG).show();
 
                     etMessage.setText(null);
                 }

@@ -3,10 +3,8 @@ package me.chrislewis.mentorship;
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,8 +30,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -43,20 +38,17 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.parse.ParseCloud;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 import me.chrislewis.mentorship.models.User;
 
 import static me.chrislewis.mentorship.CalendarFragment.REQUEST_ACCOUNT_PICKER;
 
 public class MainActivity extends AppCompatActivity {
-    private Button push;
     private ActionBarDrawerToggle mDrawerToggle;
     private int REQUEST_LOCATION = 10;
 
@@ -177,22 +169,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
-
-        push = findViewById(R.id.btnPush);
-
-        push.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "pushing", Toast.LENGTH_LONG).show();
-
-                HashMap<String, String> payload = new HashMap<>();
-                payload.put("customData", "ok");
-
-                payload.put("receiver", currentUser.getObjectId());
-                ParseCloud.callFunctionInBackground("pingReply", payload);
-                Toast.makeText(MainActivity.this, "passed message to cloud", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     @Override

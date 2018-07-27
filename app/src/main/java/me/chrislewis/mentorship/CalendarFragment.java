@@ -13,11 +13,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -28,6 +32,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -41,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
@@ -66,13 +72,12 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     ImageButton addEventButton;
     String selectedDate = "";
 
-    ImageButton permissionButton;
+    Switch permissionToggle;
     com.google.api.services.calendar.Calendar mService;
     GoogleAccountCredential credential;
     HttpTransport transport;
     JsonFactory jsonFactory;
     SharedPreferences settings;
-    Boolean allowSync;
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
@@ -81,10 +86,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     SharedViewModel model;
 
-    String newEventDate;
-    String newEventTime;
-    String newEventDescription;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calendar, parent, false);
@@ -92,10 +93,18 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        permissionToggle = view.findViewById(R.id.syncSwitch);
+        if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
+            permissionToggle.setOnCheckedChangeListener (null);
+            permissionToggle.setChecked(true);
+        }
+        else {
+            permissionToggle.setOnCheckedChangeListener (null);
+            permissionToggle.setChecked(false);
+        }
+
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
-        //get stuff from bundle in addeventdialogfragment
-        permissionButton = view.findViewById(R.id.permissionButton);
         addEventButton = view.findViewById(R.id.addEventButton);
         calendarView = view.findViewById(R.id.calendarView);
         todayText = view.findViewById(R.id.tvCurrentDay);
@@ -107,16 +116,40 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         transport = AndroidHttp.newCompatibleTransport();
         jsonFactory = GsonFactory.getDefaultInstance();
         settings = getActivity().getPreferences(Context.MODE_PRIVATE);
-        allowSync = ParseUser.getCurrentUser().getBoolean("allowSync");
         refreshEvents();
-        authorize();
-
-        permissionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.getCurrentUser().put("allowSync", true);
-                ParseUser.getCurrentUser().saveInBackground();
+        if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
+            if(model.getCredential() == null) {
                 authorize();
+                if(isGooglePlayServicesAvailable()) {
+                    chooseAccount();
+                }
+            }
+            else {
+                refreshResults();
+            }
+        }
+
+        permissionToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked) {
+                    Log.d("CalendarFragment", "Allowed sync");
+                    ParseUser.getCurrentUser().put("allowSync", true);
+                    ParseUser.getCurrentUser().saveInBackground();
+                    if(model.getCredential() == null) {
+                        authorize();
+                    }
+                    if(isGooglePlayServicesAvailable()) {
+                        chooseAccount();
+                    }
+                }
+                else {
+                    Log.d("CalendarFragment", "Disallowed sync");
+                    ParseUser.getCurrentUser().put("allowSync", false);
+                    ParseUser.getCurrentUser().saveInBackground();
+                    calendarView.removeDecorators();
+                    refreshEvents();
+                }
             }
         });
 
@@ -134,35 +167,30 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         });
     }
 
-
     public void authorize() {
-        if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
-            Log.d("CalendarFragment", "Setting up oAuth");
-            credential = GoogleAccountCredential.usingOAuth2(
-                    getActivity(), Arrays.asList(SCOPES))
-                    .setBackOff(new ExponentialBackOff())
-                    .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+        Log.d("CalendarFragment", "Setting up oAuth for first time syncer");
+        credential = GoogleAccountCredential.usingOAuth2(
+                getActivity(), Arrays.asList(SCOPES))
+                .setBackOff(new ExponentialBackOff())
+                .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
 
-            mService = new com.google.api.services.calendar.Calendar.Builder(
-                    transport, jsonFactory, credential)
-                    .setApplicationName("Google Calendar API Android Quickstart")
-                    .build();
-            if(isGooglePlayServicesAvailable()) {
-                refreshResults();
-            }
-        }
+        mService = new com.google.api.services.calendar.Calendar.Builder(
+                transport, jsonFactory, credential)
+                .setApplicationName("Google Calendar API Android Quickstart")
+                .build();
+        model.setCredential(credential);
+        model.setService(mService);
     }
 
     public void refreshEvents() {
         ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
         query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
-        query.setLimit(15);
         try {
-            Log.d("CalendarFragment", "Refreshed from parse");
             days.clear();
             List<Event> events = query.find();
             days.addAll(events);
             calendarView.addDecorators(new CurrentDayDecorator(orange, days));
+            Log.d("CalendarFragment", "Refreshed from parse");
 
         } catch (com.parse.ParseException e) {
             Log.d("CalendarFragment", "Failed to refresh from parse");
@@ -194,6 +222,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         final List<Event> todayEvents = new ArrayList<>();
         ParseQuery<Event> selectedDayQuery = new Event.Query();
         selectedDayQuery.whereEqualTo("dateString", selectedDate);
+        selectedDayQuery.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
         todayEvents.clear();
         try {
             todayEvents.addAll(selectedDayQuery.find());
@@ -222,10 +251,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         return 0xFF000000 | Red | Green | Blue;
     }
 
-    public void addCalendarEvent() {
-        //new CreateEvent(mService).execute();
-    }
-
     /*@Override
     public void onResume() {
         super.onResume();
@@ -241,11 +266,12 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     //Attempts to get data from Google Calendar API
     private void refreshResults() {
         Log.d("CalendarFragment", "Refreshing results");
-        if (credential.getSelectedAccountName() == null) {
+        if(model.getCredential().getSelectedAccountName() == null) {
             chooseAccount();
         }
         else {
             if (isDeviceOnline()) {
+                googleEvents.clear();
                 Log.d("CalendarFragment", "Device is online.");
                 new ApiAsyncTask(getActivity(), new ApiAsyncTask.AsyncResponse() {
                     @Override
@@ -266,7 +292,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     private void chooseAccount() {
         Log.d("CalendarFragment", "Choosing account.");
         startActivityForResult(
-                credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+                model.getCredential().newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
     }
 
     private boolean isDeviceOnline() {
@@ -323,10 +349,11 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 Log.d("CalendarFragment", "Got account name");
                 String accountName =
                         data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-                refreshResults();
+                 refreshResults();
                 if (accountName != null) {
                     Log.d("CalendarFragment", "Selected account name");
-                    credential.setSelectedAccountName(accountName);
+                    //credential.setSelectedAccountName(accountName);
+                    model.getCredential().setSelectedAccountName(accountName);
                     SharedPreferences settings =
                             getActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = settings.edit();
@@ -334,6 +361,12 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                     editor.commit();
                     refreshResults();
                 }
+            }
+            else {
+                ParseUser.getCurrentUser().put("allowSync", false);
+                ParseUser.getCurrentUser().saveInBackground();
+                permissionToggle.setChecked(false);
+                Log.d("CalendarFragment", "Pressed cancel and did not allow syncing.");
             }
         }
 
@@ -367,12 +400,19 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             Event newEvent = new Event();
             newEvent.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
             try {
+                Log.d("CalendarFragment", "date: " + date + " time: " + time);
                 Date newDate = newEventFormat.parse(date + " " + time);
                 newEvent.setEventDate(newDate);
                 newEvent.setEventDescription(description);
                 newEvent.setTime(time);
                 newEvent.setDateString(date);
                 newEvent.saveInBackground();
+                HashMap<String, String> payload = new HashMap<>();
+                payload.put("customData", "New Event: " + description);
+                ParseCloud.callFunctionInBackground("eventNotif", payload);
+                Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
+                toast.show();
                 refreshEvents();
                 Log.d("CalendarFragment", "Saved new event to Parse");
             }

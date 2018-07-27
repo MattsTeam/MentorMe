@@ -52,10 +52,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             viewHolder.imageOther.setVisibility(View.GONE);
             viewHolder.body.setGravity(Gravity.END);
 
-            Glide.with(mContext)
-                    .load(mUser.getProfileImage().getUrl())
-                    .apply(new RequestOptions().circleCrop())
-                    .into(viewHolder.imageMe);
+            if (mUser.getProfileImage() != null ) {
+                Glide.with(mContext)
+                        .load(mUser.getProfileImage().getUrl())
+                        .apply(new RequestOptions().circleCrop())
+                        .into(viewHolder.imageMe);
+            }
         }
         else {
             viewHolder.imageMe.setVisibility(View.GONE);

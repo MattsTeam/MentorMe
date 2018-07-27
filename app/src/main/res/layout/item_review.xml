@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivReviewWriter"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@android:color/background_dark"
+        />
+
+    <RatingBar
+        android:id="@+id/rbReview"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/ivReviewWriter" />
+
+    <TextView
+        android:id="@+id/tvReviewBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/rbReview"
+        android:layout_toEndOf="@id/ivReviewWriter"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvReviewWriter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivReviewWriter"
+        android:text="TextView" />
+</RelativeLayout>

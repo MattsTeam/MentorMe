@@ -26,6 +26,7 @@ public class User{
     private final static String ORGANIZATION_KEY = "organization";
     private final static String RANK_KEY = "rank";
     private final static String FAVORITE_KEY = "favorites";
+    private final static String REVIEWER_KEY = "reviewers";
     private final static String LOCATION_KEY = "location";
     private final static String DISTANCE_KEY = "distance";
     private final static String REL_DISTANCE_KEY = "relativeDistance";
@@ -167,6 +168,19 @@ public class User{
     public void removeFavorite(ParseUser user) {
         this.user.removeAll(FAVORITE_KEY, Collections.singleton(user));
     }
+
+    public List<ParseUser> getReviewers() {
+        return (List<ParseUser>) user.get(REVIEWER_KEY);
+    }
+
+    public void addReviewer(ParseUser user) {
+        this.user.addUnique(REVIEWER_KEY, user);
+    }
+
+    public void removeReviewer(ParseUser user) {
+        this.user.removeAll(REVIEWER_KEY, Collections.singleton(user));
+    }
+
 
     public List<String> getCategories() {
         return (List<String>) user.get(CATEGORIES_KEY);
