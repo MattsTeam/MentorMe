@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -30,6 +31,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
@@ -403,6 +406,11 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 newEvent.setTime(time);
                 newEvent.setDateString(date);
                 newEvent.saveInBackground();
+                Toast.makeText(getActivity(), "pushing new event", Toast.LENGTH_LONG).show();
+                HashMap<String, String> payload = new HashMap<>();
+                payload.put("customData", "new event");
+                ParseCloud.callFunctionInBackground("eventNotif", payload);
+                Toast.makeText(getActivity(), "passed message to cloud", Toast.LENGTH_LONG).show();
                 refreshEvents();
                 Log.d("CalendarFragment", "Saved new event to Parse");
             }
