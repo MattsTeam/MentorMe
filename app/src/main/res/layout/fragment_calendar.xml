@@ -36,15 +36,15 @@
         android:textStyle="bold"
         android:text="TextView" />
 
-    <ImageButton
-        android:id="@+id/permissionButton"
-        android:layout_width="53dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:background="@null"
-        app:srcCompat="@drawable/ic_sync_mail" />
+    <!--<ImageButton-->
+        <!--android:id="@+id/permissionButton"-->
+        <!--android:layout_width="53dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginStart="0dp"-->
+        <!--android:background="@null"-->
+        <!--app:srcCompat="@drawable/ic_sync_mail" />-->
 
     <ImageButton
         android:id="@+id/addEventButton"
@@ -54,5 +54,16 @@
         android:layout_alignTop="@+id/calendarHeader"
         android:background="@null"
         app:srcCompat="@drawable/ic_add_event" />
+
+    <Switch
+        android:id="@+id/syncSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/calendarHeader"
+        android:layout_marginStart="12dp"
+        android:switchPadding="8dp"
+        android:text="Sync"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </RelativeLayout>

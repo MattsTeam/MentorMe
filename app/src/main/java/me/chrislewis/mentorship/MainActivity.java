@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "pushing", Toast.LENGTH_LONG).show();
-
                 HashMap<String, String> payload = new HashMap<>();
                 payload.put("customData", "ok");
 
