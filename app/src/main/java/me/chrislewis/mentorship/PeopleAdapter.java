@@ -63,9 +63,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                     User filler = new User(objects.get(0));
                     if (user.getObjectId().equals(filler.getObjectId()) == false) {
                         viewHolder.tvName.setText(filler.getName());
+                        viewHolder.tvName.setVisibility(View.VISIBLE);
                         Glide.with(context)
                                 .load(filler.getProfileImage().getUrl())
                                 .into(viewHolder.ivProfileImage);
+                        viewHolder.ivProfileImage.setVisibility(View.VISIBLE);
                     }
                     recipients.add(filler);
                 }

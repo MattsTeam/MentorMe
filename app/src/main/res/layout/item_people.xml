@@ -11,6 +11,7 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:visibility="invisible"
         app:srcCompat="@android:color/black" />
 
     <TextView
@@ -19,5 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="TextView" />
+        android:text="TextView"
+        android:visibility="invisible" />
 </RelativeLayout>
