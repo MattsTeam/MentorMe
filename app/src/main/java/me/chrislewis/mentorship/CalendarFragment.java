@@ -409,7 +409,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 newEvent.saveInBackground();
                 HashMap<String, String> payload = new HashMap<>();
                 payload.put("customData", "New Event: " + description);
-                ParseCloud.callFunctionInBackground("pingReply", payload);
+                ParseCloud.callFunctionInBackground("eventNotif", payload);
                 Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
                 toast.show();
