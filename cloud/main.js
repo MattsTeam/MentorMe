@@ -66,7 +66,7 @@ Parse.Cloud.define('eventNotif', function(request, response) {
 
   Parse.Push.send({
   where: query,
-  //push_time: "2018-07-26T21:40:00"
+  push_time: "2018-07-26T21:40:00",
   // Parse.Push requires a dictionary, not a string.
   data: payload,
   }, {
