@@ -2,14 +2,13 @@ package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.parse.ParseFile;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-
+import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.User;
+
+import static android.app.Activity.RESULT_OK;
+import static me.chrislewis.mentorship.MainActivity.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 
 public class ProfileFragment extends Fragment {
 
@@ -39,14 +41,10 @@ public class ProfileFragment extends Fragment {
     EditText etSkills;
     EditText etSummary;
     EditText etEdu;
-    ParseFile parseFile;
-
 
     Button bLogOut;
     Button bUploadProfileImage;
     Button bTakePhoto;
-    File photoFile;
-    Bitmap photoBitmap;
     Button bEdit;
     Button bSave;
     CalendarFragment calendarFragment;
@@ -55,10 +53,11 @@ public class ProfileFragment extends Fragment {
 
     private SharedViewModel model;
 
+    private Camera camera;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -77,12 +76,13 @@ public class ProfileFragment extends Fragment {
         ivProfile = view.findViewById(R.id.ivProfile);
         calendarFragment = (CalendarFragment) getActivity().getSupportFragmentManager().findFragmentByTag("CalendarFragment");
 
-        user = new User(ParseUser.getCurrentUser());
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        user = model.getCurrentUser();
+        camera = new Camera(getContext(), this, model);
+
         populateInfo();
 
-
         bEdit = view.findViewById(R.id.bEdit);
-
         bEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +94,6 @@ public class ProfileFragment extends Fragment {
                 etEdu.setEnabled(true);
             }
         });
-
 
         bLogOut = view.findViewById(R.id.bLogOut);
         bLogOut.setOnClickListener(new View.OnClickListener() {
@@ -112,8 +111,7 @@ public class ProfileFragment extends Fragment {
         bTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.launchCamera();
+                camera.launchCamera();
             }
         });
 
@@ -121,9 +119,7 @@ public class ProfileFragment extends Fragment {
         bUploadProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.launchPhotos();
-
+                camera.launchPhotos();
             }
         });
 
@@ -137,44 +133,33 @@ public class ProfileFragment extends Fragment {
                 String summary = etSummary.getText().toString();
                 String edu = etEdu.getText().toString();
 
-                User mUser = new User(ParseUser.getCurrentUser());
-                mUser.setName(name);
-                mUser.setSkills(skills);
-                mUser.setJob(job);
-                mUser.setSummary(summary);
-                mUser.setEducation(edu);
-                if (parseFile != null) {
-                    mUser.setProfileImage(parseFile);
+                user.setName(name);
+                user.setSkills(skills);
+                user.setJob(job);
+                user.setSummary(summary);
+                user.setEducation(edu);
+                if (camera.getPhotoFile() != null) {
+                    user.setProfileImage(camera.getPhotoFile());
                 }
-                mUser.saveInBackground();
+                user.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Log.d("Profile", "Working");
+                        } else {
+                            Log.d("Profile", "Fail " + e);
+                        }
+                    }
+                });
                 Toast.makeText(getActivity(), "Updated Profile", Toast.LENGTH_SHORT).show();
             }
         });
 
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         adapter = new FavoritesAdapter(user.getFavorites(), model);
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvFavorites.setAdapter(adapter);
-    }
-
-    public void processImageString(String uri) {
-        Bitmap takenImage = BitmapFactory.decodeFile(uri);
-        photoFile = new File(uri);
-        Glide.with(this).load(takenImage).into(ivProfile);
-        parseFile = new ParseFile(photoFile);
-    }
-
-    public void processImageBitmap(Bitmap takenImage) {
-        photoBitmap = takenImage;
-        Glide.with(this).load(takenImage).into(ivProfile);
-
-        if (photoBitmap != null) {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            photoBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-            parseFile = new ParseFile(bytes.toByteArray());
-        }
     }
 
     private void populateInfo() {
@@ -191,7 +176,6 @@ public class ProfileFragment extends Fragment {
         if (user.getEducation() != null ) {
             etEdu.setText(user.getEducation());
         }
-
         if (user.getProfileImage() != null) {
             Glide.with(getContext())
                     .load(user.getProfileImage().getUrl())
@@ -200,6 +184,30 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Glide.with(getContext())
+                        .load(camera.getPhoto())
+                        .apply(new RequestOptions().circleCrop())
+                        .into(ivProfile);
+            } else {
+                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == PICK_IMAGE_REQUEST) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                if (resultCode == RESULT_OK) {
+                    Glide.with(getContext())
+                            .load(camera.getChosenPhoto(data))
+                            .apply(new RequestOptions().circleCrop())
+                            .into(ivProfile);
+                } else {
+                    Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                }
 
+            }
+        }
 
+    }
 }
