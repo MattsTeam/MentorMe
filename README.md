@@ -57,7 +57,7 @@ Application to match mentors and mentees based on shared interests, goals, avail
 
 # Week 1 GIF
 Here's a walkthrough of implemented user stories for week 1:
-<img src='week1GIF.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='week1GIF.gif' img align="left" title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 # Week 2 GIF
 Here's a walkthrough of implemented user stories for week 2:
