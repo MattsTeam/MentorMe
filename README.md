@@ -56,10 +56,16 @@ Application to match mentors and mentees based on shared interests, goals, avail
 * Calendar: meetings
 
 # Week 1 GIF
-<img src='week1GIF.gif' img align="left" title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<p align="center">
+  <b><img src='week1GIF.gif' img align="left" title='Video Walkthrough' width='' alt='Video Walkthrough' /></b><br>
+  <br><br>
+</p>
 
 <br><br><br><br><br><br>
 
 # Week 2 GIF
-<img src='week2GIF.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<p align="center">
+  <b><img src='week2GIF.gif' img align="left" title='Video Walkthrough' width='' alt='Video Walkthrough' /></b><br>
+  <br><br>
+</p>
 
