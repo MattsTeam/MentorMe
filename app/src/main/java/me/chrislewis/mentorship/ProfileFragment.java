@@ -121,6 +121,7 @@ public class ProfileFragment extends Fragment {
         bUploadProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                model.fragmentIdentifier = "profile";
                 MainActivity activity = (MainActivity) getActivity();
                 activity.launchPhotos();
 

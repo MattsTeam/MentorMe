@@ -7,71 +7,69 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Review;
 import me.chrislewis.mentorship.models.User;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     private Context mContext;
-    private List<ParseUser> reviewers;
+    private List<Review> reviews;
     SharedViewModel model;
 
-    public ReviewAdapter(List<ParseUser> reviewers, SharedViewModel model) {
-        this.reviewers = reviewers;
-        this.model = model;
-
+    public ReviewAdapter(List<Review> reviews) {
+        this.reviews = reviews;
     }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         mContext = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View contactView = inflater.inflate(R.layout.item_review, viewGroup, false);
 
-        return new ViewHolder(contactView);
+        View reviewsView = inflater.inflate(R.layout.item_review, viewGroup, false);
+
+        return new ViewHolder(reviewsView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        final ParseUser reviewer = reviewers.get(i);
-        reviewer.fetchInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject object, ParseException e) {
-                try {
-                    ParseUser temp = reviewer.fetchIfNeeded();
-                    User mReviewer = new User(temp);
-                    viewHolder.tvReviewWriter.setText(mReviewer.getName());
+        final Review review = reviews.get(i);
 
-                    if(mReviewer.getProfileImage() != null) {
-                        Glide.with(mContext)
-                                .load(mReviewer.getProfileImage().getUrl())
-                                .into(viewHolder.ivReviewWriter);
-                    }
+        ParseUser writer = review.getWriter();
+        try {
+            ParseUser tmp = writer.fetchIfNeeded();
+            User mWriter = new User(tmp);
+            viewHolder.tvReviewWriter.setText(mWriter.getName());
 
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
+            //  viewHolder.rbReview.setRating(review.getRating());
+            viewHolder.rbReview.setRating(1);
 
+            if(mWriter.getProfileImage() != null) {
+                Glide.with(mContext)
+                        .load(mWriter.getProfileImage().getUrl())
+                        .into(viewHolder.ivReviewWriter);
             }
-        });
-
-
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (review.getBody() != null) {
+            viewHolder.tvReviewBody.setText(review.getBody());
+        }
     }
 
     @Override
     public int getItemCount() {
-        if (reviewers == null) {
+        if (reviews == null) {
             return 0;
         } else {
-            return reviewers.size();
+            return reviews.size();
         }
     }
 
@@ -79,13 +77,24 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         ImageView ivReviewWriter;
         TextView tvReviewWriter;
         TextView tvReviewBody;
+        RatingBar rbReview;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivReviewWriter = itemView.findViewById(R.id.ivReviewWriter);
             tvReviewWriter = itemView.findViewById(R.id.tvReviewWriter);
             tvReviewBody = itemView.findViewById(R.id.tvReviewBody);
-            //itemView.setOnClickListener(this);
+            rbReview = itemView.findViewById(R.id.rbReview);
         }
+    }
+
+    public void clear() {
+        reviews.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Review> list) {
+        reviews.addAll(list);
+        notifyDataSetChanged();
     }
 }

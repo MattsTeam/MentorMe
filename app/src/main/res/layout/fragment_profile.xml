@@ -21,6 +21,7 @@
         android:layout_alignParentTop="true"
         android:text="@string/log_out" />
 
+
     <Button
         android:id="@+id/bUploadProfileImage"
         android:layout_width="wrap_content"
@@ -39,11 +40,11 @@
 
 
     <RelativeLayout
+        android:id="@+id/svInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/bUploadProfileImage"
-        android:id="@+id/svInfo"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/etName"
@@ -85,6 +86,7 @@
             android:layout_below="@id/etSummary"
             android:background="@android:color/transparent"
             android:text="Education" />
+
         <Button
             android:id="@+id/bSave"
             android:layout_width="wrap_content"
@@ -99,19 +101,19 @@
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:text="Edit"
-            android:src="@android:color/background_dark" />
+            android:src="@android:color/background_dark"
+            android:text="Edit" />
 
         <TextView
             android:id="@+id/tvFavorites"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp"
             android:layout_below="@+id/bSave"
+            android:layout_marginTop="10dp"
             android:text="Favorite Mentors"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>
@@ -123,4 +125,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/svInfo" />
+
+
 </RelativeLayout>

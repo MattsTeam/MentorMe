@@ -34,6 +34,7 @@ public class User{
     private final static String PASSWORD_KEY = "password";
     private final static String EMAIL_KEY = "email";
     private final static String OVERALL_RATING_KEY = "overallRating";
+    private final static String REVIEWS_KEY = "reviews";
 
     public String name;
     public String username;
@@ -167,6 +168,14 @@ public class User{
 
     public void removeFavorite(ParseUser user) {
         this.user.removeAll(FAVORITE_KEY, Collections.singleton(user));
+    }
+
+    public List<Review> getReviews() {
+        return (List<Review>) user.get(REVIEWS_KEY);
+    }
+
+    public void addReview(Review review) {
+        this.user.addUnique(REVIEWS_KEY, review);
     }
 
     public List<ParseUser> getReviewers() {
