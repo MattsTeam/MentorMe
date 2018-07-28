@@ -8,7 +8,9 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -103,8 +105,8 @@ public class User{
         return user.getParseFile(PROFILE_IMAGE_KEY);
     }
 
-    public void setProfileImage(ParseFile file) {
-        user.put(PROFILE_IMAGE_KEY, file);
+    public void setProfileImage(File image) {
+        user.put(PROFILE_IMAGE_KEY, new ParseFile(image));
     }
 
     public String getSkills() {
@@ -236,6 +238,10 @@ public class User{
 
     public void saveInBackground() {
         user.saveInBackground();
+    }
+
+    public void saveInBackground(SaveCallback callback) {
+        user.saveInBackground(callback);
     }
 
     public void fetchInBackground(GetCallback<ParseObject> callback) {

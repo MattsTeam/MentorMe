@@ -82,7 +82,7 @@ public class DetailsFragment extends Fragment {
         addListenerOnButton();
 
         final SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        currentUser = new User (ParseUser.getCurrentUser());
+        currentUser = model.getCurrentUser();
         user = model.getUser();
         populateInfo(user);
 
