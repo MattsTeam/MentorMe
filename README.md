@@ -58,7 +58,7 @@ Application to match mentors and mentees based on shared interests, goals, avail
 ## Week 1 GIF
 ![Walkthrough](week1GIF.gif)
 
-<br><br><br><br><br><br>
+<br><br><br>
 
 ## Week 2 GIF
 ![Walkthrough](week2GIF.gif)
