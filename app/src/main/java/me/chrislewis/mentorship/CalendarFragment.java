@@ -32,7 +32,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
-import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -46,9 +45,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.AlarmBroadcastReceiver;
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
 import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.GoogleDayDecorator;
@@ -93,6 +92,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         permissionToggle = view.findViewById(R.id.syncSwitch);
         if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
             permissionToggle.setOnCheckedChangeListener (null);
@@ -407,9 +407,9 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 newEvent.setTime(time);
                 newEvent.setDateString(date);
                 newEvent.saveInBackground();
-                HashMap<String, String> payload = new HashMap<>();
-                payload.put("customData", "New Event: " + description);
-                ParseCloud.callFunctionInBackground("eventNotif", payload);
+
+                AlarmBroadcastReceiver.setAlarm(getContext(), date, time);
+
                 Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
                 toast.show();
