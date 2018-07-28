@@ -206,7 +206,7 @@ public class ProfileFragment extends Fragment {
                             .apply(new RequestOptions().circleCrop())
                             .into(ivProfile);
                 } else {
-                    Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Picture wasn't chosen!", Toast.LENGTH_SHORT).show();
                 }
 
             }

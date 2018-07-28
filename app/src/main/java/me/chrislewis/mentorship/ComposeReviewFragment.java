@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,16 +18,20 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
+import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.Review;
 import me.chrislewis.mentorship.models.User;
+
+import static android.app.Activity.RESULT_OK;
+import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 
 public class ComposeReviewFragment extends Fragment {
     private SharedViewModel model;
@@ -40,7 +45,7 @@ public class ComposeReviewFragment extends Fragment {
     User currentUser;
     User reviewedUser;
 
-    File photoFile;
+    private Camera camera;
     Bitmap photoBitmap;
     ParseFile parseFile;
 
@@ -55,6 +60,7 @@ public class ComposeReviewFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         model = ViewModelProviders.of((FragmentActivity) getActivity()).get(SharedViewModel.class);
+        camera = new Camera(getContext(), this, model);
         currentUser = model.getCurrentUser();
         reviewedUser = model.getUser();
 
@@ -85,13 +91,17 @@ public class ComposeReviewFragment extends Fragment {
                 review.setBody(body);
                 review.setWriter(currentUser.getParseUser());
                 review.setRating(Double.valueOf(rating));
-                if (parseFile != null) {
+
+                if (photoBitmap != null) {
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    photoBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                    parseFile = new ParseFile(bytes.toByteArray());
                     review.setReviewPhoto(parseFile);
                 }
-                //review.setUser(otherUser);
+
                 review.setUserId(otherId);
 
-                review.saveInBackground(new SaveCallback() {
+                review.saveInBackground(new com.parse.SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
@@ -115,24 +125,28 @@ public class ComposeReviewFragment extends Fragment {
         btnUploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                model.fragmentIdentifier = "compose_review";
-                MainActivity activity = (MainActivity) getActivity();
-                activity.launchPhotos();
+                camera.launchPhotos();
             }
         });
-
-
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE_REQUEST) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                if (resultCode == RESULT_OK) {
+                    photoBitmap = camera.getChosenPhoto(data);
+                    Glide.with(getContext())
+                            .load(photoBitmap)
+                            .apply(new RequestOptions().circleCrop())
+                            .into(ivReviewImage);
+                } else {
+                    Toast.makeText(getContext(), "Picture wasn't chosen!", Toast.LENGTH_SHORT).show();
+                }
 
-    public void processImageBitmap(Bitmap takenImage) {
-        photoBitmap = takenImage;
-
-        if (photoBitmap != null) {
-            //Glide.with(this).load(takenImage).into(ivReviewImage);
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            photoBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-            parseFile = new ParseFile(bytes.toByteArray());
+            }
         }
+
     }
+
 }
 
