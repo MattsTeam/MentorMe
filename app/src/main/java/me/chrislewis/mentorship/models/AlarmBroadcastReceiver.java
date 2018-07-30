@@ -36,10 +36,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
     }
 
     public static void setAlarm(Context context, String date, String time){
-        Log.d("AlarmBroadcastReceiver","Alarm is set!");
-
-        // get a Calendar object with current time
-        //Calendar cal = Calendar.getInstance();
+        Log.d("AlarmBroadcastReceiver","Alarm is setting!");
         Calendar cal = new GregorianCalendar();
         int year = Integer.valueOf(date.substring(0,4));
         int month = Integer.valueOf(convertDateTime(date.substring(5,7))) - 1;
@@ -52,6 +49,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         Log.d("AlarmBroadcastReceiver", "hour: " + Integer.toString(hour));
         Log.d("AlarmBroadcastReceiver", "minute: " + Integer.toString(minute));
         cal.set(year, month, day, hour, minute);
+        //if neccessary for demo - send notification 15 minutes before actual
+        //cal.add(Calendar.MINUTE, -15);
         Log.d("AlarmBroadcastReceiver", cal.getTime().toString());
         Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
         sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -75,7 +74,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         notificationManager.createNotificationChannel(notificationChannel);
 
         Notification notification = new Notification.Builder(context)
-                .setContentTitle("New Event")
+                .setContentTitle("Upcoming event")
                 .setContentText("")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setChannelId(channelId)

@@ -11,7 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class AddEventDialogFragment extends DialogFragment {
@@ -24,8 +29,12 @@ public class AddEventDialogFragment extends DialogFragment {
     private TimePicker timePicker;
     private EditText eventDescription;
     private Boolean isSynced;
+    private TextView selectTime;
     private String todayString;
     private OnReceivedData mData;
+    private Date date;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
+    SimpleDateFormat currFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public AddEventDialogFragment() { }
 
@@ -44,6 +53,13 @@ public class AddEventDialogFragment extends DialogFragment {
         isSynced = getArguments().getBoolean("isSynced");
         todayString = getArguments().getString("dateSelected");
         Log.d("AddEventDialogFragment", "dateSelected: " + todayString);
+        try {
+            date = currFormat.parse(todayString);
+            Log.d("AddEventDialogFragment", dateFormat.format(date));
+        } catch (ParseException e) {
+            Log.d("AddEventDialog", "Failed to parse today string");
+            e.printStackTrace();
+        }
         Log.d("AddEventDialogFragment", "isSynced: " + Boolean.toString(isSynced));
         getDialog().getWindow().setBackgroundDrawableResource(R.drawable.round_event_dialog);
         return inflater.inflate(R.layout.fragment_add_event, container);
@@ -53,6 +69,8 @@ public class AddEventDialogFragment extends DialogFragment {
     @TargetApi(Build.VERSION_CODES.M)
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        selectTime = view.findViewById(R.id.tvSelectTime);
+        selectTime.setText(dateFormat.format(date));
         timePicker = view.findViewById(R.id.simpleTimePicker);
         eventDescription = view.findViewById(R.id.editDetails);
         addEventButton = view.findViewById(R.id.doneButton);

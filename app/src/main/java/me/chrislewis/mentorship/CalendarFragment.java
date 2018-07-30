@@ -63,7 +63,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     List<com.google.api.services.calendar.model.Event> googleTodayEvents = new ArrayList<>();
     ArrayList<com.google.api.services.calendar.model.Event> googleEvents = new ArrayList<>();
     com.google.api.services.calendar.model.Event googleToday;
-    int orange = getIntFromColor(255, 128, 0);
+    int orange = getIntFromColor(128, 128, 128);
     int black = getIntFromColor(0,0,0);
     MaterialCalendarView calendarView;
     Calendar calendar;
