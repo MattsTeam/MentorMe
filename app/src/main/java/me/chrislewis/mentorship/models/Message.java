@@ -39,8 +39,11 @@ public class Message extends ParseObject{
         return getParseUser(RECIPIENT_KEY);
     }
 
-    public void addRecipient(ArrayList<String> users) {
-        addAllUnique(RECIPIENT_KEY, users);
+    public void addRecipient(ArrayList<User> users) {
+        for (User i : users) {
+            i.getParseUser().revert();
+            addUnique(RECIPIENT_KEY, i.getParseUser());
+        }
     }
 
     public static class Query extends ParseQuery<Message> {
@@ -57,10 +60,13 @@ public class Message extends ParseObject{
             return this;
         }
 
-        public Query recipients(List<String> users) {
+        public Query recipients(List<User> users) {
+            ArrayList<ParseUser> holder = new ArrayList<>();
+            for (User i : users) {
+                holder.add(i.getParseUser());
+            }
             try {
-//                whereEqualTo(RECIPIENT_KEY, users);
-                whereContainsAll(RECIPIENT_KEY, users);
+                whereContainsAll(RECIPIENT_KEY, holder);
                 return this;
             } catch (Exception e) {
                 return null;
