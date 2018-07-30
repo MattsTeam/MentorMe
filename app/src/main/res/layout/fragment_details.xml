@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="Profile Picture"
-        app:srcCompat="@android:color/black" />
+        app:srcCompat="@drawable/ic_profile" />
 
     <ScrollView
         android:id="@+id/svInfo"

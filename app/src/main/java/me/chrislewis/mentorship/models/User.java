@@ -10,7 +10,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -105,8 +104,8 @@ public class User{
         return user.getParseFile(PROFILE_IMAGE_KEY);
     }
 
-    public void setProfileImage(File image) {
-        user.put(PROFILE_IMAGE_KEY, new ParseFile(image));
+    public void setProfileImage(ParseFile image) {
+        user.put(PROFILE_IMAGE_KEY, image);
     }
 
     public String getSkills() {

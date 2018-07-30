@@ -1,6 +1,8 @@
 package me.chrislewis.mentorship;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +13,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.parse.LogInCallback;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import java.io.ByteArrayOutputStream;
 
 import me.chrislewis.mentorship.models.User;
 
@@ -203,7 +208,10 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         if(sciencesButton.isSelected()) {
             newUser.addCategory("Sciences");
         }
+
         newUser.saveInBackground();
+
+
     }
 
     private void login(String username, String password) {
@@ -220,7 +228,14 @@ public class SignUpDetailsActivity extends AppCompatActivity {
                         currentUser.put("isMentor", false);
                     }
                     saveCategoryInfo();
-                    currentUser.saveInBackground();
+
+                    Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_profile);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    ParseFile profileImage = new ParseFile(stream.toByteArray());
+                    User newUser = new User(currentUser);
+                    newUser.setProfileImage(profileImage);
+                    newUser.saveInBackground();
                     Intent intent = new Intent(SignUpDetailsActivity.this, MainActivity.class);
                     intent.putExtra("fromSignUp", "signUp");
                     startActivity(intent);

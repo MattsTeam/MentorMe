@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -142,7 +143,8 @@ public class ProfileFragment extends Fragment {
                 user.setSummary(summary);
                 user.setEducation(edu);
                 if (camera.getPhotoFile() != null) {
-                    user.setProfileImage(camera.getPhotoFile());
+                    ParseFile newProfileImage = new ParseFile(camera.getPhotoFile());
+                    user.setProfileImage(newProfileImage);
                 }
                 user.saveInBackground(new SaveCallback() {
                     @Override
@@ -167,16 +169,16 @@ public class ProfileFragment extends Fragment {
 
     private void populateInfo() {
         etName.setText(user.getName());
-        if (user.getJob() != null ) {
+        if (user.getJob() != null) {
             etJob.setText(user.getJob());
         }
-        if (user.getSkills() != null ) {
+        if (user.getSkills() != null) {
             etSkills.setText(user.getSkills());
         }
-        if (user.getSummary() != null ) {
+        if (user.getSummary() != null) {
             etSummary.setText(user.getSummary());
         }
-        if (user.getEducation() != null ) {
+        if (user.getEducation() != null) {
             etEdu.setText(user.getEducation());
         }
         if (user.getProfileImage() != null) {
