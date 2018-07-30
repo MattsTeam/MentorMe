@@ -24,12 +24,12 @@ import me.chrislewis.mentorship.models.User;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
     private Context mContext;
     private String favoriteKey;
-    private List<ParseUser> favorites;
+    private List<User> favorites;
 
     SharedViewModel model;
     DetailsFragment detailsFragment = new DetailsFragment();
 
-    public FavoritesAdapter(List<ParseUser> favorites, SharedViewModel model) {
+    public FavoritesAdapter(List<User> favorites, SharedViewModel model) {
         this.favorites = favorites;
         this.model = model;
 
@@ -46,12 +46,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        final ParseUser user = favorites.get(i);
+        final User user = favorites.get(i);
         user.fetchInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
                 try {
-                    ParseUser temp = user.fetchIfNeeded();
+                    ParseUser temp = user.getParseUser().fetchIfNeeded();
                     User mUser = new User(temp);
                     viewHolder.tvName.setText(mUser.getName());
 
@@ -96,8 +96,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             Toast.makeText(mContext, "adapter clicked", Toast.LENGTH_SHORT).show();
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                ParseUser user = favorites.get(position);
-                model.setUser(new User(user));
+                User user = favorites.get(position);
+                model.setUser(user);
 
                 FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
                 fragmentTransaction = model.getFragmentManager().beginTransaction();

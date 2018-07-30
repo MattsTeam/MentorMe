@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -171,7 +170,7 @@ public class DetailsFragment extends Fragment {
             tvOverallRating.setText("Overall Rating " + oRating);
         }
 
-        List<ParseUser> favUsers = currentUser.getFavorites();
+        List<User> favUsers = currentUser.getFavorites();
         if (favUsers != null) {
             for (int i = 0; i < favUsers.size(); i++) {
                 if ((user.getObjectId()).equals(favUsers.get(i).getObjectId())) {

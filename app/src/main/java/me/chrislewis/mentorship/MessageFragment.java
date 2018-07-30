@@ -1,12 +1,12 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.FindCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
@@ -26,9 +29,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.User;
+
+import static android.app.Activity.RESULT_OK;
+import static me.chrislewis.mentorship.MainActivity.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 
 public class MessageFragment extends Fragment {
 
@@ -40,10 +48,14 @@ public class MessageFragment extends Fragment {
     MessageAdapter adapter;
 
     User user;
-    ArrayList<String> recipients = new ArrayList<>();
+    ArrayList<User> recipients = new ArrayList<>();
 
     EditText etMessage;
     Button bSend;
+    Button btImage;
+    ImageView ivMessage;
+
+    Camera camera;
 
     static final int POLL_INTERVAL = 1000;
     Handler myHandler = new Handler();
@@ -65,16 +77,21 @@ public class MessageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SharedViewModel model = ViewModelProviders.of((FragmentActivity) getActivity()).get(SharedViewModel.class);
-        recipients = model.getRecipientIds();
+        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        recipients = model.getRecipients();
         user = model.getCurrentUser();
 
-        firstMessage = user.firstChat(recipients);
+
+//        firstMessage = user.firstChat(recipients);
 
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
         rvMessages = view.findViewById(R.id.rvMessages);
+        ivMessage = view.findViewById(R.id.ivMessage);
+        btImage = view.findViewById(R.id.btImage);
         mMessages = new ArrayList<>();
+
+        camera = new Camera(getContext(), this, model);
 
         adapter = new MessageAdapter(view.getContext(), user.getParseUser(), mMessages);
         rvMessages.setAdapter(adapter);
@@ -117,6 +134,14 @@ public class MessageFragment extends Fragment {
                 }
             }
         });
+
+        btImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.launchCamera();
+            }
+        });
+
         myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
     }
 
@@ -140,6 +165,33 @@ public class MessageFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Glide.with(getContext())
+                        .load(camera.getPhoto())
+                        .apply(new RequestOptions().circleCrop())
+                        .into(ivMessage);
+            } else {
+                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == PICK_IMAGE_REQUEST) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                if (resultCode == RESULT_OK) {
+                    Glide.with(getContext())
+                            .load(camera.getChosenPhoto(data))
+                            .apply(new RequestOptions().circleCrop())
+                            .into(ivMessage);
+                } else {
+                    Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+
     }
 
 }
