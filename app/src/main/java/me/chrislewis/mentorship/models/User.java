@@ -163,12 +163,13 @@ public class User{
         return (List<ParseUser>) user.get(FAVORITE_KEY);
     }
 
-    public void addFavorite(ParseUser user) {
-        this.user.addUnique(FAVORITE_KEY, user);
+    public void addFavorite(User user) {
+        user.getParseUser().revert();
+        this.user.addUnique(FAVORITE_KEY, user.getParseUser());
     }
 
-    public void removeFavorite(ParseUser user) {
-        this.user.removeAll(FAVORITE_KEY, Collections.singleton(user));
+    public void removeFavorite(User user) {
+        this.user.removeAll(FAVORITE_KEY, Collections.singleton(user.getParseUser()));
     }
 
     public List<Review> getReviews() {

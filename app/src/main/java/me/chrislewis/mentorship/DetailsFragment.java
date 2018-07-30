@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,15 +92,30 @@ public class DetailsFragment extends Fragment {
         btFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "You favorited this mentor", Toast.LENGTH_SHORT).show();
                 if (!isFavorite) {
-                    currentUser.addFavorite(user.getParseUser());
-                    currentUser.saveInBackground();
+                    currentUser.addFavorite(user);
+                    currentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Toast.makeText(getActivity(), "You favorited this mentor", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("Details", "Error" + e);
+                            }
+                        }
+                    });
                     btFav.setBackgroundResource(R.drawable.favorite_save_active);
                     isFavorite = true;
                 } else {
-                    currentUser.removeFavorite(user.getParseUser());
-                    currentUser.saveInBackground();
+                    currentUser.removeFavorite(user);
+                    currentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Toast.makeText(getActivity(), "User Unfavorited", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                     btFav.setBackgroundResource(R.drawable.favorite_save);
                     isFavorite = false;
                 }
