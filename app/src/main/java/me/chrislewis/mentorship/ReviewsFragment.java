@@ -3,30 +3,34 @@ package me.chrislewis.mentorship;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.parse.ParseUser;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import me.chrislewis.mentorship.models.Review;
 import me.chrislewis.mentorship.models.User;
 
 public class ReviewsFragment extends Fragment {
     private User currentUser;
+    private User user;
     private SharedViewModel model;
 
     private ReviewAdapter adapter;
-    private ArrayList<ParseUser> reviewers;
+    private List<Review> reviews;
     private RecyclerView rvReviews;
 
     private ProgressBar pb;
-    private SwipeRefreshLayout swipeContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -37,43 +41,48 @@ public class ReviewsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         pb = view.findViewById(R.id.pbLoading);
-        ParseUser.getCurrentUser().fetchInBackground();
-        currentUser = new User(ParseUser.getCurrentUser());
-
 
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        adapter = new ReviewAdapter(currentUser.getReviewers(), model);
+        user = model.getUser();
+
+        reviews = new ArrayList<>();
+        adapter = new ReviewAdapter(reviews);
+
+        getUserReviews();
+
 
         rvReviews = view.findViewById(R.id.rvReviews);
-        rvReviews.setLayoutManager(new GridLayoutManager(this.getActivity(), 2));
+        rvReviews.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvReviews.setAdapter(adapter);
+    }
 
-        /*
+    public void getUserReviews() {
+        pb.setVisibility(ProgressBar.VISIBLE);
 
-        swipeContainer = view.findViewById(R.id.swipeContainer);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ParseQuery<Review> query = ParseQuery.getQuery(Review.class);
+        query.whereEqualTo("userId", user.getObjectId());
+        query.findInBackground(new FindCallback<Review>() {
             @Override
-            public void onRefresh() {
-                getReviews();
+            public void done(List<Review> objects, ParseException e) {
+                if (e == null) {
+                    adapter.clear();
+                    if (objects.size() != 0) {
+                        adapter.addAll(objects);
+                        adapter.notifyDataSetChanged();
+                        pb.setVisibility(ProgressBar.INVISIBLE);
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "This user has no reviews.", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    e.printStackTrace();
+                }
             }
         });
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-                */
 
-        //getReviews();
+        pb.setVisibility(ProgressBar.INVISIBLE);
     }
-    /*
-    public void getReviews() {
-        pb.setVisibility(ProgressBar.VISIBLE);
-        adapter.clear();
-        ParseUser.getCurrentUser().fetchInBackground();
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("isMentor", true);
-        query.whereNotEqualTo("objectId", currentUser.getObjectId());
-    }
-    */
+
 
 }

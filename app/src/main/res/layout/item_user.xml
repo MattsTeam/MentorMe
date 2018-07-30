@@ -23,7 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal"
             android:contentDescription="Profile Image"
-            app:srcCompat="@android:color/background_dark" />
+            app:srcCompat="@drawable/ic_profile" />
 
         <TextView
             android:id="@+id/tvName"

@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="Profile Picture"
-        app:srcCompat="@android:color/black" />
+        app:srcCompat="@drawable/ic_profile" />
 
     <ScrollView
         android:id="@+id/svInfo"
@@ -68,7 +68,7 @@
 
             <RatingBar
                 android:id="@+id/rb"
-                android:layout_width="229dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvEdu"
                 android:numStars="5"
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rb"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@id/tvRating"
                 android:text="Your Rating"
                 android:textStyle="bold" />
@@ -99,13 +99,30 @@
                 android:layout_below="@id/tvRating"
                 android:text="Submit Rating" />
 
+            <TextView
+                android:id="@+id/tvPromptReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnSubmit"
+                android:layout_marginBottom="108dp"
+                android:text="Have something to say?" />
+
+
             <Button
                 android:id="@+id/btReviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/rb"
-                android:layout_marginLeft="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/tvEdu"
                 android:text="See Reviews" />
+
+            <Button
+                android:id="@+id/btnComposeReview"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_alignBaseline="@+id/tvPromptReview"
+                android:layout_toEndOf="@+id/tvPromptReview"
+                android:text="Write a Review" />
         </RelativeLayout>
     </ScrollView>
 

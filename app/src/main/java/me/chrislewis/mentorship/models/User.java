@@ -10,7 +10,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +35,7 @@ public class User{
     private final static String PASSWORD_KEY = "password";
     private final static String EMAIL_KEY = "email";
     private final static String OVERALL_RATING_KEY = "overallRating";
+    private final static String REVIEWS_KEY = "reviews";
 
     public String name;
     public String username;
@@ -104,8 +104,8 @@ public class User{
         return user.getParseFile(PROFILE_IMAGE_KEY);
     }
 
-    public void setProfileImage(File image) {
-        user.put(PROFILE_IMAGE_KEY, new ParseFile(image));
+    public void setProfileImage(ParseFile image) {
+        user.put(PROFILE_IMAGE_KEY, image);
     }
 
     public String getSkills() {
@@ -170,6 +170,14 @@ public class User{
 
     public void removeFavorite(User user) {
         this.user.removeAll(FAVORITE_KEY, Collections.singleton(user.getParseUser()));
+    }
+
+    public List<Review> getReviews() {
+        return (List<Review>) user.get(REVIEWS_KEY);
+    }
+
+    public void addReview(Review review) {
+        this.user.addUnique(REVIEWS_KEY, review);
     }
 
     public List<ParseUser> getReviewers() {

@@ -50,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
     final CalendarFragment calendarFragment = new CalendarFragment();
     final MessageListFragment messageFragment = new MessageListFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
+    final ComposeReviewFragment composeReviewFragment = new ComposeReviewFragment();
 
     public String photoFileName = "photo.jpg";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PICK_IMAGE_REQUEST = 1;
     private static final String PREF_ACCOUNT_NAME = "accountName";
+
     File photoFile;
 
     ParseGeoPoint ParseLocation;
@@ -197,9 +199,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
 

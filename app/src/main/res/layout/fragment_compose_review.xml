@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tvUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Mentor" />
+
+    <RatingBar
+        android:id="@+id/rbCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvUser"
+        android:numStars="5" />
+
+    <ImageView
+        android:id="@+id/ivReviewImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/rbCompose"
+        app:srcCompat="@android:color/holo_blue_dark" />
+
+    <EditText
+        android:id="@+id/etReviewBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivReviewImage"
+        android:hint="Example: This mentor was very helpful"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/btnSubmitReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etReviewBody"
+        android:text="Submit Review" />
+
+    <Button
+        android:id="@+id/btnUploadPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/btnSubmitReview"
+        android:layout_marginEnd="99dp"
+        android:text="Upload Photo" />
+
+
+</RelativeLayout>

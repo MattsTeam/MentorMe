@@ -43,11 +43,13 @@ public class DetailsFragment extends Fragment {
     Button btMessage;
     ImageView ivProfile;
     Button btReviews;
+    Button btComposeReview;
 
     SharedViewModel model;
 
     MessageFragment messageFragment = new MessageFragment();
     ReviewsFragment reviewsFragment = new ReviewsFragment();
+    ComposeReviewFragment composeReviewFragment = new ComposeReviewFragment();
 
     boolean isFavorite;
     private RatingBar ratingBar;
@@ -75,6 +77,7 @@ public class DetailsFragment extends Fragment {
         btFav = view.findViewById(R.id.btFav);
         btMessage = view.findViewById(R.id.btMessage);
         btReviews = view.findViewById(R.id.btReviews);
+        btComposeReview = view.findViewById(R.id.btnComposeReview);
         ivProfile = view.findViewById(R.id.ivProfile);
         tvOverallRating = view.findViewById(R.id.tvRating);
 
@@ -136,6 +139,15 @@ public class DetailsFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, reviewsFragment).commit();
+            }
+        });
+
+        btComposeReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //model.setReviewedUser(user);
+                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.flContainer, composeReviewFragment).commit();
             }
         });
     }
