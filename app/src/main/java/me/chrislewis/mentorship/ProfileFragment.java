@@ -9,21 +9,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.User;
@@ -45,10 +42,7 @@ public class ProfileFragment extends Fragment {
     TextView tvEdu;
 
     Button bLogOut;
-    Button bUploadProfileImage;
-    Button bTakePhoto;
-    Button bEdit;
-    Button bSave;
+    ImageButton bEdit;
     CalendarFragment calendarFragment;
     EditProfileFragment editProfileFragment;
 
@@ -106,43 +100,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        bTakePhoto = view.findViewById(R.id.bTakePhoto);
-        bTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                camera.launchCamera();
-            }
-        });
-
-        bUploadProfileImage = view.findViewById(R.id.bUploadProfileImage);
-        bUploadProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                camera.launchPhotos();
-            }
-        });
-
-        bSave = view.findViewById(R.id.bSave);
-        bSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (camera.getPhotoFile() != null) {
-                    ParseFile newProfileImage = new ParseFile(camera.getPhotoFile());
-                    user.setProfileImage(newProfileImage);
-                }
-                user.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            Log.d("Profile", "Working");
-                        } else {
-                            Log.d("Profile", "Fail " + e);
-                        }
-                    }
-                });
-                Toast.makeText(getActivity(), "Updated Profile", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         adapter = new FavoritesAdapter(user.getFavorites(), model);
 

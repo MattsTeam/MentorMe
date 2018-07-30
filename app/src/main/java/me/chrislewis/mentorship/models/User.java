@@ -36,6 +36,7 @@ public class User{
     private final static String EMAIL_KEY = "email";
     private final static String OVERALL_RATING_KEY = "overallRating";
     private final static String REVIEWS_KEY = "reviews";
+    private final static String NUM_REVIEWS_KEY = "numReviews";
 
     public String name;
     public String username;
@@ -159,6 +160,9 @@ public class User{
     public double getOverallRating() {return user.getDouble(OVERALL_RATING_KEY);}
     public void setRating(double rating) { user.put(OVERALL_RATING_KEY, rating); }
 
+    public Number getNumReviews() {return user.getNumber(NUM_REVIEWS_KEY);}
+    public void setNumReviews(Number numReviews) { user.put(NUM_REVIEWS_KEY, numReviews); }
+
     public List<User> getFavorites() {
         List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
         ArrayList<User> users = new ArrayList<>();
@@ -224,7 +228,7 @@ public class User{
         user.put(REL_DISTANCE_KEY, distance);
     }
 
-    public boolean firstChat(ArrayList<User> users) {
+    public boolean firstChat(ArrayList<String> users) {
         for(Chat chat : chats) {
             if(chat.getUsers().equals(users)) {
                 return false;

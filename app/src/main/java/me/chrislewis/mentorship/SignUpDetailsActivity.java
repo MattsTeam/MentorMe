@@ -183,6 +183,8 @@ public class SignUpDetailsActivity extends AppCompatActivity {
                 login(username, password);
             }
         });
+
+        setDefaultValues();
     }
 
     private void saveCategoryInfo() {
@@ -210,7 +212,21 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         }
 
         newUser.saveInBackground();
+    }
 
+    public void setDefaultValues() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        User newUser = new User(currentUser);
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_profile);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        ParseFile profileImage = new ParseFile(stream.toByteArray());
+
+
+        newUser.setNumReviews(0);
+        newUser.setProfileImage(profileImage);
+        newUser.saveInBackground();
 
     }
 
@@ -229,13 +245,8 @@ public class SignUpDetailsActivity extends AppCompatActivity {
                     }
                     saveCategoryInfo();
 
-                    Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_profile);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    ParseFile profileImage = new ParseFile(stream.toByteArray());
-                    User newUser = new User(currentUser);
-                    newUser.setProfileImage(profileImage);
-                    newUser.saveInBackground();
+
+
                     Intent intent = new Intent(SignUpDetailsActivity.this, MainActivity.class);
                     intent.putExtra("fromSignUp", "signUp");
                     startActivity(intent);
