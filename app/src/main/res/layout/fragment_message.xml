@@ -46,7 +46,7 @@
             android:textSize="18sp"></Button>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/etMessage"
