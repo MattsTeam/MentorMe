@@ -10,11 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +44,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        final Chat chat = chats.get(i);
+        /*final Chat chat = chats.get(i);
         ArrayList<String> users = chat.getUsers();
         final ArrayList<User> recipients = new ArrayList<>();
         for(int j = 0; j < users.size(); j++){
@@ -75,8 +70,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
         }
         chat.setRecipients(recipients);
-        chat.setUsers(recipients);
-
+        chat.setUsers(recipients);*/
     }
 
     @Override

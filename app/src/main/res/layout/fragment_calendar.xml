@@ -18,52 +18,59 @@
     <ImageView
         android:id="@+id/calendarHeader"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         app:srcCompat="@color/orange" />
 
     <TextView
         android:id="@+id/tvCurrentDay"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:layout_height="72dp"
+        android:layout_alignBottom="@+id/calendarHeader"
         android:layout_alignLeft="@+id/calendarHeader"
         android:layout_alignRight="@+id/calendarHeader"
         android:layout_alignTop="@+id/calendarHeader"
-        android:layout_alignBottom="@+id/calendarHeader"
+        android:layout_marginTop="8dp"
         android:gravity="center"
+        android:text="TextView"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:text="TextView" />
-
-    <!--<ImageButton-->
-        <!--android:id="@+id/permissionButton"-->
-        <!--android:layout_width="53dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_marginStart="0dp"-->
-        <!--android:background="@null"-->
-        <!--app:srcCompat="@drawable/ic_sync_mail" />-->
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/addEventButton"
         android:layout_width="49dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/calendarHeader"
+        android:layout_alignTop="@+id/syncSwitch"
         android:background="@null"
         app:srcCompat="@drawable/ic_add_event" />
 
     <Switch
         android:id="@+id/syncSwitch"
-        android:layout_width="wrap_content"
+        android:layout_width="103dp"
         android:layout_height="50dp"
-        android:layout_alignTop="@+id/calendarHeader"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp"
         android:layout_marginStart="12dp"
-        android:switchPadding="8dp"
-        android:text="Sync"
+        android:switchPadding="1dp"
+        android:text="Google Calendar Sync"
         android:textColor="@color/white"
+        android:textSize="12sp"
         android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:layout_below="@+id/calendarView"
+        >
+
+        <com.framgia.library.calendardayview.CalendarDayView
+            android:id="@+id/dayView"
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            app:dayHeight="115dp"/>
+    </ScrollView>
 
 </RelativeLayout>

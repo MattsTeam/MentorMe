@@ -75,6 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         user.setRelDistance(10.0);
         user.setLocation(new ParseGeoPoint());
         user.setJob("N/A");
+        user.setSync(false);
         user.setDescription("N/A");
         user.saveInBackground();
 
