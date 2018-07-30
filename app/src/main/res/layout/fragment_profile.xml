@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/ivProfile"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_profile"/>
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/ic_profile" />
 
     <Button
         android:id="@+id/bLogOut"
@@ -22,28 +22,14 @@
         android:text="@string/log_out" />
 
 
-    <Button
-        android:id="@+id/bUploadProfileImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfile"
-        android:layout_toStartOf="@+id/bLogOut"
-        android:text="Upload Profile Photo" />
-
-    <Button
-        android:id="@+id/bTakePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivProfile"
-        android:text="Take Photo" />
-
-
     <RelativeLayout
         android:id="@+id/svInfo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/bUploadProfileImage"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="5dp"
         android:orientation="vertical">
 
         <TextView
@@ -87,44 +73,37 @@
             android:background="@android:color/transparent"
             android:text="Education" />
 
-        <Button
-            android:id="@+id/bSave"
+        <ImageButton
+            android:id="@+id/bEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/etEdu"
-            android:text="Save Profile" />
-
-        <Button
-            android:id="@+id/bEdit"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:src="@android:color/background_dark"
+            android:layout_marginEnd="13dp"
+            android:src="@drawable/edit"
             android:text="Edit" />
 
-        <TextView
-            android:id="@+id/tvFavorites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/bSave"
-            android:layout_marginTop="10dp"
-            android:text="Favorite Mentors"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvFavorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/svInfo"
+        android:layout_marginTop="10dp"
+        android:text="Favorite Mentors"
+        android:layout_marginLeft="5dp"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFavorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/svInfo" />
+        android:layout_below="@+id/tvFavorites" />
 
 
 </RelativeLayout>
