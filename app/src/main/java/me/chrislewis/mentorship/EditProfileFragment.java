@@ -6,16 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -32,25 +29,19 @@ import static android.app.Activity.RESULT_OK;
 import static me.chrislewis.mentorship.MainActivity.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 
-public class ProfileFragment extends Fragment {
-
-    FavoritesAdapter adapter;
-    RecyclerView rvFavorites;
-
+public class EditProfileFragment extends Fragment {
     ImageView ivProfile;
-    TextView tvName;
-    TextView tvJob;
-    TextView tvSkills;
-    TextView tvSummary;
-    TextView tvEdu;
+    EditText etName;
+    EditText etJob;
+    EditText etSkills;
+    EditText etSummary;
+    EditText etEdu;
 
     Button bLogOut;
     Button bUploadProfileImage;
     Button bTakePhoto;
-    Button bEdit;
     Button bSave;
     CalendarFragment calendarFragment;
-    EditProfileFragment editProfileFragment;
 
     User user;
 
@@ -61,17 +52,16 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        tvName = view.findViewById(R.id.tvName);
-        tvJob = view.findViewById(R.id.tvJob);
-        tvSkills = view.findViewById(R.id.tvSkills);
-        tvSummary = view.findViewById(R.id.tvSummary);
-        tvEdu = view.findViewById(R.id.tvEdu);
-        tvEdu.setEnabled(false);
+        etName = view.findViewById(R.id.etName);
+        etJob = view.findViewById(R.id.etJob);
+        etSkills = view.findViewById(R.id.etSkills);
+        etSummary = view.findViewById(R.id.etSummary);
+        etEdu = view.findViewById(R.id.etEdu);
         ivProfile = view.findViewById(R.id.ivProfile);
         calendarFragment = (CalendarFragment) getActivity().getSupportFragmentManager().findFragmentByTag("CalendarFragment");
 
@@ -80,19 +70,6 @@ public class ProfileFragment extends Fragment {
         camera = new Camera(getContext(), this, model);
 
         populateInfo();
-
-
-        bEdit = view.findViewById(R.id.bEdit);
-
-        bEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
-                editProfileFragment = new EditProfileFragment();
-                fragmentTransaction.replace(R.id.flContainer, editProfileFragment).commit();
-            }
-        });
-
 
         bLogOut = view.findViewById(R.id.bLogOut);
         bLogOut.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +103,17 @@ public class ProfileFragment extends Fragment {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = etName.getText().toString();
+                String skills = etSkills.getText().toString();
+                String job = etJob.getText().toString();
+                String summary = etSummary.getText().toString();
+                String edu = etEdu.getText().toString();
+
+                user.setName(name);
+                user.setSkills(skills);
+                user.setJob(job);
+                user.setSummary(summary);
+                user.setEducation(edu);
                 if (camera.getPhotoFile() != null) {
                     ParseFile newProfileImage = new ParseFile(camera.getPhotoFile());
                     user.setProfileImage(newProfileImage);
@@ -144,26 +132,24 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        adapter = new FavoritesAdapter(user.getFavorites(), model);
-
-        rvFavorites = view.findViewById(R.id.rvFavorites);
-        rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        rvFavorites.setAdapter(adapter);
     }
 
     private void populateInfo() {
-        tvName.setText(user.getName());
+        if (user.getName() != null) {
+            etName.setText(user.getName());
+        }
+
         if (user.getJob() != null) {
-            tvJob.setText("Job: " + user.getJob());
+            etJob.setText(user.getJob());
         }
         if (user.getSkills() != null) {
-            tvSkills.setText("Skills: " + user.getSkills());
+            etSkills.setText(user.getSkills());
         }
         if (user.getSummary() != null) {
-            tvSummary.setText("Summary: " + user.getSummary());
+            etSummary.setText(user.getSummary());
         }
         if (user.getEducation() != null) {
-            tvEdu.setText("Education: " + user.getEducation());
+            etEdu.setText(user.getEducation());
         }
         if (user.getProfileImage() != null) {
             Glide.with(getContext())

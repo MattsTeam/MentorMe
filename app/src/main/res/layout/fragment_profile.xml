@@ -46,8 +46,8 @@
         android:layout_below="@id/bUploadProfileImage"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etName"
+        <TextView
+            android:id="@+id/tvName"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -55,35 +55,35 @@
             android:background="@android:color/transparent"
             android:text="Name" />
 
-        <EditText
-            android:id="@+id/etSkills"
+        <TextView
+            android:id="@+id/tvSkills"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etName"
+            android:layout_below="@id/tvName"
             android:background="@android:color/transparent"
             android:text="Skills" />
 
-        <EditText
-            android:id="@+id/etJob"
+        <TextView
+            android:id="@+id/tvJob"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etSkills"
+            android:layout_below="@id/tvSkills"
             android:background="@android:color/transparent"
             android:text="Job" />
 
-        <EditText
-            android:id="@+id/etSummary"
+        <TextView
+            android:id="@+id/tvSummary"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etJob"
+            android:layout_below="@id/tvJob"
             android:background="@android:color/transparent"
             android:text="Summary" />
 
-        <EditText
-            android:id="@+id/etEdu"
+        <TextView
+            android:id="@+id/tvEdu"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etSummary"
+            android:layout_below="@id/tvSummary"
             android:background="@android:color/transparent"
             android:text="Education" />
 
