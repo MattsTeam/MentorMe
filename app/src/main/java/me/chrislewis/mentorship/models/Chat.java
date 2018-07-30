@@ -1,14 +1,12 @@
 package me.chrislewis.mentorship.models;
 
-import android.util.Log;
-
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 @ParseClassName("Chat")
 public class Chat extends ParseObject{
@@ -22,9 +20,10 @@ public class Chat extends ParseObject{
 
     public Chat() {}
 
-    public Chat(ArrayList<String> users) {
-        for(String i : users) {
-            addUnique(USERS_KEY, i);
+    public Chat(ArrayList<User> users) {
+        for(User i : users) {
+            i.getParseUser().revert();
+            addUnique(USERS_KEY, i.getParseUser());
         }
         objectId = getString(OBJECT_ID_KEY);
     }
@@ -37,23 +36,20 @@ public class Chat extends ParseObject{
         this.recipients = recipients;
     }
 
-    public ArrayList<String> getUsers() {
-        return (ArrayList<String>) get(USERS_KEY);
+    public ArrayList<User> getUsers() {
+        ArrayList<ParseUser> parseUsers = (ArrayList<ParseUser>) get(USERS_KEY);
+        ArrayList<User> users = new ArrayList<>();
+        for (ParseUser i : parseUsers) {
+            users.add(new User(i));
+        }
+        return users;
     }
 
     public void setUsers(ArrayList<User> users) {
         for(User i : users) {
-            addUnique("test", "word");
+            i.getParseUser().revert();
+            addUnique(USERS_KEY, i.getParseUser());
         }
-        Log.d("Chat", "testing");
-        saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.d("Chat", "Error " + e);
-                }
-            }
-        });
     }
 
     public static class Query extends ParseQuery<Chat> {
@@ -62,7 +58,7 @@ public class Chat extends ParseObject{
         }
 
         public Query findChats(User user){
-            whereContains(USERS_KEY, user.getObjectId());
+            whereContainsAll(USERS_KEY, Collections.singleton(user.getParseUser()));
             return this;
         }
     }
