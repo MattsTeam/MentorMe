@@ -159,8 +159,13 @@ public class User{
     public double getOverallRating() {return user.getDouble(OVERALL_RATING_KEY);}
     public void setRating(double rating) { user.put(OVERALL_RATING_KEY, rating); }
 
-    public List<ParseUser> getFavorites() {
-        return (List<ParseUser>) user.get(FAVORITE_KEY);
+    public List<User> getFavorites() {
+        List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
+        ArrayList<User> users = new ArrayList<>();
+        for (ParseUser i : parseUsers) {
+            users.add(new User(i));
+        }
+        return users;
     }
 
     public void addFavorite(User user) {
@@ -219,7 +224,7 @@ public class User{
         user.put(REL_DISTANCE_KEY, distance);
     }
 
-    public boolean firstChat(ArrayList<String> users) {
+    public boolean firstChat(ArrayList<User> users) {
         for(Chat chat : chats) {
             if(chat.getUsers().equals(users)) {
                 return false;
