@@ -163,8 +163,13 @@ public class User{
     public Number getNumReviews() {return user.getNumber(NUM_REVIEWS_KEY);}
     public void setNumReviews(Number numReviews) { user.put(NUM_REVIEWS_KEY, numReviews); }
 
-    public List<ParseUser> getFavorites() {
-        return (List<ParseUser>) user.get(FAVORITE_KEY);
+    public List<User> getFavorites() {
+        List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
+        ArrayList<User> users = new ArrayList<>();
+        for (ParseUser i : parseUsers) {
+            users.add(new User(i));
+        }
+        return users;
     }
 
     public void addFavorite(User user) {
