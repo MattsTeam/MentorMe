@@ -59,42 +59,8 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
-        mDrawerLayout = view.findViewById(R.id.drawer_layout);
-        NavigationView navigationView = view.findViewById(R.id.drawer_view);
-        final Menu menu = navigationView.getMenu();
 
-
-        currentCategories = currentUser.getCategories();
-        if (currentCategories != null) {
-            for (String category : currentCategories) {
-                int itemId = currentCategories.indexOf(category);
-                menu.add(Menu.NONE, itemId, Menu.NONE, category);
-            }
-        }
-
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "All Categories");
-        menu.getItem(menu.size() - 1 ).setChecked(true);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                menuItem.setChecked(true);
-                checkedItem = menuItem;
-                uncheckOtherItems(menuItem, menu);
-                Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
-
-                String category = menuItem.toString();
-                if (category == "All Categories") {
-                    getAllUsers();
-                }
-                else {
-                    filterByCategory(category);
-                }
-                mDrawerLayout.closeDrawers();
-
-                return true;
-            }
-        });
+        setupNavigationDrawer(view);
 
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
@@ -248,5 +214,47 @@ public class HomeFragment extends Fragment {
 
     public void openDrawer() {
         mDrawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    public void setupNavigationDrawer(View view) {
+        mDrawerLayout = view.findViewById(R.id.drawer_layout);
+        NavigationView navigationView = view.findViewById(R.id.drawer_view);
+        final Menu menu = navigationView.getMenu();
+
+        currentCategories = currentUser.getCategories();
+        if (currentCategories != null) {
+            for (String category : currentCategories) {
+                int itemId = currentCategories.indexOf(category);
+                menu.add(Menu.NONE, itemId, Menu.NONE, category);
+            }
+        }
+
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "All Categories");
+        menu.getItem(menu.size() - 1 ).setChecked(true);
+        uncheckOtherItems(menu.getItem(menu.size() - 1), menu);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.toString() == "My Categories") {
+                    menuItem.setChecked(false);
+                    return true;
+                }
+                menuItem.setChecked(true);
+                checkedItem = menuItem;
+                uncheckOtherItems(menuItem, menu);
+                Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
+
+                String category = menuItem.toString();
+                if (category == "All Categories") {
+                    getAllUsers();
+                } else {
+                    filterByCategory(category);
+                }
+                mDrawerLayout.closeDrawers();
+
+                return true;
+            }
+        });
     }
 }
