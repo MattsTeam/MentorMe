@@ -227,7 +227,7 @@ public class User{
 
     public void setSync(Boolean isSync) { user.put(SYNC_KEY, isSync); }
 
-    public boolean firstChat(ArrayList<String> users) {
+    public boolean firstChat(ArrayList<User> users) {
         for(Chat chat : chats) {
             if(chat.getUsers().equals(users)) {
                 return false;
@@ -254,6 +254,10 @@ public class User{
 
     public void fetchInBackground(GetCallback<ParseObject> callback) {
         user.fetchInBackground(callback);
+    }
+
+    public void fetchIfNeed() throws ParseException {
+        user = user.fetchIfNeeded();
     }
 
     public String getRelativeTimeAgo() {

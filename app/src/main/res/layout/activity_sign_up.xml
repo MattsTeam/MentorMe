@@ -162,4 +162,13 @@
         android:textSize="20sp"
         android:text="Next" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        app:srcCompat="@drawable/mentorme" />
+
 </RelativeLayout>

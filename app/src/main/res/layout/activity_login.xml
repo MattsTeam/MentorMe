@@ -13,40 +13,40 @@
         android:layout_height="45dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="160dp"
-        android:paddingLeft="15dp"
         android:background="@drawable/round_text_input"
+        android:hint=" Username"
+        android:paddingLeft="15dp"
         android:textColor="@color/loginGrey"
-        android:textCursorDrawable="@null"
-        android:hint=" Username" />
+        android:textCursorDrawable="@null" />
 
     <EditText
         android:id="@+id/tvPassword"
         android:layout_width="220dp"
         android:layout_height="45dp"
         android:layout_alignLeft="@+id/tvUsername"
-        android:textColor="@color/loginGrey"
         android:layout_below="@id/tvUsername"
         android:layout_marginTop="20dp"
-        android:paddingLeft="15dp"
         android:background="@drawable/round_text_input"
-        android:textCursorDrawable="@null"
         android:ems="10"
         android:hint="  Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:paddingLeft="15dp"
+        android:textColor="@color/loginGrey"
+        android:textCursorDrawable="@null" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="220dp"
         android:layout_height="45dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/tvPassword"
         android:layout_alignLeft="@id/tvUsername"
+        android:layout_below="@+id/tvPassword"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:background="@drawable/round_login_button"
+        android:text="Sign In"
         android:textAllCaps="false"
         android:textColor="@color/papaya"
-        android:textSize="20sp"
-        android:text="Sign In" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvSignUp"
@@ -56,8 +56,17 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:textStyle="bold"
+        android:text="Don't have an account? Sign up."
         android:textColor="@color/orange"
-        android:text="Don't have an account? Sign up." />
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="255dp"
+        android:layout_height="77dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp"
+        app:srcCompat="@drawable/mentorme" />
 
 </RelativeLayout>
