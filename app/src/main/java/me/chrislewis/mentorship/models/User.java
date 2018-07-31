@@ -37,6 +37,7 @@ public class User{
     private final static String OVERALL_RATING_KEY = "overallRating";
     private final static String REVIEWS_KEY = "reviews";
     private final static String NUM_RATINGS_KEY = "numRatings";
+    private final static String SYNC_KEY = "allowSync";
 
     public String name;
     public String username;
@@ -214,6 +215,10 @@ public class User{
     public void setRelDistance(Double distance) {
         user.put(REL_DISTANCE_KEY, distance);
     }
+
+    public Boolean getSync() { return user.getBoolean(SYNC_KEY); }
+
+    public void setSync(Boolean isSync) { user.put(SYNC_KEY, isSync); }
 
     public boolean firstChat(ArrayList<String> users) {
         for(Chat chat : chats) {

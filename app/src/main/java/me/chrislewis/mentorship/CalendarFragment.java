@@ -56,7 +56,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse, AddEventDialogFragment.OnReceivedData{
 
-    SimpleDateFormat todayFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
+    SimpleDateFormat todayFormat = new SimpleDateFormat("MMM dd, yyyy");
     SimpleDateFormat newEventFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     ArrayList<Event> days = new ArrayList<>();
@@ -251,18 +251,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         return 0xFF000000 | Red | Green | Blue;
     }
 
-    /*@Override
-    public void onResume() {
-        super.onResume();
-        if (isGooglePlayServicesAvailable() && allowSync) {
-            Log.d("CalendarFragment", "Google play services is available");
-            refreshResults();
-        }
-        else {
-            Log.d("CalendarFragment", "Google play services is not available");
-        }
-    }*/
-
     //Attempts to get data from Google Calendar API
     private void refreshResults() {
         Log.d("CalendarFragment", "Refreshing results");
@@ -296,7 +284,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     }
 
     private boolean isDeviceOnline() {
-        Log.d("CalendarFragment", "Is device online");
         ConnectivityManager connMgr =
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -369,13 +356,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 Log.d("CalendarFragment", "Pressed cancel and did not allow syncing.");
             }
         }
-
-        /*else if(requestCode == REQUEST_AUTHORIZATION) {
-            Log.d("CalendarFragment", "Request authorization");
-            if (resultCode != RESULT_OK) {
-                chooseAccount();
-            }
-        }*/
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -384,11 +364,11 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     }
 
     @Override
-    public void passNewEvent(String date, String time, String description) {
+    public void passNewEvent(String date, String time, String description, String invitee, String inviteeId) {
         //Add new event to Google Calendar
         if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
             try {
-                new CreateEvent(mService, date, time, description).execute();
+                new CreateEvent(mService, date, time, description, invitee).execute();
                 refreshResults();
             }
             catch (java.text.ParseException e) {
@@ -406,6 +386,10 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 newEvent.setEventDescription(description);
                 newEvent.setTime(time);
                 newEvent.setDateString(date);
+                Log.d("CalendarFragment", invitee);
+                Log.d("CalendarFragment", inviteeId);
+                newEvent.setInviteeString(invitee);
+                newEvent.setInviteeIdString(inviteeId);
                 newEvent.saveInBackground();
 
                 AlarmBroadcastReceiver.setAlarm(getContext(), date, time);
@@ -423,4 +407,5 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
         }
     }
+
 }

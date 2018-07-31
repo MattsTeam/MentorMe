@@ -42,7 +42,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         return new ViewHolder(contactView);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final Chat chat = chats.get(i);

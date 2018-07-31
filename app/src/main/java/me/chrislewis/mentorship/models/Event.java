@@ -19,6 +19,8 @@ public class Event extends ParseObject implements Serializable {
     private final static String DATE_STRING_KEY = "dateString";
     private final static String TIME_KEY = "timeString";
     private final static String DATE_STRING = "dateString";
+    private final static String INVITEE_STRING = "invitee";
+    private final static String INVITEE_ID_STRING = "inviteeId";
     private final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private final static DateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
 
@@ -50,6 +52,10 @@ public class Event extends ParseObject implements Serializable {
     public String getEventTime() { return getString(TIME_KEY); }
 
     public void setTime(String time) { put(TIME_KEY, time); }
+
+    public void setInviteeString(String invitee) { put(INVITEE_STRING, invitee); }
+
+    public void setInviteeIdString(String inviteeId) { put(INVITEE_ID_STRING, inviteeId); }
 
     public static class Query extends ParseQuery<Event> {
         public Query() {
