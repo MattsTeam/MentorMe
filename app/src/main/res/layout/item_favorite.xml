@@ -18,4 +18,12 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/ivProfile"
         android:text="TextView" />
+
+    <Button
+        android:id="@+id/btMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/title_messages" />
 </RelativeLayout>
