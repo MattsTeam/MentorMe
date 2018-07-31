@@ -1,6 +1,5 @@
 package me.chrislewis.mentorship;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +20,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
-
-import java.util.Objects;
 
 import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.User;

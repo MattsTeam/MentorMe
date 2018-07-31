@@ -72,7 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
         user.setName(nameInput.getText().toString());
         user.setEducation("N/A");
         user.setOrganization("N/A");
-        user.setRelDistance(10.0);
         user.setLocation(new ParseGeoPoint());
         user.setJob("N/A");
         user.setSync(false);

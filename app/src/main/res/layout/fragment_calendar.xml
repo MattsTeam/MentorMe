@@ -15,50 +15,61 @@
         app:mcv_selectionColor="@color/orange"
         app:mcv_showOtherDates="all" />
 
-    <ImageView
-        android:id="@+id/calendarHeader"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar_calendar"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        app:srcCompat="@color/orange" />
+        android:fitsSystemWindows="true"
+        app:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:title=""
+        android:background="@color/orange"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
 
-    <TextView
-        android:id="@+id/tvCurrentDay"
-        android:layout_width="wrap_content"
-        android:layout_height="72dp"
-        android:layout_alignBottom="@+id/calendarHeader"
-        android:layout_alignLeft="@+id/calendarHeader"
-        android:layout_alignRight="@+id/calendarHeader"
-        android:layout_alignTop="@+id/calendarHeader"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/addEventButton"
-        android:layout_width="49dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/syncSwitch"
-        android:background="@null"
-        app:srcCompat="@drawable/ic_add_event" />
+            <TextView
+                android:id="@+id/tvCurrentDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="151dp"
+                android:gravity="center"
+                android:text="Today"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-    <Switch
-        android:id="@+id/syncSwitch"
-        android:layout_width="103dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="11dp"
-        android:layout_marginStart="12dp"
-        android:switchPadding="1dp"
-        android:text="Google Calendar Sync"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+            <ImageButton
+                android:id="@+id/addEventButton"
+                android:layout_width="49dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/syncSwitch"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_add_event" />
+
+            <Switch
+                android:id="@+id/syncSwitch"
+                android:layout_width="103dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_marginStart="12dp"
+                android:switchPadding="1dp"
+                android:text="Google Calendar Sync"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"

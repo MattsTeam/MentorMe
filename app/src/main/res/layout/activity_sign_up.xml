@@ -14,7 +14,7 @@
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="77dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginTop="120dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -103,32 +103,32 @@
 
     <ImageView
         android:id="@+id/usernameImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/usernameIcon"
         android:layout_alignLeft="@+id/usernameIcon"
         android:layout_alignRight="@+id/usernameIcon"
         android:layout_alignTop="@+id/usernameIcon"
-        android:layout_alignBottom="@+id/usernameIcon"
+        android:layout_gravity="center"
         android:gravity="center"
         app:srcCompat="@drawable/ic_username" />
 
     <ImageView
         android:id="@+id/passwordImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/passwordIcon"
         android:layout_alignLeft="@+id/passwordIcon"
         android:layout_alignRight="@+id/passwordIcon"
         android:layout_alignTop="@+id/passwordIcon"
-        android:layout_alignBottom="@+id/passwordIcon"
+        android:layout_gravity="center"
         android:gravity="center"
         app:srcCompat="@drawable/ic_password" />
 
     <ImageView
         android:id="@+id/emailImage"
-        android:layout_width="48dp"
-        android:layout_height="32dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/emailIcon"
         android:layout_alignLeft="@+id/emailIcon"
         android:layout_alignRight="@+id/emailIcon"
@@ -139,13 +139,13 @@
 
     <ImageView
         android:id="@+id/nameImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/nameIcon"
         android:layout_alignLeft="@+id/nameIcon"
         android:layout_alignRight="@+id/nameIcon"
         android:layout_alignTop="@+id/nameIcon"
-        android:layout_alignBottom="@+id/nameIcon"
+        android:layout_gravity="center"
         android:gravity="center"
         app:srcCompat="@drawable/ic_name" />
 

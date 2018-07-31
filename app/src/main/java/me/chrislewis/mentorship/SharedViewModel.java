@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.Calendar;
+import com.parse.ParseGeoPoint;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
@@ -25,8 +27,10 @@ public class SharedViewModel extends ViewModel{
     FragmentManager fragmentManager;
     GoogleAccountCredential credential;
     com.google.api.services.calendar.Calendar mService;
+    List<String> newEventInfo = new ArrayList<>();
 
     String fragmentIdentifier;
+    ParseGeoPoint parseLocation;
 
     public Calendar getService() {
         return mService;
@@ -117,4 +121,18 @@ public class SharedViewModel extends ViewModel{
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
+
+    public void setNewEventInfo(String date, String time, String description, String invitee, String inviteeId) {
+        newEventInfo.clear();
+        newEventInfo.add(date);
+        newEventInfo.add(time);
+        newEventInfo.add(description);
+        newEventInfo.add(invitee);
+        newEventInfo.add(inviteeId);
+    }
+
+    public List<String> getNewEventInfo() { return newEventInfo; }
+
+    public ParseGeoPoint getLocation() { return parseLocation; }
+    public void setLocation (ParseGeoPoint location) {this.parseLocation = location; }
 }

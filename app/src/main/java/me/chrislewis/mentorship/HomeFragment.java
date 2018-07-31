@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -47,6 +49,7 @@ public class HomeFragment extends Fragment {
     private List<ParseUser> sameCategoryUsers;
     private Button btnOpenDrawer;
     MenuItem checkedItem;
+    ParseGeoPoint currentParseLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -95,12 +98,14 @@ public class HomeFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
+        //setupLocationServices();
+
         getAllUsers();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_home, menu);
+        inflater.inflate(R.menu.menu_calendar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -153,14 +158,42 @@ public class HomeFragment extends Fragment {
         double distanceRank = 0;
         double organizationRank = 0;
         double educationRank = 0;
-        distanceRank = 10 * user.getRelDistance();
+        double ratingRank = 0;
         if(!user.getOrganization().equals(currentUser.getOrganization())) {
             organizationRank = 4;
         }
         if(!user.getEducation().equals(currentUser.getOrganization())) {
             educationRank = 5;
         }
-        return distanceRank + organizationRank + educationRank;
+
+        User mUser = new User(ParseUser.getCurrentUser());
+        currentParseLocation = mUser.getCurrentLocation();
+        if (currentParseLocation != null) {
+            Location currentLocation = new Location("MainActivity");
+            currentLocation.setLongitude(currentParseLocation.getLongitude());
+            currentLocation.setLatitude(currentParseLocation.getLatitude());
+
+            Location otherLocation = new Location("parse other user");
+            otherLocation.setLongitude(user.getCurrentLocation().getLongitude());
+            otherLocation.setLatitude(user.getCurrentLocation().getLatitude());
+
+            double distanceInMeters = otherLocation.distanceTo(currentLocation);
+            double distanceInMiles = distanceInMeters * 0.000621371192;
+            double distance = Math.round(distanceInMiles * 10) / 10;
+
+            distanceRank = 20 * distance;
+            user.setRelDistance(distance);
+            user.saveInBackground();
+
+        }
+
+        double rating = currentUser.getOverallRating();
+        if (rating != 0.0) {
+            ratingRank = 10 / 0.2;
+        } else if (rating == 0.0) {
+            ratingRank = 5.0;
+        }
+        return distanceRank + organizationRank + educationRank + ratingRank;
     }
 
     public void filterByCategory(String category) {

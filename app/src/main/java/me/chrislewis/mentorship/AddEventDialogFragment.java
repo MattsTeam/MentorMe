@@ -133,13 +133,23 @@ public class AddEventDialogFragment extends DialogFragment {
                 String inviteeId = ids.get(names.indexOf(invitee));
                 Log.d("AddEventDialogFragment", invitee);
                 Log.d("AddEventDialogFragment", inviteeId);
-                sendEvent(todayString, time, description, invitee, inviteeId);
+                model.setNewEventInfo(todayString, time, description, invitee, inviteeId);
+                model.getFragmentManager().findFragmentById(R.id.flContainer);
+                CalendarFragment calendarFragment = (CalendarFragment) model.getFragmentManager().findFragmentByTag("CalendarFragment");
+                calendarFragment.createParseEvent();
+                //getActivity().startActivityForResult(getActivity().getIntent(), 10);
+                //sendEvent(todayString, time, description, invitee, inviteeId);
                 dismiss();
             }
         });
     }
 
     private void sendEvent(String date, String time, String description, String invitee, String inviteeId) {
+        Log.d("AddEventDialogFragment", date);
+        Log.d("AddEventDialogFragment", time);
+        Log.d("AddEventDialogFragment", description);
+        Log.d("AddEventDialogFragment", invitee);
+        Log.d("AddEventDialogFragment", inviteeId);
         mData.passNewEvent(date, time, description, invitee, inviteeId);
     }
 
