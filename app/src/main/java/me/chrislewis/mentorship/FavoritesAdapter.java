@@ -7,29 +7,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
+import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.User;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
     private Context mContext;
-    private String favoriteKey;
     private List<User> favorites;
 
     SharedViewModel model;
-    DetailsFragment detailsFragment = new DetailsFragment();
+    private FragmentTransaction fragmentTransaction;
+    private DetailsFragment detailsFragment = new DetailsFragment();
+    private MessageFragment messageFragment = new MessageFragment();
 
-    public FavoritesAdapter(List<User> favorites, SharedViewModel model) {
+    FavoritesAdapter(List<User> favorites, SharedViewModel model) {
         this.favorites = favorites;
         this.model = model;
 
@@ -47,28 +47,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final User user = favorites.get(i);
-        user.fetchInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject object, ParseException e) {
-                try {
-                    ParseUser temp = user.getParseUser().fetchIfNeeded();
-                    User mUser = new User(temp);
-                    viewHolder.tvName.setText(mUser.getName());
-
-                    if(mUser.getProfileImage() != null) {
-                        Glide.with(mContext)
-                                .load(mUser.getProfileImage().getUrl())
-                                .into(viewHolder.ivProfile);
-                    }
-
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
-
-            }
-        });
-
-
+        viewHolder.tvName.setText(user.getName());
+        Glide.with(mContext)
+                .load(user.getProfileImage().getUrl())
+                .apply(new RequestOptions().circleCrop())
+                .into(viewHolder.ivProfile);
     }
 
     @Override
@@ -83,23 +66,36 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView ivProfile;
         TextView tvName;
+        Button btMessage;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfile = itemView.findViewById(R.id.ivProfile);
             tvName = itemView.findViewById(R.id.tvName);
+            btMessage = itemView.findViewById(R.id.btMessage);
+            btMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        User user = favorites.get(position);
+
+                        model.setRecipients(new ArrayList<>(Arrays.asList(user, model.getCurrentUser())));
+                        fragmentTransaction = model.getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
+                    }
+                }
+            });
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(mContext, "adapter clicked", Toast.LENGTH_SHORT).show();
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 User user = favorites.get(position);
                 model.setUser(user);
 
-                FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
                 fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
             }
