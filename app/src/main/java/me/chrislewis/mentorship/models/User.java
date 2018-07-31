@@ -177,12 +177,12 @@ public class User{
         List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
         ArrayList<User> users = new ArrayList<>();
         if (parseUsers != null) {
-            for (ParseUser i : parseUsers) {
-                users.add(new User(i));
-
-            }
-            return users;
-        } else {
+          for (ParseUser i : parseUsers) {
+            users.add(new User(i));
+          }
+          return users;
+        }
+        else {
             return null;
         }
     }

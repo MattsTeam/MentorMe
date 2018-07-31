@@ -62,7 +62,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     ArrayList<Event> days = new ArrayList<>();
     List<com.google.api.services.calendar.model.Event> googleTodayEvents = new ArrayList<>();
     ArrayList<com.google.api.services.calendar.model.Event> googleEvents = new ArrayList<>();
-    com.google.api.services.calendar.model.Event googleToday;
     int orange = getIntFromColor(128, 128, 128);
     int black = getIntFromColor(0,0,0);
     MaterialCalendarView calendarView;
@@ -361,6 +360,42 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
+    }
+
+    public void createParseEvent() {
+        Event newEvent = new Event();
+        newEvent.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
+        String date = model.getNewEventInfo().get(0);
+        String time = model.getNewEventInfo().get(1);
+        newEvent.setDateString(date);
+        newEvent.setTime(time);
+        Date newDate = null;
+        try {
+            newDate = newEventFormat.parse(date + " " + time);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        newEvent.setEventDate(newDate);
+        String description = model.getNewEventInfo().get(2);
+        newEvent.setEventDescription(description);
+        String invitee = model.getNewEventInfo().get(3);
+        String inviteeId = model.getNewEventInfo().get(4);
+        Log.d("CalendarFragment", "date: " + date);
+        Log.d("CalendarFragment", "time: " + time);
+        Log.d("CalendarFragment", "invitee: " + invitee);
+        Log.d("CalendarFragment", "inviteeId: " + inviteeId);
+        newEvent.setInviteeString(invitee);
+        newEvent.setInviteeIdString(inviteeId);
+        newEvent.saveInBackground();
+
+        AlarmBroadcastReceiver.setAlarm(getContext(), date, time);
+
+        Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
+        toast.show();
+        refreshEvents();
+        Log.d("CalendarFragment", "Saved new event to Parse");
+
     }
 
     @Override
