@@ -1,5 +1,6 @@
 package me.chrislewis.mentorship;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
+
+import java.util.Objects;
 
 import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.User;
@@ -54,7 +56,7 @@ public class ProfileFragment extends Fragment {
     private Camera camera;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -68,7 +70,9 @@ public class ProfileFragment extends Fragment {
         tvEdu = view.findViewById(R.id.tvEdu);
         tvEdu.setEnabled(false);
         ivProfile = view.findViewById(R.id.ivProfile);
-        calendarFragment = (CalendarFragment) getActivity().getSupportFragmentManager().findFragmentByTag("CalendarFragment");
+        calendarFragment = (CalendarFragment) Objects.requireNonNull(getActivity())
+                .getSupportFragmentManager()
+                .findFragmentByTag("CalendarFragment");
 
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         user = model.getCurrentUser();
@@ -100,15 +104,9 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
-
-
-        adapter = new FavoritesAdapter(user.getFavorites(), model);
-
-        rvFavorites = view.findViewById(R.id.rvFavorites);
-        rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        rvFavorites.setAdapter(adapter);
     }
 
+    @SuppressLint("SetTextI18n")
     private void populateInfo() {
         tvName.setText(user.getName());
         if (user.getJob() != null) {
@@ -124,7 +122,7 @@ public class ProfileFragment extends Fragment {
             tvEdu.setText("Education: " + user.getEducation());
         }
         if (user.getProfileImage() != null) {
-            Glide.with(getContext())
+            Glide.with(Objects.requireNonNull(getContext()))
                     .load(user.getProfileImage().getUrl())
                     .apply(new RequestOptions().circleCrop())
                     .into(ivProfile);
@@ -135,23 +133,21 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Glide.with(getContext())
+                Glide.with(Objects.requireNonNull(getContext()))
                         .load(camera.getPhoto())
                         .apply(new RequestOptions().circleCrop())
                         .into(ivProfile);
             } else {
-                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),
+                        "Picture wasn't taken!",
+                        Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == PICK_IMAGE_REQUEST) {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                if (resultCode == RESULT_OK) {
-                    Glide.with(getContext())
-                            .load(camera.getChosenPhoto(data))
-                            .apply(new RequestOptions().circleCrop())
-                            .into(ivProfile);
-                } else {
-                    Toast.makeText(getContext(), "Picture wasn't chosen!", Toast.LENGTH_SHORT).show();
-                }
+                Glide.with(Objects.requireNonNull(getContext()))
+                        .load(camera.getChosenPhoto(data))
+                        .apply(new RequestOptions().circleCrop())
+                        .into(ivProfile);
 
             }
         }
