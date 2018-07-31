@@ -3,7 +3,6 @@ package me.chrislewis.mentorship.models;
 import android.text.format.DateUtils;
 
 import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -37,6 +36,7 @@ public class User{
     private final static String EMAIL_KEY = "email";
     private final static String OVERALL_RATING_KEY = "overallRating";
     private final static String REVIEWS_KEY = "reviews";
+    private final static String SYNC_KEY = "allowSync";
     private final static String NUM_REVIEWS_KEY = "numReviews";
 
     public String name;
@@ -228,6 +228,10 @@ public class User{
     public void setRelDistance(Double distance) {
         user.put(REL_DISTANCE_KEY, distance);
     }
+
+    public Boolean getSync() { return user.getBoolean(SYNC_KEY); }
+
+    public void setSync(Boolean isSync) { user.put(SYNC_KEY, isSync); }
 
     public boolean firstChat(ArrayList<User> users) {
         for(Chat chat : chats) {
