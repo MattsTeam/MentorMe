@@ -2,8 +2,6 @@ package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -52,13 +50,6 @@ public class HomeFragment extends Fragment {
     private Button btnOpenDrawer;
     MenuItem checkedItem;
     ParseGeoPoint currentParseLocation;
-    ParseGeoPoint parseLocation;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private int REQUEST_LOCATION = 10;
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -298,43 +289,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-    /*
-    public void setupLocationServices() {
-        locationManager = (LocationManager) getSystemService(getActivity(), LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                parseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
-                model.setLocation(parseLocation);
-                User currentUser = new User(ParseUser.getCurrentUser());
-                currentUser.setLocation(parseLocation);
-                currentUser.saveInBackground();
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
-
-
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
-
-            return;
-        }
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
-
-    }
-    */
 }

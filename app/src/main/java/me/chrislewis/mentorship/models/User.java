@@ -3,6 +3,7 @@ package me.chrislewis.mentorship.models;
 import android.text.format.DateUtils;
 
 import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
