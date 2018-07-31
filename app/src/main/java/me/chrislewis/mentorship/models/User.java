@@ -3,6 +3,7 @@ package me.chrislewis.mentorship.models;
 import android.text.format.DateUtils;
 
 import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -39,23 +40,16 @@ public class User{
     private final static String NUM_RATINGS_KEY = "numRatings";
     private final static String SYNC_KEY = "allowSync";
 
-    public String name;
-    public String username;
-    public String job;
-    public String profileImage;
-    public String skills;
-    public String summary;
-    public String education;
-    public String description;
-    public String location;
-    public String distance;
-    public String relativeDistance;
-
     private ParseUser user;
-    public List<Chat> chats;
+    private List<Chat> chats;
+    private ArrayList<User> favorites;
 
     public User(ParseUser user){
-        this.user = user;
+        try {
+            this.user = user.fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public ParseUser getParseUser() {
@@ -165,12 +159,20 @@ public class User{
     public void setNumRatings(Integer numRatings) { user.put(NUM_RATINGS_KEY, getNumRatings()); }
 
     public List<User> getFavorites() {
-        List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
-        ArrayList<User> users = new ArrayList<>();
-        for (ParseUser i : parseUsers) {
-            users.add(new User(i));
+        if (favorites == null) {
+            favorites = new ArrayList<>();
+            List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
+            if (parseUsers != null) {
+                for (ParseUser i : parseUsers) {
+                    favorites.add(new User(i));
+                }
+                return favorites;
+            } else {
+                return null;
+            }
+        } else {
+            return favorites;
         }
-        return users;
     }
 
     public void addFavorite(User user) {
@@ -221,9 +223,11 @@ public class User{
     public void setSync(Boolean isSync) { user.put(SYNC_KEY, isSync); }
 
     public boolean firstChat(ArrayList<User> users) {
-        for(Chat chat : chats) {
-            if(chat.getUsers().equals(users)) {
-                return false;
+        if (chats != null) {
+            for (Chat chat : chats) {
+                if (chat.getUsers().equals(users)) {
+                    return false;
+                }
             }
         }
         return true;
