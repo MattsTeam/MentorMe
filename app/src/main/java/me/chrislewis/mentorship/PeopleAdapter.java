@@ -11,9 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
     Context context;
     List<Chat> chats;
-    User user;
+    User currentUser;
     SharedViewModel model;
     MessageFragment messageFragment = new MessageFragment();
 
@@ -34,7 +32,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         this.context = context;
         this.chats = chats;
         this.model = model;
-        this.user = model.getCurrentUser();
+        this.currentUser = model.getCurrentUser();
     }
 
     @NonNull
@@ -48,35 +46,25 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Chat chat = chats.get(i);
-        ArrayList<String> users = chat.getUsers();
-        final ArrayList<User> recipients = new ArrayList<>();
-        for(int j = 0; j < users.size(); j++){
-            String holder = users.get(j);
-
-            User.Query query = new User.Query();
-            query.getUser(holder);
-            query.findInBackground(new FindCallback<ParseUser>() {
-                @Override
-                public void done(List<ParseUser> objects, ParseException e) {
-                    User filler = new User(objects.get(0));
-                    if (user.getObjectId().equals(filler.getObjectId()) == false) {
-                        viewHolder.tvName.setText(filler.getName());
-                        viewHolder.tvName.setVisibility(View.VISIBLE);
-                        Glide.with(context)
-                                .load(filler.getProfileImage().getUrl())
-                                .into(viewHolder.ivProfileImage);
-                        viewHolder.ivProfileImage.setVisibility(View.VISIBLE);
-                    }
-                    recipients.add(filler);
+        ArrayList<User> users = chat.getUsers();
+        for(User user : users){
+            if (!currentUser.getObjectId().equals(user.getObjectId())) {
+                try {
+                    user.fetchIfNeed();
+                    viewHolder.tvName.setText(user.getName());
+                    viewHolder.tvName.setVisibility(View.VISIBLE);
+                    Glide.with(context)
+                            .load(user.getProfileImage().getUrl())
+                            .into(viewHolder.ivProfileImage);
+                    viewHolder.ivProfileImage.setVisibility(View.VISIBLE);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            });
-
+            break;
+            }
         }
-        chat.setRecipients(recipients);
-        chat.setUsers(recipients);
-
     }
 
     @Override
@@ -105,7 +93,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Chat chat = chats.get(position);
-                model.setRecipients(chat.getRecipients());
+                model.setRecipients(chat.getUsers());
 
                 FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
