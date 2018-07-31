@@ -22,13 +22,13 @@ import me.chrislewis.mentorship.models.User;
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
 
     Context context;
-    List<Chat> chats;
+    private List<Chat> chats;
     User currentUser;
     SharedViewModel model;
-    MessageFragment messageFragment = new MessageFragment();
+    private MessageFragment messageFragment = new MessageFragment();
 
 
-    public PeopleAdapter(Context context, ArrayList<Chat> chats, SharedViewModel model) {
+    PeopleAdapter(Context context, List<Chat> chats, SharedViewModel model) {
         this.context = context;
         this.chats = chats;
         this.model = model;
@@ -80,7 +80,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         ImageView ivProfileImage;
         TextView tvName;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvName = itemView.findViewById(R.id.tvName);
