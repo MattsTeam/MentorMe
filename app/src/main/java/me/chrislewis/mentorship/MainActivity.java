@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     final MessageListFragment messageFragment = new MessageListFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
     final ComposeReviewFragment composeReviewFragment = new ComposeReviewFragment();
+    final FavoritesFragment favoritesFragment = new FavoritesFragment();
 
     public String photoFileName = "photo.jpg";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -74,14 +75,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.navigation_favorites:
+                    actionBar.show();
+                    actionBar.setTitle("");
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
+                    return true;
                 case R.id.navigation_home:
                     actionBar.show();
                     actionBar.setTitle("");
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
-
                     return true;
                 case R.id.navigation_messages:
+                    actionBar.show();
+                    actionBar.setTitle("");
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
                     actionBar.hide();
@@ -117,17 +125,20 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction = fragmentManager.beginTransaction();
 
+        currentUser.getFavorites();
+
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
         model.setFragmentManager(fragmentManager);
         model.setFragmentTransaction(fragmentTransaction);
         model.setCurrentUser(currentUser);
+
 
         Intent getI = getIntent();
         if (getI.hasExtra("fromSignUp")){
             fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
         }
         else {
-            fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
+            fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
             actionBar.setTitle("");
 
         }
