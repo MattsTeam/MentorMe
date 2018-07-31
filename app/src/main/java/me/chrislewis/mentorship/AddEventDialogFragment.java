@@ -31,7 +31,7 @@ import me.chrislewis.mentorship.models.User;
 public class AddEventDialogFragment extends DialogFragment {
 
     public interface OnReceivedData {
-        public void passNewEvent(String date, String time, String description);
+        public void passNewEvent(String date, String time, String description, String invitee, String inviteeId);
     }
 
     private Button addEventButton;
@@ -129,14 +129,18 @@ public class AddEventDialogFragment extends DialogFragment {
                 }
                 String time = hour + ":" + minute;
                 String description = eventDescription.getText().toString();
-                sendEvent(todayString, time, description);
+                String invitee = findMentors.getSelectedItem().toString();
+                String inviteeId = ids.get(names.indexOf(invitee));
+                Log.d("AddEventDialogFragment", invitee);
+                Log.d("AddEventDialogFragment", inviteeId);
+                sendEvent(todayString, time, description, invitee, inviteeId);
                 dismiss();
             }
         });
     }
 
-    private void sendEvent(String date, String time, String description) {
-        mData.passNewEvent(date, time, description);
+    private void sendEvent(String date, String time, String description, String invitee, String inviteeId) {
+        mData.passNewEvent(date, time, description, invitee, inviteeId);
     }
 
 }
