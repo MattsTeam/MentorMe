@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -42,10 +41,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         context = parent.getContext();
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
-        ParseGeoPoint ParseCurrentLocation = currentUser.getCurrentLocation();
-        currentLocation.setLatitude(ParseCurrentLocation.getLatitude());
-        currentLocation.setLongitude(ParseCurrentLocation.getLongitude());
-
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View gridView = inflater.inflate(R.layout.item_user, parent, false);
@@ -70,21 +65,13 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
         Double rating = user.getOverallRating();
         if (rating != null) {
-            holder.tvRating.setText("Rating: " + rating);
+            holder.tvRating.setText("Rating: " + String.format("%.2f", rating));
+        } else {
+            holder.tvRating.setText("Rating: N/A");
         }
 
-        ParseGeoPoint ParseLocation = user.getCurrentLocation();
-        if (ParseLocation != null) {
-            Location location = new Location("location");
-            location.setLongitude(ParseLocation.getLongitude());
-            location.setLatitude(ParseLocation.getLatitude());
-            double distanceInMeters = currentLocation.distanceTo(location);
-            double distanceInMiles = distanceInMeters * 0.000621371192;
-            double distance = Math.round(distanceInMiles * 10) / 10;
-
-            holder.tvDistance.setText(Double.toString(distance) + " miles away");
-            user.setRelDistance(distance);
-        }
+        Double relDistance = user.getRelDistance();
+        holder.tvDistance.setText(Double.toString(relDistance) + " miles away");
 
         String categoriesText = user.getCategories().toString();
         if (categoriesText != null) {
@@ -129,7 +116,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
                 fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
             }
-
         }
     }
 

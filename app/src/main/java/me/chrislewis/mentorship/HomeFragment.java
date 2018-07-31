@@ -1,6 +1,9 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,6 +24,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -47,6 +51,14 @@ public class HomeFragment extends Fragment {
     private List<ParseUser> sameCategoryUsers;
     private Button btnOpenDrawer;
     MenuItem checkedItem;
+    ParseGeoPoint currentParseLocation;
+    ParseGeoPoint parseLocation;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private int REQUEST_LOCATION = 10;
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -95,12 +107,14 @@ public class HomeFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
+        //setupLocationServices();
+
         getAllUsers();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_home, menu);
+        inflater.inflate(R.menu.menu_calendar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -153,14 +167,42 @@ public class HomeFragment extends Fragment {
         double distanceRank = 0;
         double organizationRank = 0;
         double educationRank = 0;
-        distanceRank = 10 * user.getRelDistance();
+        double ratingRank = 0;
         if(!user.getOrganization().equals(currentUser.getOrganization())) {
             organizationRank = 4;
         }
         if(!user.getEducation().equals(currentUser.getOrganization())) {
             educationRank = 5;
         }
-        return distanceRank + organizationRank + educationRank;
+
+        User mUser = new User(ParseUser.getCurrentUser());
+        currentParseLocation = mUser.getCurrentLocation();
+        if (currentParseLocation != null) {
+            Location currentLocation = new Location("MainActivity");
+            currentLocation.setLongitude(currentParseLocation.getLongitude());
+            currentLocation.setLatitude(currentParseLocation.getLatitude());
+
+            Location otherLocation = new Location("parse other user");
+            otherLocation.setLongitude(user.getCurrentLocation().getLongitude());
+            otherLocation.setLatitude(user.getCurrentLocation().getLatitude());
+
+            double distanceInMeters = otherLocation.distanceTo(currentLocation);
+            double distanceInMiles = distanceInMeters * 0.000621371192;
+            double distance = Math.round(distanceInMiles * 10) / 10;
+
+            distanceRank = 20 * distance;
+            user.setRelDistance(distance);
+            user.saveInBackground();
+
+        }
+
+        double rating = currentUser.getOverallRating();
+        if (rating != 0.0) {
+            ratingRank = 10 / 0.2;
+        } else if (rating == 0.0) {
+            ratingRank = 5.0;
+        }
+        return distanceRank + organizationRank + educationRank + ratingRank;
     }
 
     public void filterByCategory(String category) {
@@ -256,4 +298,43 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    /*
+    public void setupLocationServices() {
+        locationManager = (LocationManager) getSystemService(getActivity(), LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                parseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+                model.setLocation(parseLocation);
+                User currentUser = new User(ParseUser.getCurrentUser());
+                currentUser.setLocation(parseLocation);
+                currentUser.saveInBackground();
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+
+            return;
+        }
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+
+    }
+    */
 }

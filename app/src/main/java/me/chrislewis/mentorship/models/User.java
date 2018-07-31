@@ -164,13 +164,26 @@ public class User{
     public Integer getNumRatings() {return user.getInt(NUM_RATINGS_KEY);}
     public void setNumRatings(Integer numRatings) { user.put(NUM_RATINGS_KEY, getNumRatings()); }
 
+    public Double getRelDistance() {
+        return user.getDouble(REL_DISTANCE_KEY);
+    }
+
+    public void setRelDistance(double distance) {
+        user.put(REL_DISTANCE_KEY, distance);
+    }
+
     public List<User> getFavorites() {
         List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
         ArrayList<User> users = new ArrayList<>();
-        for (ParseUser i : parseUsers) {
-            users.add(new User(i));
+        if (parseUsers != null) {
+            for (ParseUser i : parseUsers) {
+                users.add(new User(i));
+
+            }
+            return users;
+        } else {
+            return null;
         }
-        return users;
     }
 
     public void addFavorite(User user) {
@@ -208,13 +221,7 @@ public class User{
         user.put(DISTANCE_KEY, distance);
     }
 
-    public Double getRelDistance() {
-        return user.getDouble(REL_DISTANCE_KEY);
-    }
 
-    public void setRelDistance(Double distance) {
-        user.put(REL_DISTANCE_KEY, distance);
-    }
 
     public Boolean getSync() { return user.getBoolean(SYNC_KEY); }
 

@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     final CalendarFragment calendarFragment = new CalendarFragment();
     final MessageListFragment messageFragment = new MessageListFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
-    final ComposeReviewFragment composeReviewFragment = new ComposeReviewFragment();
 
     public String photoFileName = "photo.jpg";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -59,11 +57,12 @@ public class MainActivity extends AppCompatActivity {
 
     File photoFile;
 
-    ParseGeoPoint ParseLocation;
+    ParseGeoPoint parseLocation;
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    public Toolbar toolbar;
+    public android.support.v7.widget.Toolbar toolbar;
+
     public ActionBar actionBar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -73,20 +72,22 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    actionBar.show();
-                    actionBar.setTitle("");
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
+                    displayHomeActionBar();
 
                     return true;
                 case R.id.navigation_messages:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
-                    actionBar.hide();
+                    actionBar.collapseActionView();
+                            //.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_calendar:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
+                    actionBar.collapseActionView();
+                    //displayCalendarActionBar();
                     return true;
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
@@ -104,11 +105,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        android.support.v7.widget.Toolbar toolbar= findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.baseline_list_black_24dp);
+        displayHomeActionBar();
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -120,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         model.setFragmentTransaction(fragmentTransaction);
         model.setCurrentUser(new User(ParseUser.getCurrentUser()));
 
+        setupLocationServices();
+
         Intent getI = getIntent();
         if (getI.hasExtra("fromSignUp")){
             fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
@@ -129,39 +128,6 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setTitle("");
 
         }
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                ParseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        };
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
-
-            return;
-        }
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
 
     @Override
@@ -206,6 +172,66 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    public void displayHomeActionBar() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.baseline_list_black_24dp);
+        actionBar.setTitle("");
+        actionBar.show();
+
+    }
+
+    public void displayCalendarActionBar() {
+        toolbar = findViewById(R.id.toolbar_calendar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setTitle("");
+        actionBar.show();
+
+        //calendarFragment.configureActionBar();
+    }
+
+    public void setupLocationServices (){
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                parseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+                model.setLocation(parseLocation);
+                User currentUser = new User(ParseUser.getCurrentUser());
+                currentUser.setLocation(parseLocation);
+                currentUser.saveInBackground();
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+
+            return;
+        }
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+
+    }
 
 }
 
