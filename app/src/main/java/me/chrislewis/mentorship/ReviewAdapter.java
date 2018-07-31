@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -54,6 +55,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             if(mWriter.getProfileImage() != null) {
                 Glide.with(mContext)
                         .load(mWriter.getProfileImage().getUrl())
+                        .apply(new RequestOptions().circleCrop())
                         .into(viewHolder.ivReviewWriter);
             }
         } catch (ParseException e) {

@@ -43,12 +43,14 @@ public class DetailsFragment extends Fragment {
     ImageView ivProfile;
     Button btReviews;
     Button btComposeReview;
+    Button btCalendar;
 
     SharedViewModel model;
 
     MessageFragment messageFragment = new MessageFragment();
     ReviewsFragment reviewsFragment = new ReviewsFragment();
     ComposeReviewFragment composeReviewFragment = new ComposeReviewFragment();
+    SelectDateFragment selectDateFragment = new SelectDateFragment();
 
     boolean isFavorite;
     private RatingBar ratingBar;
@@ -74,6 +76,7 @@ public class DetailsFragment extends Fragment {
         tvSummary = view.findViewById(R.id.tvSummary);
         tvEdu = view.findViewById(R.id.tvEdu);
         btFav = view.findViewById(R.id.btFav);
+        btCalendar = view.findViewById(R.id.calendarButton);
         btMessage = view.findViewById(R.id.btMessage);
         btReviews = view.findViewById(R.id.btReviews);
         btComposeReview = view.findViewById(R.id.btnComposeReview);
@@ -149,6 +152,13 @@ public class DetailsFragment extends Fragment {
                 fragmentTransaction.replace(R.id.flContainer, composeReviewFragment).commit();
             }
         });
+
+        btCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectDateFragment.show(model.getFragmentManager(), "DatePicker");
+            }
+        });
     }
 
     private void populateInfo(User user) {
@@ -197,7 +207,7 @@ public class DetailsFragment extends Fragment {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
-                tvRatingValue.setText("You rated this mentor " + String.valueOf(rating));
+                tvRatingValue.setText("Your rating: " + String.valueOf(rating));
             }
         });
     }
@@ -211,6 +221,17 @@ public class DetailsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+                myRating = ratingBar.getRating();
+                Double pastUserRating = user.getOverallRating();
+                Integer oldNumRatings = user.getNumRatings();
+                Integer newNumRatings = oldNumRatings + 1;
+
+                user.setNumRatings(newNumRatings);
+                Double newRating = (pastUserRating * oldNumRatings + myRating) / newNumRatings;
+                user.setOverallRating(newRating);
+                user.saveInBackground();
+
+                tvOverallRating.setText("Overall Rating " + String.format("%.2f", newRating));
 
                 Toast.makeText(getActivity(), "Submitted rating: " +
                         String.valueOf(ratingBar.getRating()),

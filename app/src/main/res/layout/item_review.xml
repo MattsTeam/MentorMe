@@ -12,6 +12,7 @@
         android:id="@+id/ivReviewWriter"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
         app:srcCompat="@android:color/background_dark"
         />
 
@@ -21,7 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/ivReviewWriter"
         android:numStars="5"
-        android:stepSize="1.0" />
+        android:stepSize="0.5"
+        android:isIndicator="true"
+        style="@style/AppThemeRatingBar"/>
 
     <TextView
         android:id="@+id/tvReviewBody"
@@ -30,13 +33,16 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@id/rbReview"
         android:layout_toEndOf="@id/ivReviewWriter"
+        android:layout_marginLeft="5dp"
         android:text="Example: This mentor is great" />
 
     <TextView
         android:id="@+id/tvReviewWriter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/ivReviewWriter"
+        android:layout_alignEnd="@+id/ivReviewWriter"
         android:layout_below="@+id/ivReviewWriter"
-        android:text="Writer" />
+        android:text="Writer"
+        android:textAlignment="center"/>
 </RelativeLayout>

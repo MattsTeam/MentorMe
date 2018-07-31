@@ -36,8 +36,8 @@ public class User{
     private final static String EMAIL_KEY = "email";
     private final static String OVERALL_RATING_KEY = "overallRating";
     private final static String REVIEWS_KEY = "reviews";
+    private final static String NUM_RATINGS_KEY = "numRatings";
     private final static String SYNC_KEY = "allowSync";
-    private final static String NUM_REVIEWS_KEY = "numReviews";
 
     public String name;
     public String username;
@@ -159,10 +159,10 @@ public class User{
     }
 
     public double getOverallRating() {return user.getDouble(OVERALL_RATING_KEY);}
-    public void setRating(double rating) { user.put(OVERALL_RATING_KEY, rating); }
+    public void setOverallRating(double rating) { user.put(OVERALL_RATING_KEY, rating); }
 
-    public Number getNumReviews() {return user.getNumber(NUM_REVIEWS_KEY);}
-    public void setNumReviews(Number numReviews) { user.put(NUM_REVIEWS_KEY, numReviews); }
+    public Integer getNumRatings() {return user.getInt(NUM_RATINGS_KEY);}
+    public void setNumRatings(Integer numRatings) { user.put(NUM_RATINGS_KEY, getNumRatings()); }
 
     public List<User> getFavorites() {
         List<ParseUser> parseUsers = (List<ParseUser>) user.get(FAVORITE_KEY);
@@ -189,19 +189,6 @@ public class User{
     public void addReview(Review review) {
         this.user.addUnique(REVIEWS_KEY, review);
     }
-
-    public List<ParseUser> getReviewers() {
-        return (List<ParseUser>) user.get(REVIEWER_KEY);
-    }
-
-    public void addReviewer(ParseUser user) {
-        this.user.addUnique(REVIEWER_KEY, user);
-    }
-
-    public void removeReviewer(ParseUser user) {
-        this.user.removeAll(REVIEWER_KEY, Collections.singleton(user));
-    }
-
 
     public List<String> getCategories() {
         return (List<String>) user.get(CATEGORIES_KEY);

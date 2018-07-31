@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment {
     private Button btnOpenDrawer;
     MenuItem checkedItem;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, parent, false);
@@ -56,13 +55,13 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
         setupNavigationDrawer(view);
-
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
         rvUsers = view.findViewById(R.id.rvGrid);
 

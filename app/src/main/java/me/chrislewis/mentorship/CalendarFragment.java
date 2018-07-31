@@ -364,11 +364,11 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     }
 
     @Override
-    public void passNewEvent(String date, String time, String description) {
+    public void passNewEvent(String date, String time, String description, String invitee, String inviteeId) {
         //Add new event to Google Calendar
         if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
             try {
-                new CreateEvent(mService, date, time, description).execute();
+                new CreateEvent(mService, date, time, description, invitee).execute();
                 refreshResults();
             }
             catch (java.text.ParseException e) {
@@ -386,6 +386,10 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 newEvent.setEventDescription(description);
                 newEvent.setTime(time);
                 newEvent.setDateString(date);
+                Log.d("CalendarFragment", invitee);
+                Log.d("CalendarFragment", inviteeId);
+                newEvent.setInviteeString(invitee);
+                newEvent.setInviteeIdString(inviteeId);
                 newEvent.saveInBackground();
 
                 AlarmBroadcastReceiver.setAlarm(getContext(), date, time);

@@ -21,14 +21,16 @@ public class CreateEvent extends AsyncTask<Void, Void, Void> {
     String eventDay;
     String eventTime;
     String description;
+    String inviteeName;
     Date eventDate;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    CreateEvent(Calendar mService, String date, String time, String description) throws ParseException {
+    CreateEvent(Calendar mService, String date, String time, String description, String invitee) throws ParseException {
         this.mService = mService;
         this.description = description;
         eventDay = date;
         eventTime = time;
+        inviteeName = invitee;
         eventDate = dateFormat.parse(eventDay + " " + eventTime);
     }
 
@@ -60,8 +62,7 @@ public class CreateEvent extends AsyncTask<Void, Void, Void> {
         //event.setRecurrence(Arrays.asList(recurrence));
 
         EventAttendee[] attendees = new EventAttendee[]{
-                new EventAttendee().setEmail("test@example.com"),
-                new EventAttendee().setEmail("test2@example.com"),
+                new EventAttendee().setEmail(inviteeName)
         };
         event.setAttendees(Arrays.asList(attendees));
 

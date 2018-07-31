@@ -34,12 +34,18 @@ public class Review extends ParseObject{
         put(USER_ID_KEY, userId);
     }
 
+    public void setUser(User user) {
+        user.getParseUser().revert();
+        put(USER_KEY, user);
+
+
+    }
+
     public ParseUser getWriter() {
         return getParseUser(WRITER_KEY);
     }
 
     public void setWriter(ParseUser writer) {
-
         put(WRITER_KEY, writer);
     }
 
@@ -62,11 +68,5 @@ public class Review extends ParseObject{
             setLimit(50);
             return this;
         }
-        /*
-        public Query withUser() {
-            include(USER_KEY);
-            return this;
-        }
-        */
     }
 }

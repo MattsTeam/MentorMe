@@ -222,10 +222,10 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         ParseFile profileImage = new ParseFile(stream.toByteArray());
-
-
-        newUser.setNumReviews(0);
         newUser.setProfileImage(profileImage);
+
+        newUser.setNumRatings(0);
+
         newUser.saveInBackground();
 
     }
