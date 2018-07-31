@@ -28,24 +28,21 @@ public class Chat extends ParseObject{
         objectId = getString(OBJECT_ID_KEY);
     }
 
-    public ArrayList<User> getRecipients() {
-        return recipients;
-    }
-
-    public void setRecipients(ArrayList<User> recipients) {
-        this.recipients = recipients;
-    }
-
     public ArrayList<User> getUsers() {
-        ArrayList<ParseUser> parseUsers = (ArrayList<ParseUser>) get(USERS_KEY);
-        ArrayList<User> users = new ArrayList<>();
-        for (ParseUser i : parseUsers) {
-            users.add(new User(i));
+        if (recipients == null) {
+            ArrayList<ParseUser> parseUsers = (ArrayList<ParseUser>) get(USERS_KEY);
+            ArrayList<User> users = new ArrayList<>();
+            for (ParseUser i : parseUsers) {
+                users.add(new User(i));
+            }
+            return users;
+        } else {
+            return recipients;
         }
-        return users;
     }
 
     public void setUsers(ArrayList<User> users) {
+        recipients = users;
         for(User i : users) {
             i.getParseUser().revert();
             addUnique(USERS_KEY, i.getParseUser());

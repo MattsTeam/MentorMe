@@ -44,8 +44,10 @@ public class MessageFragment extends Fragment {
     boolean firstMessage = true;
 
     RecyclerView rvMessages;
-    ArrayList<Message> mMessages;
+    ArrayList<Message> mMessages = new ArrayList<>();
     MessageAdapter adapter;
+
+    SharedViewModel model;
 
     User user;
     ArrayList<User> recipients = new ArrayList<>();
@@ -77,19 +79,17 @@ public class MessageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         recipients = model.getRecipients();
         user = model.getCurrentUser();
 
-
-//        firstMessage = user.firstChat(recipients);
+        firstMessage = user.firstChat(recipients);
 
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
         rvMessages = view.findViewById(R.id.rvMessages);
         ivMessage = view.findViewById(R.id.ivMessage);
         btImage = view.findViewById(R.id.btImage);
-        mMessages = new ArrayList<>();
 
         camera = new Camera(getContext(), this, model);
 
@@ -124,7 +124,6 @@ public class MessageFragment extends Fragment {
                             }
                         }
                     });
-
                     HashMap<String, String> payload = new HashMap<>();
                     payload.put("customData", "New message: " + data);
                     ParseCloud.callFunctionInBackground("pingReply", payload);

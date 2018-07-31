@@ -3,6 +3,7 @@ package me.chrislewis.mentorship.models;
 import android.text.format.DateUtils;
 
 import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -228,7 +229,7 @@ public class User{
         user.put(REL_DISTANCE_KEY, distance);
     }
 
-    public boolean firstChat(ArrayList<String> users) {
+    public boolean firstChat(ArrayList<User> users) {
         for(Chat chat : chats) {
             if(chat.getUsers().equals(users)) {
                 return false;
@@ -255,6 +256,10 @@ public class User{
 
     public void fetchInBackground(GetCallback<ParseObject> callback) {
         user.fetchInBackground(callback);
+    }
+
+    public void fetchIfNeed() throws ParseException {
+        user = user.fetchIfNeeded();
     }
 
     public String getRelativeTimeAgo() {
