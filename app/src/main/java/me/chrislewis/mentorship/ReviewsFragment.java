@@ -3,6 +3,7 @@ package me.chrislewis.mentorship;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,6 +74,9 @@ public class ReviewsFragment extends Fragment {
                     }
                     else {
                         Toast.makeText(getActivity(), "This user has no reviews.", Toast.LENGTH_LONG).show();
+                        DetailsFragment detailsFragment = new DetailsFragment();
+                        FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
                     }
                 }
                 else {

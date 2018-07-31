@@ -7,4 +7,9 @@
         <item name="colorPrimaryDark">@color/darkOrange</item>
     </style>
 
+    <style name="AppThemeRatingBar" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/orange</item>
+        <item name="android:colorControlNormal">@color/darkOrange</item>
+    </style>
+
 </resources>

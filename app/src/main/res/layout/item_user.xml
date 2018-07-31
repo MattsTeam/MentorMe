@@ -47,7 +47,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvDistance"
-            android:text="brief description"
+            android:text="Description: N/A"
             android:textAlignment="center" />
         <TextView
             android:id="@+id/tvCategories"
@@ -55,6 +55,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvDescription"
             android:text="Categories"
+            android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCategories"
+            android:text="Rating: N/A"
             android:textAlignment="center" />
 
         <ImageButton

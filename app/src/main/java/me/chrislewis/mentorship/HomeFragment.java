@@ -56,6 +56,11 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        /*
+        MainActivity activity = getActivity();
+        activity.displayActionBar();
+        */
+
         super.onViewCreated(view, savedInstanceState);
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());

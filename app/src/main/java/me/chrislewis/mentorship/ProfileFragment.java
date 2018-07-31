@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
 
     Button bLogOut;
     ImageButton bEdit;
+    Button bSave;
     CalendarFragment calendarFragment;
     EditProfileFragment editProfileFragment;
 

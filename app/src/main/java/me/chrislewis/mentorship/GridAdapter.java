@@ -68,6 +68,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
             Glide.with(context).load(user.getProfileImage().getUrl()).into(holder.ivProfileImage);
         }
 
+        Double rating = user.getOverallRating();
+        if (rating != null) {
+            holder.tvRating.setText("Rating: " + rating);
+        }
+
         ParseGeoPoint ParseLocation = user.getCurrentLocation();
         if (ParseLocation != null) {
             Location location = new Location("location");
@@ -100,6 +105,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         public TextView tvDistance;
         public TextView tvDescription;
         public TextView tvCategories;
+        public TextView tvRating;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,6 +114,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
             tvDistance = (TextView) itemView.findViewById(R.id.tvDistance);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             tvCategories = (TextView) itemView.findViewById(R.id.tvCategories);
+            tvRating = (TextView) itemView.findViewById(R.id.tvRating);
             itemView.setOnClickListener(this);
         }
 

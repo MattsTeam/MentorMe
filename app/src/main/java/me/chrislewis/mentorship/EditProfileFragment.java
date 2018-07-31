@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import me.chrislewis.mentorship.models.Camera;
@@ -37,9 +37,8 @@ public class EditProfileFragment extends Fragment {
     EditText etSummary;
     EditText etEdu;
 
-    Button bLogOut;
-    Button bUploadProfileImage;
-    Button bTakePhoto;
+    ImageButton bUploadProfileImage;
+    ImageButton bTakePhoto;
     Button bSave;
     CalendarFragment calendarFragment;
 
@@ -70,18 +69,6 @@ public class EditProfileFragment extends Fragment {
         camera = new Camera(getContext(), this, model);
 
         populateInfo();
-
-        bLogOut = view.findViewById(R.id.bLogOut);
-        bLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                //TODO revoke gmail credentials
-                Intent intent = new Intent(view.getContext(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
 
         bTakePhoto = view.findViewById(R.id.bTakePhoto);
         bTakePhoto.setOnClickListener(new View.OnClickListener() {

@@ -8,74 +8,76 @@
 
     <ImageView
         android:id="@+id/ivProfile"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_profile"/>
-
-    <Button
-        android:id="@+id/bLogOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_width="167dp"
+        android:layout_height="164dp"
         android:layout_alignParentTop="true"
-        android:text="@string/log_out" />
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ic_profile" />
 
 
-    <Button
+    <ImageButton
         android:id="@+id/bUploadProfileImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/bTakePhoto"
-        android:text="Upload Profile Photo" />
+        android:layout_below="@+id/ivProfile"
+        android:layout_toEndOf="@+id/bTakePhoto"
+        android:layout_alignTop="@id/bTakePhoto"
+        android:src="@drawable/outline_insert_photo_black_18dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/bTakePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/bLogOut"
-        android:text="Take Photo" />
+        android:layout_below="@+id/ivProfile"
+        android:layout_alignStart="@id/ivProfile"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="22dp"
+        android:src="@drawable/outline_camera_alt_black_18dp" />
 
 
     <EditText
         android:id="@+id/etName"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivProfile"
+        android:layout_below="@id/bUploadProfileImage"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:text="Name" />
 
     <EditText
         android:id="@+id/etSkills"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etName"
+        android:layout_below="@+id/etName"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:text="Skills" />
 
     <EditText
         android:id="@+id/etJob"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etSkills"
+        android:layout_below="@+id/etSkills"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:text="Job" />
 
     <EditText
         android:id="@+id/etSummary"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etJob"
+        android:layout_below="@+id/etJob"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:text="Summary" />
 
     <EditText
         android:id="@+id/etEdu"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etSummary"
+        android:layout_below="@+id/etSummary"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:text="Education" />
 
@@ -83,20 +85,10 @@
         android:id="@+id/bSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/etEdu"
-        android:text="Save Profile" />
+        android:layout_marginBottom="145dp"
+        android:text="Save Changes" />
 
-
-    <TextView
-        android:id="@+id/tvFavorites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/bSave"
-        android:layout_marginTop="10dp"
-        android:text="Favorite Mentors"
-        android:textSize="25sp"
-        android:textStyle="bold" />
 
 </RelativeLayout>

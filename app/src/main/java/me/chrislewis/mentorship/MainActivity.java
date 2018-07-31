@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationListener locationListener;
 
     public Toolbar toolbar;
-    private User currentUser = new User(ParseUser.getCurrentUser());
+    public ActionBar actionBar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,14 +73,16 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    actionBar.show();
+                    actionBar.setTitle("");
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
-                    //toolbar.setTitle("Search for Mentors");
 
                     return true;
                 case R.id.navigation_messages:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
+                    actionBar.hide();
                     return true;
                 case R.id.navigation_calendar:
                     fragmentTransaction = fragmentManager.beginTransaction();
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
+                    actionBar.hide();
                     return true;
             }
             return false;
@@ -101,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        android.support.v7.widget.Toolbar toolbar= findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.baseline_list_black_24dp);
 
@@ -124,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
+            actionBar.setTitle("");
+
         }
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -201,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
 }

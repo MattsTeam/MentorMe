@@ -197,7 +197,7 @@ public class DetailsFragment extends Fragment {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
-                tvRatingValue.setText("You rated this mentor " + String.valueOf(rating));
+                tvRatingValue.setText("Your rating: " + String.valueOf(rating));
             }
         });
     }
@@ -211,6 +211,17 @@ public class DetailsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+                myRating = ratingBar.getRating();
+                Double pastUserRating = user.getOverallRating();
+                Integer oldNumRatings = user.getNumRatings();
+                Integer newNumRatings = oldNumRatings + 1;
+
+                user.setNumRatings(newNumRatings);
+                Double newRating = (pastUserRating * oldNumRatings + myRating) / newNumRatings;
+                user.setOverallRating(newRating);
+                user.saveInBackground();
+
+                tvOverallRating.setText("Overall Rating " + String.format("%.2f", newRating));
 
                 Toast.makeText(getActivity(), "Submitted rating: " +
                         String.valueOf(ratingBar.getRating()),

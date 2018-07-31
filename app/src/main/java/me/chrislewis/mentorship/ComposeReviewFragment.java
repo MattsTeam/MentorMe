@@ -90,7 +90,18 @@ public class ComposeReviewFragment extends Fragment {
                 Review review = new Review();
                 review.setBody(body);
                 review.setWriter(currentUser.getParseUser());
-                review.setRating(Double.valueOf(rating));
+
+                Double mRating = Double.valueOf(rating);
+                if (mRating != null) {
+                    review.setRating(mRating);
+                    Double pastUserRating = reviewedUser.getOverallRating();
+                    Integer oldNumRatings = reviewedUser.getNumRatings();
+                    Integer newNumRatings = oldNumRatings + 1;
+                    reviewedUser.setNumRatings(newNumRatings);
+                    Double newRating = (pastUserRating * oldNumRatings + mRating) / newNumRatings;
+                    reviewedUser.setOverallRating(newRating);
+                }
+
 
                 if (photoBitmap != null) {
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -111,13 +122,15 @@ public class ComposeReviewFragment extends Fragment {
                             fragmentTransaction.replace(R.id.flContainer, reviewsFragment).commit();
                         }
                         else {
-                            Log.d("Debug Reviews", "Faile" + e);
+                            Log.d("Debug Reviews", "Failed review" + e);
                         }
                     }
                 });
-                // add currentUser to user's reviewers array
-                reviewedUser.addReview(review);
-                reviewedUser.addReviewer(currentUser.getParseUser());
+
+                //reviewedUser.addReview(review);
+
+
+
 
             }
         });

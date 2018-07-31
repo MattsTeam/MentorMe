@@ -10,11 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,35 +42,36 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         return new ViewHolder(contactView);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final Chat chat = chats.get(i);
-        ArrayList<String> users = chat.getUsers();
-        final ArrayList<User> recipients = new ArrayList<>();
-        for(int j = 0; j < users.size(); j++){
-            String holder = users.get(j);
-
-            User.Query query = new User.Query();
-            query.getUser(holder);
-            query.findInBackground(new FindCallback<ParseUser>() {
-                @Override
-                public void done(List<ParseUser> objects, ParseException e) {
-                    User filler = new User(objects.get(0));
-                    if (user.getObjectId().equals(filler.getObjectId()) == false) {
-                        viewHolder.tvName.setText(filler.getName());
-                        viewHolder.tvName.setVisibility(View.VISIBLE);
-                        Glide.with(context)
-                                .load(filler.getProfileImage().getUrl())
-                                .into(viewHolder.ivProfileImage);
-                        viewHolder.ivProfileImage.setVisibility(View.VISIBLE);
-                    }
-                    recipients.add(filler);
-                }
-            });
-
-        }
-        chat.setRecipients(recipients);
-        chat.setUsers(recipients);
+//        ArrayList<String> users = chat.getUsers();
+//        final ArrayList<User> recipients = new ArrayList<>();
+//        for(int j = 0; j < users.size(); j++){
+//            String holder = users.get(j);
+//
+//            User.Query query = new User.Query();
+//            query.getUser(holder);
+//            query.findInBackground(new FindCallback<ParseUser>() {
+//                @Override
+//                public void done(List<ParseUser> objects, ParseException e) {
+//                    User filler = new User(objects.get(0));
+//                    if (user.getObjectId().equals(filler.getObjectId()) == false) {
+//                        viewHolder.tvName.setText(filler.getName());
+//                        viewHolder.tvName.setVisibility(View.VISIBLE);
+//                        Glide.with(context)
+//                                .load(filler.getProfileImage().getUrl())
+//                                .into(viewHolder.ivProfileImage);
+//                        viewHolder.ivProfileImage.setVisibility(View.VISIBLE);
+//                    }
+//                    recipients.add(filler);
+//                }
+//            });
+//
+//        }
+//        chat.setRecipients(recipients);
+//        chat.setUsers(recipients);
 
     }
 

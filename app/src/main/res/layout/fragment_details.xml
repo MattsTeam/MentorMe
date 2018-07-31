@@ -81,7 +81,7 @@
                 android:layout_below="@+id/rb"
                 android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@id/tvRating"
-                android:text="Your Rating"
+                android:text="Your Rating: N/A"
                 android:textStyle="bold" />
 
             <TextView
