@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
+    User currentUser = new User(ParseUser.getCurrentUser());
+
     public Toolbar toolbar;
     public ActionBar actionBar;
 
