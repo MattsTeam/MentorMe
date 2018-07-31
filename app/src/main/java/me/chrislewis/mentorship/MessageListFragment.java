@@ -17,6 +17,7 @@ import com.parse.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
@@ -26,19 +27,21 @@ public class MessageListFragment extends Fragment {
     RecyclerView rvPeople;
     PeopleAdapter adapter;
 
-    ArrayList<Chat> chats = new ArrayList<>();
+    List<Chat> chats = new ArrayList<>();
 
     SharedViewModel model;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_message_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        model = ViewModelProviders
+                .of(Objects.requireNonNull(getActivity()))
+                .get(SharedViewModel.class);
 
         adapter = new PeopleAdapter(view.getContext(), chats, model);
 
