@@ -28,13 +28,13 @@ public class SharedViewModel extends ViewModel{
     GoogleAccountCredential credential;
     com.google.api.services.calendar.Calendar mService;
     List<String> newEventInfo = new ArrayList<>();
-
+    Boolean createFromCalendar = false;
     String fragmentIdentifier;
     ParseGeoPoint parseLocation;
 
-    public Calendar getService() {
-        return mService;
-    }
+    public void setCreateFromCalendar(Boolean b) { createFromCalendar = b; }
+
+    public Boolean getCreateFromCalendar() { return createFromCalendar; }
 
     public void setService(Calendar mService) {
         this.mService = mService;

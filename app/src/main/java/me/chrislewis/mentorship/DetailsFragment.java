@@ -156,6 +156,7 @@ public class DetailsFragment extends Fragment {
         btCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                model.setCreateFromCalendar(false);
                 selectDateFragment.show(model.getFragmentManager(), "DatePicker");
             }
         });

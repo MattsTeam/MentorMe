@@ -73,15 +73,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="115dp"
+        android:layout_height="190dp"
         android:layout_below="@+id/calendarView"
         >
 
         <com.framgia.library.calendardayview.CalendarDayView
             android:id="@+id/dayView"
             android:layout_width="match_parent"
-            android:layout_height="115dp"
-            app:dayHeight="115dp"/>
+            android:layout_height="190dp"
+            app:dayHeight="190dp"/>
     </ScrollView>
 
 </RelativeLayout>

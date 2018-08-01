@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.AlarmBroadcastReceiver;
+import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.User;
 
 
@@ -49,13 +53,14 @@ public class AddEventDialogFragment extends DialogFragment {
     private ArrayAdapter<String> adapter;
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
     SimpleDateFormat currFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat newEventFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SharedViewModel model;
 
     public AddEventDialogFragment() { }
 
-    public void setUp(OnReceivedData data) {
+    /*public void setUp(OnReceivedData data) {
         mData = data;
-    }
+    }*/
 
     public static AddEventDialogFragment newInstance() {
         AddEventDialogFragment frag = new AddEventDialogFragment();
@@ -94,8 +99,6 @@ public class AddEventDialogFragment extends DialogFragment {
             } catch (com.parse.ParseException e) {
                 e.printStackTrace();
             }
-            Log.d("AddEventDialogFragment", "Name: " + users.get(i).getName());
-            Log.d("AddEventDialogFragment", "Id: " + users.get(i).getObjectId());
         }
     }
 
@@ -131,26 +134,60 @@ public class AddEventDialogFragment extends DialogFragment {
                 String description = eventDescription.getText().toString();
                 String invitee = findMentors.getSelectedItem().toString();
                 String inviteeId = ids.get(names.indexOf(invitee));
-                Log.d("AddEventDialogFragment", invitee);
-                Log.d("AddEventDialogFragment", inviteeId);
                 model.setNewEventInfo(todayString, time, description, invitee, inviteeId);
-                model.getFragmentManager().findFragmentById(R.id.flContainer);
-                CalendarFragment calendarFragment = (CalendarFragment) model.getFragmentManager().findFragmentByTag("CalendarFragment");
-                calendarFragment.createParseEvent();
-                //getActivity().startActivityForResult(getActivity().getIntent(), 10);
-                //sendEvent(todayString, time, description, invitee, inviteeId);
+                createParseEvent();
+                if(model.getCreateFromCalendar()) {
+                    model.getFragmentManager().findFragmentById(R.id.flContainer);
+                    CalendarFragment calendarFragment = (CalendarFragment) model.getFragmentManager().findFragmentByTag("CalendarFragment");
+                    calendarFragment.refreshEvents();
+                }
                 dismiss();
             }
         });
     }
 
-    private void sendEvent(String date, String time, String description, String invitee, String inviteeId) {
+    public void createParseEvent() {
+        Event newEvent = new Event();
+        newEvent.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
+        String date = model.getNewEventInfo().get(0);
+        String time = model.getNewEventInfo().get(1);
+        newEvent.setDateString(date);
+        newEvent.setTime(time);
+        Date newDate = null;
+        try {
+            newDate = newEventFormat.parse(date + " " + time);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        newEvent.setEventDate(newDate);
+        String description = model.getNewEventInfo().get(2);
+        newEvent.setEventDescription(description);
+        String invitee = model.getNewEventInfo().get(3);
+        String inviteeId = model.getNewEventInfo().get(4);
+        Log.d("CalendarFragment", "date: " + date);
+        Log.d("CalendarFragment", "time: " + time);
+        Log.d("CalendarFragment", "invitee: " + invitee);
+        Log.d("CalendarFragment", "inviteeId: " + inviteeId);
+        newEvent.setInviteeString(invitee);
+        newEvent.setInviteeIdString(inviteeId);
+        newEvent.saveInBackground();
+
+        AlarmBroadcastReceiver.setAlarm(getContext(), date, time);
+
+        Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
+        toast.show();
+        Log.d("AddEventDialogFragment", "Saved new event to Parse");
+
+    }
+
+    /*private void sendEvent(String date, String time, String description, String invitee, String inviteeId) {
         Log.d("AddEventDialogFragment", date);
         Log.d("AddEventDialogFragment", time);
         Log.d("AddEventDialogFragment", description);
         Log.d("AddEventDialogFragment", invitee);
         Log.d("AddEventDialogFragment", inviteeId);
         mData.passNewEvent(date, time, description, invitee, inviteeId);
-    }
+    }*/
 
 }

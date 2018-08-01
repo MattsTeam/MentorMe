@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -44,10 +42,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.AlarmBroadcastReceiver;
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
 import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.GoogleDayDecorator;
@@ -57,7 +53,6 @@ import static android.app.Activity.RESULT_OK;
 public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse, AddEventDialogFragment.OnReceivedData{
 
     SimpleDateFormat todayFormat = new SimpleDateFormat("MMM dd, yyyy");
-    SimpleDateFormat newEventFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     ArrayList<Event> days = new ArrayList<>();
     List<com.google.api.services.calendar.model.Event> googleTodayEvents = new ArrayList<>();
@@ -156,7 +151,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             @Override
             public void onClick(View view) {
                 AddEventDialogFragment addEventFragment = AddEventDialogFragment.newInstance();
-                addEventFragment.setUp(CalendarFragment.this);
+                model.setCreateFromCalendar(true);
                 Bundle addEventBundle = new Bundle();
                 addEventBundle.putString("dateSelected", selectedDate);
                 addEventBundle.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
@@ -362,42 +357,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
     }
 
-    public void createParseEvent() {
-        Event newEvent = new Event();
-        newEvent.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
-        String date = model.getNewEventInfo().get(0);
-        String time = model.getNewEventInfo().get(1);
-        newEvent.setDateString(date);
-        newEvent.setTime(time);
-        Date newDate = null;
-        try {
-            newDate = newEventFormat.parse(date + " " + time);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-        newEvent.setEventDate(newDate);
-        String description = model.getNewEventInfo().get(2);
-        newEvent.setEventDescription(description);
-        String invitee = model.getNewEventInfo().get(3);
-        String inviteeId = model.getNewEventInfo().get(4);
-        Log.d("CalendarFragment", "date: " + date);
-        Log.d("CalendarFragment", "time: " + time);
-        Log.d("CalendarFragment", "invitee: " + invitee);
-        Log.d("CalendarFragment", "inviteeId: " + inviteeId);
-        newEvent.setInviteeString(invitee);
-        newEvent.setInviteeIdString(inviteeId);
-        newEvent.saveInBackground();
-
-        AlarmBroadcastReceiver.setAlarm(getContext(), date, time);
-
-        Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
-        toast.show();
-        refreshEvents();
-        Log.d("CalendarFragment", "Saved new event to Parse");
-
-    }
-
     @Override
     public void passNewEvent(String date, String time, String description, String invitee, String inviteeId) {
         //Add new event to Google Calendar
@@ -411,7 +370,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             }
         }
         //Add new event to Parse
-        else {
+        /*else {
             Event newEvent = new Event();
             newEvent.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
             try {
@@ -440,7 +399,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
                 e.printStackTrace();
             }
 
-        }
+        }*/
     }
 
 }
