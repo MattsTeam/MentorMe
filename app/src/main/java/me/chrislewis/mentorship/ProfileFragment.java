@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
 
+import java.util.Objects;
+
 import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.User;
 
@@ -103,7 +105,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    @SuppressLint("SetTextI18n")
     private void populateInfo() {
         tvName.setText(user.getName());
         if (user.getJob() != null) {

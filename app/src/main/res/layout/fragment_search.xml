@@ -44,18 +44,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_view">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:text="My Categories"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp" />
-
-
-
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
     private FragmentTransaction fragmentTransaction;
     final FragmentManager fragmentManager = getSupportFragmentManager();
-    final HomeFragment homeFragment = new HomeFragment();
+    final SearchFragment searchFragment = new SearchFragment();
     final CalendarFragment calendarFragment = new CalendarFragment();
     final MessageListFragment messageFragment = new MessageListFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
@@ -76,26 +76,30 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_favorites:
-                    actionBar.show();
-                    actionBar.setTitle("");
+                    displayHomeActionBar();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
                     return true;
-                case R.id.navigation_home:
-                    actionBar.show();
-                    actionBar.setTitle("");
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.flContainer, homeFragment).commit();
+                case R.id.navigation_search:
                     displayHomeActionBar();
+                    actionBar.hide();
+                    actionBar.setTitle("");
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    actionBar.setHomeAsUpIndicator(R.drawable.baseline_list_black_24dp);
+                    actionBar.show();
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, searchFragment).commit();
+
                     return true;
                 case R.id.navigation_messages:
-                    actionBar.show();
-                    actionBar.setTitle("");
+                    actionBar.hide();
+                    displayHomeActionBar();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
-                    actionBar.hide();
                     return true;
                 case R.id.navigation_calendar:
+                    actionBar.hide();
+                    displayHomeActionBar();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
                     return true;
@@ -114,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         displayHomeActionBar();
 
@@ -190,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.flContainer);
         switch(item.getItemId()) {
             case android.R.id.home:
-                if (currentFragment == homeFragment) {
-                    homeFragment.openDrawer();
+                if (currentFragment == searchFragment) {
+                    searchFragment.openDrawer();
                 }
 
                 return true;
@@ -223,22 +228,10 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.baseline_list_black_24dp);
-        actionBar.setTitle("");
-        actionBar.show();
-
-    }
-
-    public void displayCalendarActionBar() {
-        toolbar = findViewById(R.id.toolbar_calendar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setTitle("");
         actionBar.show();
 
-        //calendarFragment.configureActionBar();
     }
 
     public void setupLocationServices (){

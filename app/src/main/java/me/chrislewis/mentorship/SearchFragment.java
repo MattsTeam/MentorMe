@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,19 +29,21 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.User;
 
-public class HomeFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
     private User currentUser;
 
     private SharedViewModel model;
 
     private List<String> currentCategories;
+    private List<String> allCategories;
     private GridAdapter gridAdapter;
     private ArrayList<ParseUser> users;
     private RecyclerView rvUsers;
@@ -50,10 +54,12 @@ public class HomeFragment extends Fragment {
     private Button btnOpenDrawer;
     MenuItem checkedItem;
     ParseGeoPoint currentParseLocation;
+    SubMenu menuGroup;
+    ProfileFragment profileFragment = new ProfileFragment();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, parent, false);
+        return inflater.inflate(R.layout.fragment_search, parent, false);
     }
 
     @Override
@@ -253,38 +259,64 @@ public class HomeFragment extends Fragment {
         NavigationView navigationView = view.findViewById(R.id.drawer_view);
         final Menu menu = navigationView.getMenu();
 
+        menuGroup = menu.addSubMenu("My Categories");
         currentCategories = currentUser.getCategories();
+
+        int categoryId = 0;
         if (currentCategories != null) {
             for (String category : currentCategories) {
-                int itemId = currentCategories.indexOf(category);
-                menu.add(Menu.NONE, itemId, Menu.NONE, category);
+                categoryId = currentCategories.indexOf(category);
+                menuGroup.add(Menu.NONE, categoryId, Menu.NONE, category);
+            }
+        }
+        categoryId = categoryId + 1;
+        menuGroup.add(Menu.NONE, categoryId, Menu.NONE, "All Categories");
+
+        MenuItem last = menuGroup.getItem(menuGroup.size() - 1);
+        last.setChecked(true);
+        uncheckOtherItems(last, menuGroup);
+        checkedItem = last;
+
+
+        SubMenu menuOthers = menu.addSubMenu("Other Categories");
+        allCategories = Arrays.asList("English", "History", "Science", "Math", "Art", "Languages");
+        List<String> otherCategories = new ArrayList<>(allCategories);
+        otherCategories.removeAll(currentCategories);
+
+        if (otherCategories.size() > 0) {
+            for (String category : otherCategories) {
+                categoryId = otherCategories.indexOf(category);
+                menuOthers.add(Menu.NONE, categoryId, Menu.NONE, category);
             }
         }
 
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "All Categories");
-        menu.getItem(menu.size() - 1 ).setChecked(true);
-        uncheckOtherItems(menu.getItem(menu.size() - 1), menu);
+        SubMenu menuAdd = menu.addSubMenu("Add Categories");
+        menuAdd.add(Menu.NONE, Menu.NONE, Menu.NONE, "Go to Profile");
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.toString() == "My Categories") {
-                    menuItem.setChecked(false);
-                    return true;
-                }
-                menuItem.setChecked(true);
-                checkedItem = menuItem;
-                uncheckOtherItems(menuItem, menu);
-                Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
-
                 String category = menuItem.toString();
-                if (category == "All Categories") {
-                    getAllUsers();
-                } else {
-                    filterByCategory(category);
-                }
-                mDrawerLayout.closeDrawers();
+                if (category != "Add Categories") {
+                    menuItem.setChecked(true);
+                    checkedItem = menuItem;
+                    uncheckOtherItems(menuItem, menuGroup);
+                    Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
 
+                    if (category == "All Categories") {
+                        getAllUsers();
+                    } else {
+                        filterByCategory(category);
+                    }
+
+                    mDrawerLayout.closeDrawers();
+
+                } else {
+                    Toast.makeText(getActivity(), "add new categories", Toast.LENGTH_SHORT).show();
+                    FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
+                }
                 return true;
             }
         });
