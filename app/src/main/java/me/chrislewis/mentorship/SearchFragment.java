@@ -71,16 +71,6 @@ public class SearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         toolbar = view.findViewById(R.id.toolbar_search);
 
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-//
-//        toolbar.setNavigationIcon(R.drawable.baseline_list_black_24dp);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getActivity(), "open drawer", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
@@ -124,7 +114,6 @@ public class SearchFragment extends Fragment {
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "open drawer", Toast.LENGTH_SHORT).show();
                 mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
