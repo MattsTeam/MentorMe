@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import me.chrislewis.mentorship.models.Event;
+import me.chrislewis.mentorship.models.ParseEvent;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
-    private List<Event> mEvents;
+    private List<ParseEvent> mEvents;
     Context context;
 
-    public EventAdapter(List<Event> events) { mEvents = events; }
+    public EventAdapter(List<ParseEvent> events) { mEvents = events; }
 
     @NonNull
     @Override
@@ -32,7 +32,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Event event = mEvents.get(position);
+        ParseEvent event = mEvents.get(position);
         //holder.tvTime.setText(event.eventTime);
         //holder.tvDescription.setText(event.description);
         holder.tvTime.setText(event.getEventTime());

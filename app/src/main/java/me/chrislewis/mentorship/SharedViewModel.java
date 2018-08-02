@@ -122,13 +122,14 @@ public class SharedViewModel extends ViewModel{
         this.fragmentManager = fragmentManager;
     }
 
-    public void setNewEventInfo(String date, String time, String description, String invitee, String inviteeId) {
+    public void setNewEventInfo(String date, String startTime, String endTime, String description, String invitee, String inviteeId) {
         newEventInfo.clear();
         newEventInfo.add(date);
-        newEventInfo.add(time);
+        newEventInfo.add(startTime);
         newEventInfo.add(description);
         newEventInfo.add(invitee);
         newEventInfo.add(inviteeId);
+        newEventInfo.add(endTime);
     }
 
     public List<String> getNewEventInfo() { return newEventInfo; }

@@ -1,75 +1,77 @@
 package me.chrislewis.mentorship.models;
 
-import com.parse.ParseClassName;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.framgia.library.calendardayview.data.IEvent;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Calendar;
 
-@ParseClassName("Event")
-public class Event extends ParseObject implements Serializable {
+public class Event implements IEvent {
 
-    private final static String USER_ID_KEY = "userId";
-    private final static String DATE_KEY = "eventDate";
-    private final static String DESCRIPTION_KEY = "description";
-    private final static String DATE_STRING_KEY = "dateString";
-    private final static String TIME_KEY = "timeString";
-    private final static String DATE_STRING = "dateString";
-    private final static String INVITEE_STRING = "invitee";
-    private final static String INVITEE_ID_STRING = "inviteeId";
-    private final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-    private final static DateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
+    private long mId;
+    private Calendar mStartTime;
+    private Calendar mEndTime;
+    private String mName;
+    private String mLocation;
+    private int mColor;
 
+    public Event() {
 
-    public Event() { }
-
-    public String getDateString() { return getString(DATE_STRING_KEY); }
-
-    public void setDateString(String eventDate) { put(DATE_STRING_KEY, eventDate);}
-
-    public Date getEventDate() { return (Date) get(DATE_KEY); }
-
-    public void setEventDate(Date date) {
-        put(DATE_KEY, date);
     }
 
-    public String getUserId() {
-        return getString(USER_ID_KEY);
+    public Event(long mId, Calendar mStartTime, Calendar mEndTime, String mName, String mLocation,
+                 int mColor) {
+        this.mId = mId;
+        this.mStartTime = mStartTime;
+        this.mEndTime = mEndTime;
+        this.mName = mName;
+        this.mLocation = mLocation;
+        this.mColor = mColor;
     }
 
-    public void setUserIdKey(String userId) {
-        put(USER_ID_KEY, userId);
+    public long getId() {
+        return mId;
     }
 
-    public String getEventDescription() { return getString(DESCRIPTION_KEY); }
-
-    public void setEventDescription(String description) { put(DESCRIPTION_KEY, description); }
-
-    public String getEventTime() { return getString(TIME_KEY); }
-
-    public void setTime(String time) { put(TIME_KEY, time); }
-
-    public void setInviteeString(String invitee) { put(INVITEE_STRING, invitee); }
-
-    public void setInviteeIdString(String inviteeId) { put(INVITEE_ID_STRING, inviteeId); }
-
-    public static class Query extends ParseQuery<Event> {
-        public Query() {
-            super(Event.class);
-        }
-        public Query getTop() {
-            setLimit(20);
-            return this;
-        }
-        public Query withUser() {
-            include("user");
-            include("comments");
-            return this;
-        }
+    public void setId(long id) {
+        this.mId = id;
     }
 
+    public Calendar getStartTime() {
+        return mStartTime;
+    }
+
+    public void setStartTime(Calendar startTime) {
+        this.mStartTime = startTime;
+    }
+
+    public Calendar getEndTime() {
+        return mEndTime;
+    }
+
+    public void setEndTime(Calendar endTime) {
+        this.mEndTime = endTime;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        this.mName = name;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        this.mLocation = location;
+    }
+
+    public int getColor() {
+        return mColor;
+    }
+
+    public void setColor(int color) {
+        this.mColor = color;
+    }
 }

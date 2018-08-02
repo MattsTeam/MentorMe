@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.Event;
+import me.chrislewis.mentorship.models.ParseEvent;
 
 public class EventDialogFragment extends DialogFragment{
 
     private TextView tvDate;
-    private List<Event> eventList = new ArrayList<>();
+    private List<ParseEvent> eventList = new ArrayList<>();
     private List<com.google.api.services.calendar.model.Event> googleEventList = new ArrayList<>();
     private Date todayDate;
     private RecyclerView rvEvents;
@@ -42,7 +42,7 @@ public class EventDialogFragment extends DialogFragment{
                              Bundle savedInstanceState) {
         Bundle mainBundle = getArguments();
         Bundle todayEvents = mainBundle.getBundle("parseBundle");
-        eventList = (List<Event>) todayEvents.getSerializable("todayEvents");
+        eventList = (List<ParseEvent>) todayEvents.getSerializable("todayEvents");
         Bundle googleTodayEvents = mainBundle.getBundle("googleBundle");
         googleEventList = (List<com.google.api.services.calendar.model.Event>) googleTodayEvents.getSerializable("todayGoogleEvents");
         getDialog().getWindow().setBackgroundDrawableResource(R.drawable.round_event_dialog);

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.Event;
+import me.chrislewis.mentorship.models.ParseEvent;
 
 public class CalendarEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -20,7 +20,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static int ITEM_TYPE_GOOGLE_EVENT = 1;
     private List<Object> items = new ArrayList<>();
 
-    public CalendarEventsAdapter(List<Event> events, List<com.google.api.services.calendar.model.Event> googleEvents) {
+    public CalendarEventsAdapter(List<ParseEvent> events, List<com.google.api.services.calendar.model.Event> googleEvents) {
         this.items.addAll(events);
         this.items.addAll(googleEvents);
     }
@@ -43,7 +43,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         Object item = items.get(position);
         if (viewHolder instanceof EventViewHolder) {
-            ((EventViewHolder) viewHolder).bind((Event) item);
+            ((EventViewHolder) viewHolder).bind((ParseEvent) item);
         }
         else {
             ((GoogleEventViewHolder) viewHolder).bind((com.google.api.services.calendar.model.Event) item);
@@ -52,7 +52,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
-        if (items.get(position) instanceof Event) {
+        if (items.get(position) instanceof ParseEvent) {
             return ITEM_TYPE_EVENT;
         }
         else {
@@ -75,7 +75,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             tvDescription = itemView.findViewById(R.id.tvDescription);
         }
 
-        public void bind(Event event) {
+        public void bind(ParseEvent event) {
             tvTime.setText(event.getEventTime());
             tvDescription.setText(event.getEventDescription());
         }

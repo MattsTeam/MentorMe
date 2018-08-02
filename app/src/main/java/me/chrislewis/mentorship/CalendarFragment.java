@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.framgia.library.calendardayview.data.IEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -47,6 +48,7 @@ import java.util.List;
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
 import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.GoogleDayDecorator;
+import me.chrislewis.mentorship.models.ParseEvent;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -54,7 +56,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     SimpleDateFormat todayFormat = new SimpleDateFormat("MMM dd, yyyy");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    ArrayList<Event> days = new ArrayList<>();
+    ArrayList<ParseEvent> days = new ArrayList<>();
     List<com.google.api.services.calendar.model.Event> googleTodayEvents = new ArrayList<>();
     ArrayList<com.google.api.services.calendar.model.Event> googleEvents = new ArrayList<>();
     int orange = getIntFromColor(128, 128, 128);
@@ -78,6 +80,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY, CalendarScopes.CALENDAR};
 
     SharedViewModel model;
+    com.framgia.library.calendardayview.CalendarDayView dayView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -86,8 +89,8 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         permissionToggle = view.findViewById(R.id.syncSwitch);
+        dayView = view.findViewById(R.id.dayView);
         if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
             permissionToggle.setOnCheckedChangeListener (null);
             permissionToggle.setChecked(true);
@@ -177,13 +180,14 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     }
 
     public void refreshEvents() {
-        ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
+        ParseQuery<ParseEvent> query = ParseQuery.getQuery(ParseEvent.class);
         query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
         try {
             days.clear();
-            List<Event> events = query.find();
+            List<ParseEvent> events = query.find();
             days.addAll(events);
             calendarView.addDecorators(new CurrentDayDecorator(orange, days));
+            populateDayView(events);
             Log.d("CalendarFragment", "Refreshed from parse");
 
         } catch (com.parse.ParseException e) {
@@ -213,8 +217,8 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         final FragmentManager fragmentManager = getFragmentManager();
         final EventDialogFragment fragment = EventDialogFragment.newInstance();
 
-        final List<Event> todayEvents = new ArrayList<>();
-        ParseQuery<Event> selectedDayQuery = new Event.Query();
+        final List<ParseEvent> todayEvents = new ArrayList<>();
+        ParseQuery<ParseEvent> selectedDayQuery = new ParseEvent.Query();
         selectedDayQuery.whereEqualTo("dateString", selectedDate);
         selectedDayQuery.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
         todayEvents.clear();
@@ -233,9 +237,51 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             mainBundle.putBundle("googleBundle", googleBundle);
             mainBundle.putBundle("parseBundle", parseBundle);
             fragment.setArguments(mainBundle);
+
+            //populate dayView
             fragment.show(fragmentManager, "event_dialog_fragment");
         }
+        populateDayView(todayEvents);
 
+    }
+
+    public int getHour(String time) {
+        String hour = time.substring(0,2);
+        if(hour.substring(0,1) == "0") {
+            hour = hour.substring(1,2);
+            return Integer.valueOf(hour);
+        }
+        return Integer.valueOf(hour);
+    }
+
+    public int getMinute(String time) {
+        String minute = time.substring(3,5);
+        if(minute.substring(0,1) == "0") {
+            minute = minute.substring(1,2);
+            return Integer.valueOf(minute);
+        }
+        return Integer.valueOf(minute);
+    }
+
+    public void populateDayView(List<ParseEvent> todayEvents) {
+        ArrayList<IEvent> dayViewEvents = new ArrayList<>();
+        Log.d("CalendarFragment", "Day view objects: " + Integer.toString(todayEvents.size()));
+        for(int i = 0; i < todayEvents.size(); i++) {
+            ParseEvent currentEvent = todayEvents.get(i);
+            Calendar timeStart = Calendar.getInstance();
+            timeStart.set(Calendar.HOUR_OF_DAY, getHour(currentEvent.getEventTime()));
+            timeStart.set(Calendar.MINUTE,getMinute(currentEvent.getEventTime()));
+            Log.d("CalendarFragmnet", "start: " + timeStart.getTime().toString());
+            Calendar timeEnd = (Calendar) Calendar.getInstance();
+            timeEnd.set(Calendar.HOUR_OF_DAY, getHour(currentEvent.getEndTime()));
+            timeEnd.set(Calendar.MINUTE,getMinute(currentEvent.getEndTime()));
+            Log.d("CalendarFragment", "end: " + timeEnd.getTime().toString());
+            String location = "N/A";
+            String description = currentEvent.getEventDescription();
+            Event event = new Event(3, timeStart, timeEnd, description, location, orange);
+            dayViewEvents.add(event);
+        }
+        dayView.setEvents(dayViewEvents);
     }
 
     public int getIntFromColor(int Red, int Green, int Blue){

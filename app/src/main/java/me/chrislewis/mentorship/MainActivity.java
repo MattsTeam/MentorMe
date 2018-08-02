@@ -76,37 +76,37 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_favorites:
-                    displayHomeActionBar();
+                    //displayHomeActionBar();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
                     return true;
                 case R.id.navigation_search:
-                    displayHomeActionBar();
-                    actionBar.hide();
-                    actionBar.setTitle("");
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                    actionBar.setHomeAsUpIndicator(R.drawable.baseline_list_black_24dp);
-                    actionBar.show();
+//                    displayHomeActionBar();
+//                    actionBar.hide();
+//                    actionBar.setTitle("");
+//                    actionBar.setDisplayHomeAsUpEnabled(true);
+//                    actionBar.setHomeAsUpIndicator(R.drawable.baseline_list_black_24dp);
+//                    actionBar.show();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, searchFragment).commit();
 
                     return true;
                 case R.id.navigation_messages:
-                    actionBar.hide();
-                    displayHomeActionBar();
+                    //actionBar.hide();
+                    //displayHomeActionBar();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
                     return true;
                 case R.id.navigation_calendar:
-                    actionBar.hide();
-                    displayHomeActionBar();
+                    //actionBar.hide();
+                    //displayHomeActionBar();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
-                    actionBar.hide();
+                    //actionBar.hide();
                     return true;
             }
             return false;
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        displayHomeActionBar();
+        //displayHomeActionBar();
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
-            actionBar.setTitle("");
+            //actionBar.setTitle("");
 
         }
 

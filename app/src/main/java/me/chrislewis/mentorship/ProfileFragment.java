@@ -1,5 +1,6 @@
 package me.chrislewis.mentorship;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;

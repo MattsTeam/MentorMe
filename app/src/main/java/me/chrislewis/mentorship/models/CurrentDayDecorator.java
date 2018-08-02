@@ -25,7 +25,7 @@ public class CurrentDayDecorator implements DayViewDecorator {
     private Date calendarDate;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public CurrentDayDecorator(int color, ArrayList<Event> events) {
+    public CurrentDayDecorator(int color, ArrayList<ParseEvent> events) {
         this.color = color;
         Collection<CalendarDay> dates = new ArrayList<>();
         for(int i = 0; i < events.size(); i++) {

@@ -8,7 +8,7 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
 import me.chrislewis.mentorship.models.Chat;
-import me.chrislewis.mentorship.models.Event;
+import me.chrislewis.mentorship.models.ParseEvent;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.Review;
 import okhttp3.OkHttpClient;
@@ -30,7 +30,7 @@ public class ParseApp extends MultiDexApplication {
         builder.networkInterceptors().add(httpLoggingInterceptor);
 
         ParseObject.registerSubclass(Message.class);
-        ParseObject.registerSubclass(Event.class);
+        ParseObject.registerSubclass(ParseEvent.class);
         ParseObject.registerSubclass(Chat.class);
         ParseObject.registerSubclass(Review.class);
 
