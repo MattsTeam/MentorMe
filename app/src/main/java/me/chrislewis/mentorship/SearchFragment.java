@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,7 +21,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -51,11 +52,13 @@ public class SearchFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private DrawerLayout mDrawerLayout;
     private List<ParseUser> sameCategoryUsers;
-    private Button btnOpenDrawer;
     MenuItem checkedItem;
     ParseGeoPoint currentParseLocation;
     SubMenu menuGroup;
     ProfileFragment profileFragment = new ProfileFragment();
+    Toolbar toolbar;
+
+    ImageButton menuButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -66,6 +69,18 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
+        toolbar = view.findViewById(R.id.toolbar_search);
+
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//
+//        toolbar.setNavigationIcon(R.drawable.baseline_list_black_24dp);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getActivity(), "open drawer", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
@@ -104,7 +119,15 @@ public class SearchFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        //setupLocationServices();
+
+        menuButton = view.findViewById(R.id.btnMenu);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "open drawer", Toast.LENGTH_SHORT).show();
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         getAllUsers();
     }
@@ -264,10 +287,6 @@ public class SearchFragment extends Fragment {
                 menu.getItem(i).setChecked(false);
             }
         }
-    }
-
-    public void openDrawer() {
-        mDrawerLayout.openDrawer(GravityCompat.START);
     }
 
     public void setupNavigationDrawer(View view) {

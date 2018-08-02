@@ -182,31 +182,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu (Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_toolbar, menu);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.flContainer);
-        switch(item.getItemId()) {
-            case android.R.id.home:
-                if (currentFragment == searchFragment) {
-                    searchFragment.openDrawer();
-                }
-
-                return true;
-            default:
-                super.onOptionsItemSelected(item);
-                return true;
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -221,17 +196,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-    }
-
-
-    public void displayHomeActionBar() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setTitle("");
-        actionBar.show();
-
     }
 
     public void setupLocationServices (){
