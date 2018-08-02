@@ -39,6 +39,7 @@ public class User{
     private final static String REVIEWS_KEY = "reviews";
     private final static String NUM_RATINGS_KEY = "numRatings";
     private final static String SYNC_KEY = "allowSync";
+    private final static String IS_MENTOR_KEY = "isMentor";
 
     private ParseUser user;
     private List<Chat> chats;
@@ -156,7 +157,9 @@ public class User{
     public void setOverallRating(double rating) { user.put(OVERALL_RATING_KEY, rating); }
 
     public Integer getNumRatings() {return user.getInt(NUM_RATINGS_KEY);}
-    public void setNumRatings(Integer numRatings) { user.put(NUM_RATINGS_KEY, getNumRatings()); }
+    public void setNumRatings(Integer numRatings) { user.put(NUM_RATINGS_KEY, numRatings); }
+
+    public boolean getIsMentor() { return user.getBoolean(IS_MENTOR_KEY); }
 
     public Double getRelDistance() {
         return user.getDouble(REL_DISTANCE_KEY);

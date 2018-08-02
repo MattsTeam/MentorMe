@@ -26,10 +26,10 @@
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@color/orange"
+            android:gravity="center"
             android:queryHint="Search"
             app:iconifiedByDefault="false" />
     </android.support.v7.widget.Toolbar>

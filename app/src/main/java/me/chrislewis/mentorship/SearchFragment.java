@@ -120,7 +120,11 @@ public class SearchFragment extends Fragment {
         gridAdapter.clear();
         ParseUser.getCurrentUser().fetchInBackground();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("isMentor", true);
+        if (currentUser.getIsMentor() == true) {
+            query.whereEqualTo("isMentor", false);
+        } else if (currentUser.getIsMentor() == false) {
+            query.whereEqualTo("isMentor", true);
+        }
         query.whereNotEqualTo("objectId", currentUser.getObjectId());
 
 
@@ -209,7 +213,13 @@ public class SearchFragment extends Fragment {
         gridAdapter.clear();
         ParseUser.getCurrentUser().fetchInBackground();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("isMentor", true);
+
+        if (currentUser.getIsMentor() == true) {
+            query.whereEqualTo("isMentor", false);
+        } else if (currentUser.getIsMentor() == false) {
+            query.whereEqualTo("isMentor", true);
+        }
+
         query.whereNotEqualTo("objectId", currentUser.getObjectId());
         query.whereContains("categories", category);
 
@@ -232,7 +242,13 @@ public class SearchFragment extends Fragment {
                 gridAdapter.addAll(sameCategoryUsers);
             }
             else {
-                Toast.makeText(getActivity(), "There are no mentors in this category", Toast.LENGTH_LONG).show();
+                if (currentUser.getIsMentor() == true) {
+                    Toast.makeText(getActivity(), "There are no mentees in this category", Toast.LENGTH_LONG).show();
+
+                } else if (currentUser.getIsMentor() == false) {
+                    Toast.makeText(getActivity(), "There are no mentors in this category", Toast.LENGTH_LONG).show();
+
+                }
             }
         }
         catch (com.parse.ParseException e) {
@@ -302,7 +318,11 @@ public class SearchFragment extends Fragment {
                     menuItem.setChecked(true);
                     checkedItem = menuItem;
                     uncheckOtherItems(menuItem, menuGroup);
-                    Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
+                    if (currentUser.getIsMentor() == true) {
+                        Toast.makeText(getActivity(),"Showing mentees for " + menuItem, Toast.LENGTH_SHORT).show();
+                    } else if (currentUser.getIsMentor() == false) {
+                        Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
+                    }
 
                     if (category == "All Categories") {
                         getAllUsers();
