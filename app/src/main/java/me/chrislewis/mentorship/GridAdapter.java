@@ -72,7 +72,8 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
         }
 
         Double relDistance = user.getRelDistance();
-        holder.tvDistance.setText(Double.toString(relDistance) + " miles away");
+        holder.tvDistance.setText(Double.toString(relDistance) + " mi");
+
         if (user.getCategories() != null) {
             for(int i = 0; i < user.getCategories().size(); i++) {
                 if(user.getCategories().get(i).equals("Art")) {
@@ -137,6 +138,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
             if (position != RecyclerView.NO_POSITION) {
                 ParseUser user = mUsers.get(position);
                 model.setUser(new User(user));
+
                 FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
                 fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();

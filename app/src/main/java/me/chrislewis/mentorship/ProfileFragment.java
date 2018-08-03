@@ -31,10 +31,6 @@ import static me.chrislewis.mentorship.MainActivity.CAPTURE_IMAGE_ACTIVITY_REQUE
 import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 
 public class ProfileFragment extends Fragment {
-
-    FavoritesAdapter adapter;
-    RecyclerView rvFavorites;
-
     ImageView ivProfile;
     TextView tvName;
     TextView tvJob;
@@ -124,30 +120,5 @@ public class ProfileFragment extends Fragment {
                     .apply(new RequestOptions().circleCrop())
                     .into(ivProfile);
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Glide.with(Objects.requireNonNull(getContext()))
-                        .load(camera.getPhoto())
-                        .apply(new RequestOptions().circleCrop())
-                        .into(ivProfile);
-            } else {
-                Toast.makeText(getContext(),
-                        "Picture wasn't taken!",
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == PICK_IMAGE_REQUEST) {
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                Glide.with(Objects.requireNonNull(getContext()))
-                        .load(camera.getChosenPhoto(data))
-                        .apply(new RequestOptions().circleCrop())
-                        .into(ivProfile);
-
-            }
-        }
-
     }
 }

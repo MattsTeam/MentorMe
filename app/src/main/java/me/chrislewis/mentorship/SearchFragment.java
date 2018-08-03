@@ -308,11 +308,9 @@ public class SearchFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
-    public void uncheckOtherItems(MenuItem item, Menu menu) {
+    public void uncheckAllItems(Menu menu) {
         for (int i = 0; i < menu.size(); i++) {
-            if (i != item.getItemId()) {
-                menu.getItem(i).setChecked(false);
-            }
+            menu.getItem(i).setChecked(false);
         }
     }
 
@@ -330,20 +328,17 @@ public class SearchFragment extends Fragment {
                 categoryId = currentCategories.indexOf(category);
                 menuGroup.add(Menu.NONE, categoryId, Menu.NONE, category);
             }
+            categoryId = categoryId + 1;
         }
-        categoryId = categoryId + 1;
         menuGroup.add(Menu.NONE, categoryId, Menu.NONE, "All Categories");
 
-        MenuItem last = menuGroup.getItem(menuGroup.size() - 1);
-        last.setChecked(true);
-        uncheckOtherItems(last, menuGroup);
-        checkedItem = last;
 
-
-        SubMenu menuOthers = menu.addSubMenu("Other Categories");
+        final SubMenu menuOthers = menu.addSubMenu("Other Categories");
         allCategories = Arrays.asList("English", "History", "Science", "Math", "Art", "Languages");
         List<String> otherCategories = new ArrayList<>(allCategories);
-        otherCategories.removeAll(currentCategories);
+        if (currentCategories != null) {
+            otherCategories.removeAll(currentCategories);
+        }
 
         if (otherCategories.size() > 0) {
             for (String category : otherCategories) {
@@ -352,18 +347,27 @@ public class SearchFragment extends Fragment {
             }
         }
 
-        SubMenu menuAdd = menu.addSubMenu("Add Categories");
+        final SubMenu menuAdd = menu.addSubMenu("Add Categories");
         menuAdd.add(Menu.NONE, Menu.NONE, Menu.NONE, "Go to Profile");
+
+        MenuItem last = menuGroup.getItem(menuGroup.size() - 1);
+        uncheckAllItems(menuGroup);
+        uncheckAllItems(menuOthers);
+        uncheckAllItems(menuAdd);
+        last.setChecked(true);
+        checkedItem = last;
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 String category = menuItem.toString();
+                uncheckAllItems(menuGroup);
+                uncheckAllItems(menuOthers);
+                uncheckAllItems(menuAdd);
+                menuItem.setChecked(true);
                 if (category != "Add Categories") {
-                    menuItem.setChecked(true);
                     checkedItem = menuItem;
-                    uncheckOtherItems(menuItem, menuGroup);
                     if (currentUser.getIsMentor() == true) {
                         Toast.makeText(getActivity(),"Showing mentees for " + menuItem, Toast.LENGTH_SHORT).show();
                     } else if (currentUser.getIsMentor() == false) {
