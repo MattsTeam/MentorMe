@@ -48,7 +48,6 @@ import java.util.List;
 
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
 import me.chrislewis.mentorship.models.CustomDecoration;
-import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.GoogleDayDecorator;
 import me.chrislewis.mentorship.models.ParseEvent;
 import me.chrislewis.mentorship.models.Popup;
@@ -191,7 +190,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             List<ParseEvent> events = query.find();
             days.addAll(events);
             calendarView.addDecorators(new CurrentDayDecorator(orange, days));
-            populateDayView(events);
+            //populateDayView(events);
             Log.d("CalendarFragment", "Refreshed from parse");
 
         } catch (com.parse.ParseException e) {
@@ -270,25 +269,29 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void populateDayView(List<ParseEvent> todayEvents) {
         ArrayList<IEvent> dayViewEvents = new ArrayList<>();
         ArrayList<IPopup> dayViewPopups = new ArrayList<>();
+        model.inviteeImages.clear();
         Log.d("CalendarFragment", "Day view objects: " + Integer.toString(todayEvents.size()));
+        model.inviteeNum = todayEvents.size() - 1;
+        model.resetInviteeIndex();
         for(int i = 0; i < todayEvents.size(); i++) {
             ParseEvent currentEvent = todayEvents.get(i);
+            model.addInviteeImg(currentEvent.getInviteeImage());
             Calendar timeStart = Calendar.getInstance();
             timeStart.set(Calendar.HOUR_OF_DAY, getHour(currentEvent.getEventTime()));
             timeStart.set(Calendar.MINUTE,getMinute(currentEvent.getEventTime()));
             Calendar timeEnd = (Calendar) Calendar.getInstance();
             timeEnd.set(Calendar.HOUR_OF_DAY, getHour(currentEvent.getEndTime()));
             timeEnd.set(Calendar.MINUTE,getMinute(currentEvent.getEndTime()));
-            String location = "N/A";
+            //String location = "N/A";
             String description = currentEvent.getEventDescription();
-            Event event = new Event(3, timeStart, timeEnd, description, location, orange);
+            //Event event = new Event(3, timeStart, timeEnd, description, location, orange);
             Popup popup = new Popup();
             popup.setStartTime(timeStart);
             popup.setEndTime(timeEnd);
             popup.setTitle(description);
             popup.setDescription(currentEvent.getInviteeString());
             popup.setQuote("");
-            dayViewEvents.add(event);
+            //dayViewEvents.add(event);
             dayViewPopups.add(popup);
         }
         //dayView.setEvents(dayViewEvents);
