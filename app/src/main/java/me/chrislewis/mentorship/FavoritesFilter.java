@@ -8,12 +8,11 @@ import java.util.ArrayList;
 
 import me.chrislewis.mentorship.models.User;
 
-public class SearchFilter extends Filter {
-    GridAdapter adapter;
-    ArrayList<ParseUser> filterList;
+public class FavoritesFilter extends Filter {
+    FavoritesAdapter adapter;
+    ArrayList<User> filterList;
 
-    public SearchFilter(ArrayList<ParseUser> filterList, GridAdapter adapter)
-    {
+    public FavoritesFilter(ArrayList<User> filterList, FavoritesAdapter adapter) {
         this.adapter = adapter;
         this.filterList = filterList;
 
@@ -26,12 +25,12 @@ public class SearchFilter extends Filter {
         if(constraint != null && constraint.length() > 0)
         {
             constraint=constraint.toString().toUpperCase();
-            ArrayList<ParseUser> filteredUsers = new ArrayList<>();
+            ArrayList<User> filteredUsers = new ArrayList<>();
 
             for (int i=0;i<filterList.size();i++)
             {
                 if (filterList.get(i) != null) {
-                    User u = new User(filterList.get(i));
+                    User u = filterList.get(i);
                     if(u.getName().toUpperCase().contains(constraint))
                     {
                         filteredUsers.add(filterList.get(i));
@@ -51,10 +50,10 @@ public class SearchFilter extends Filter {
 
     @Override
     protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-        adapter.users = (ArrayList<ParseUser>) filterResults.values;
+        adapter.arrayUsers = (ArrayList<User>) filterResults.values;
         adapter.clear();
         adapter.notifyDataSetChanged();
-        adapter.addAll(adapter.users);
+        adapter.addAll(adapter.arrayUsers);
         adapter.notifyDataSetChanged();
     }
 }

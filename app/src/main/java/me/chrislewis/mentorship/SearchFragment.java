@@ -130,16 +130,28 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                if (query == "" || query == null) {
-                    getAllUsers();
+                if (query.equals("")) {
+                    if (checkedItem == null) {
+                        getAllUsers();
+                    }
+                    else {
+                        String category = checkedItem.toString();
+                        if (category == "All Categories") {
+                            getAllUsers();
+                        }
+                        else {
+                            filterByCategory(category);
+                        }
+                    }
+                } else {
+                    gridAdapter.getFilter().filter(query);
                 }
-                gridAdapter.getFilter().filter(query);
                 return false;
             }
         });
 
-
         getAllUsers();
+
     }
 
     @Override

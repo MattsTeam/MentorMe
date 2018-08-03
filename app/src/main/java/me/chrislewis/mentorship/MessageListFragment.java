@@ -63,7 +63,11 @@ public class MessageListFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                adapter.getFilter().filter(query);
+                if (query.equals("")) {
+                    findChats(model.getCurrentUser());
+                } else {
+                    adapter.getFilter().filter(query);
+                }
                 return false;
             }
         });
