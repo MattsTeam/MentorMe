@@ -18,24 +18,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Match;
 import me.chrislewis.mentorship.models.User;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
     private Context mContext;
     private List<User> favorites;
+    private List<Match> matches;
+    User currentUser;
+
+    private boolean isMentor;
 
     SharedViewModel model;
     private FragmentTransaction fragmentTransaction;
     private DetailsFragment detailsFragment = new DetailsFragment();
     private MessageFragment messageFragment = new MessageFragment();
 
-    FavoritesAdapter(List<User> favorites, SharedViewModel model) {
+    FavoritesAdapter(List<User> favorites, List<Match> matches, SharedViewModel model) {
         this.favorites = favorites;
+        this.matches = matches;
         this.model = model;
+        currentUser = model.currentUser;
+        isMentor = currentUser.getIsMentor();
     }
+
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder (@NonNull ViewGroup viewGroup,int i){
         mContext = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View contactView = inflater.inflate(R.layout.item_favorite, viewGroup, false);
@@ -44,45 +53,56 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-
-        final User user = favorites.get(i);
-
-        if (user != null) {
-
-            String name = user.getName();
-            if (name != null) {
-                viewHolder.tvName.setText(name);
+    public void onBindViewHolder ( @NonNull final ViewHolder viewHolder, int i){
+        Match match = matches.get(i);
+        try {
+            User user = null;
+            if (isMentor) {
+                user = match.getMentee();
+                viewHolder.btAccept.setVisibility(View.VISIBLE);
+                viewHolder.btDecline.setVisibility(View.VISIBLE);
+            } else {
+                user = match.getMentor();
             }
-
-
-            if (user.getProfileImage().getUrl() != null) {
-                Glide.with(mContext)
-                        .load(user.getProfileImage().getUrl())
-                        .apply(new RequestOptions().circleCrop())
-                        .into(viewHolder.ivProfile);
+            viewHolder.tvName.setText(user.getName());
+            if (match.isAccepted()) {
+                viewHolder.tvMatch.setText("ACCEPTED");
+            } else {
+                viewHolder.tvMatch.setText("PENDING");
             }
+            Glide.with(mContext)
+                    .load(user.getProfileImage().getUrl())
+                    .apply(new RequestOptions().circleCrop())
+                    .into(viewHolder.ivProfile);
+        } catch (Exception e) {
+            currentUser.removeMatch(match);
         }
     }
 
     @Override
-    public int getItemCount() {
-        if (favorites == null) {
+    public int getItemCount () {
+        if (matches == null) {
             return 0;
         } else {
-            return favorites.size();
+            return matches.size();
         }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView ivProfile;
         TextView tvName;
+        TextView tvMatch;
         Button btMessage;
+        Button btAccept;
+        Button btDecline;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfile = itemView.findViewById(R.id.ivProfile);
             tvName = itemView.findViewById(R.id.tvName);
+            tvMatch = itemView.findViewById(R.id.tvMatch);
+            btAccept = itemView.findViewById(R.id.btAccept);
+            btDecline = itemView.findViewById(R.id.btDecline);
             btMessage = itemView.findViewById(R.id.btMessage);
             btMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,7 +117,34 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                     }
                 }
             });
+            btAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Match match = matches.get(position);
+                        match.setAccepted(true);
+                        btAccept.setVisibility(View.INVISIBLE);
+                        btDecline.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+            btDecline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Match match = matches.get(position);
+                        match.setDeclined(true);
+                        match.deleteInBackground();
+                        btAccept.setVisibility(View.INVISIBLE);
+                        btDecline.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
             itemView.setOnClickListener(this);
+
+
         }
 
         @Override
@@ -113,13 +160,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         }
     }
 
-    public void clear() {
-        favorites.clear();
+    public void clear () {
+        matches.clear();
         notifyDataSetChanged();
     }
 
-    public void addAll(List<User> list) {
-        favorites.addAll(list);
+    public void addAll (List < Match > list) {
+        matches.addAll(list);
         notifyDataSetChanged();
     }
 }

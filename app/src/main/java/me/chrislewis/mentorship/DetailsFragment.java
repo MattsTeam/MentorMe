@@ -25,6 +25,7 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Match;
 import me.chrislewis.mentorship.models.User;
 
 import static com.parse.Parse.getApplicationContext;
@@ -46,6 +47,8 @@ public class DetailsFragment extends Fragment {
     Button btCalendar;
 
     SharedViewModel model;
+
+    Match match;
 
     MessageFragment messageFragment = new MessageFragment();
     ReviewsFragment reviewsFragment = new ReviewsFragment();
@@ -101,6 +104,10 @@ public class DetailsFragment extends Fragment {
                         public void done(ParseException e) {
                             if (e == null) {
                                 Toast.makeText(getActivity(), "You favorited this mentor", Toast.LENGTH_SHORT).show();
+                                match = new Match(currentUser, user);
+                                match.saveInBackground();
+                                currentUser.addMatch(match);
+                                currentUser.saveInBackground();
                             } else {
                                 Log.d("Details", "Error" + e);
                             }

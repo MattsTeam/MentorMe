@@ -40,10 +40,12 @@ public class User{
     private final static String NUM_RATINGS_KEY = "numRatings";
     private final static String SYNC_KEY = "allowSync";
     private final static String IS_MENTOR_KEY = "isMentor";
+    private final static String CONNECTION_KEY = "connects";
 
     private ParseUser user;
     private List<Chat> chats;
     private ArrayList<User> favorites;
+    private ArrayList<Match> matches;
 
     public User(ParseUser user){
         try {
@@ -188,11 +190,55 @@ public class User{
 
     public void addFavorite(User user) {
         user.getParseUser().revert();
+        favorites.add(user);
         this.user.addUnique(FAVORITE_KEY, user.getParseUser());
     }
 
     public void removeFavorite(User user) {
         this.user.removeAll(FAVORITE_KEY, Collections.singleton(user.getParseUser()));
+        favorites.remove(user);
+    }
+
+    public List<Match> getMatches() {
+        if (matches == null) {
+            matches = new ArrayList<>();
+            List<Match> holder = (List<Match>) user.get(CONNECTION_KEY);
+            if (holder != null) {
+                for (Match i : holder) {
+                    try {
+                        i.fetchIfNeeded();
+                        matches.add(i);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return matches;
+            } else {
+                return null;
+            }
+        } else {
+            return matches;
+        }
+    }
+
+    public void setMatches(List<Match> matches) {
+        user.remove(CONNECTION_KEY);
+        this.matches = (ArrayList<Match>) matches;
+        user.addAllUnique(CONNECTION_KEY, matches);
+    }
+
+    public void clearMatch() {
+        matches.clear();
+    }
+
+    public void addMatch(Match match) {
+        matches.add(match);
+        this.user.addUnique(CONNECTION_KEY, match);
+    }
+
+    public void removeMatch(Match match) {
+        this.user.removeAll(CONNECTION_KEY, Collections.singleton(match));
+        matches.remove(match);
     }
 
     public List<Review> getReviews() {
@@ -221,11 +267,13 @@ public class User{
         user.put(DISTANCE_KEY, distance);
     }
 
-
-
     public Boolean getSync() { return user.getBoolean(SYNC_KEY); }
 
     public void setSync(Boolean isSync) { user.put(SYNC_KEY, isSync); }
+
+    public void invite(User user) {
+
+    }
 
     public boolean firstChat(ArrayList<User> users) {
         if (chats != null) {
