@@ -58,6 +58,8 @@ public class ParseEvent extends ParseObject implements Serializable {
 
     public void setTime(String time) { put(TIME_KEY, time); }
 
+    public String getInviteeString() { return getString(INVITEE_STRING); }
+
     public void setInviteeString(String invitee) { put(INVITEE_STRING, invitee); }
 
     public void setInviteeIdString(String inviteeId) { put(INVITEE_ID_STRING, inviteeId); }

@@ -22,6 +22,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.framgia.library.calendardayview.data.IEvent;
+import com.framgia.library.calendardayview.data.IPopup;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -46,9 +47,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.CurrentDayDecorator;
+import me.chrislewis.mentorship.models.CustomDecoration;
 import me.chrislewis.mentorship.models.Event;
 import me.chrislewis.mentorship.models.GoogleDayDecorator;
 import me.chrislewis.mentorship.models.ParseEvent;
+import me.chrislewis.mentorship.models.Popup;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -91,6 +94,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
         permissionToggle = view.findViewById(R.id.syncSwitch);
         dayView = view.findViewById(R.id.dayView);
+        dayView.setDecorator(new CustomDecoration(getActivity()));
         if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
             permissionToggle.setOnCheckedChangeListener (null);
             permissionToggle.setChecked(true);
@@ -265,23 +269,30 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     public void populateDayView(List<ParseEvent> todayEvents) {
         ArrayList<IEvent> dayViewEvents = new ArrayList<>();
+        ArrayList<IPopup> dayViewPopups = new ArrayList<>();
         Log.d("CalendarFragment", "Day view objects: " + Integer.toString(todayEvents.size()));
         for(int i = 0; i < todayEvents.size(); i++) {
             ParseEvent currentEvent = todayEvents.get(i);
             Calendar timeStart = Calendar.getInstance();
             timeStart.set(Calendar.HOUR_OF_DAY, getHour(currentEvent.getEventTime()));
             timeStart.set(Calendar.MINUTE,getMinute(currentEvent.getEventTime()));
-            Log.d("CalendarFragmnet", "start: " + timeStart.getTime().toString());
             Calendar timeEnd = (Calendar) Calendar.getInstance();
             timeEnd.set(Calendar.HOUR_OF_DAY, getHour(currentEvent.getEndTime()));
             timeEnd.set(Calendar.MINUTE,getMinute(currentEvent.getEndTime()));
-            Log.d("CalendarFragment", "end: " + timeEnd.getTime().toString());
             String location = "N/A";
             String description = currentEvent.getEventDescription();
             Event event = new Event(3, timeStart, timeEnd, description, location, orange);
+            Popup popup = new Popup();
+            popup.setStartTime(timeStart);
+            popup.setEndTime(timeEnd);
+            popup.setTitle(description);
+            popup.setDescription(currentEvent.getInviteeString());
+            popup.setQuote("");
             dayViewEvents.add(event);
+            dayViewPopups.add(popup);
         }
-        dayView.setEvents(dayViewEvents);
+        //dayView.setEvents(dayViewEvents);
+        dayView.setPopups(dayViewPopups);
     }
 
     public int getIntFromColor(int Red, int Green, int Blue){
