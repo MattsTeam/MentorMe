@@ -28,4 +28,30 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:text="@string/title_messages" />
+
+    <TextView
+        android:id="@+id/tvMatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivProfile"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/btDecline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivProfile"
+        android:layout_alignParentEnd="true"
+        android:text="Decline"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivProfile"
+        android:layout_toStartOf="@+id/btDecline"
+        android:text="Accept"
+        android:visibility="invisible" />
 </RelativeLayout>
