@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -22,11 +23,16 @@ public class ParseEvent extends ParseObject implements Serializable {
     private final static String INVITEE_STRING = "invitee";
     private final static String INVITEE_ID_STRING = "inviteeId";
     private final static String END_TIME_KEY = "endTimeString";
+    private final static String PROFILE_IMAGE_KEY = "inviteeImage";
     private final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private final static DateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
 
 
     public ParseEvent() { }
+
+    public ParseFile getInviteeImage() { return getParseFile(PROFILE_IMAGE_KEY); }
+
+    public void setInviteeImage(ParseFile img) { put(PROFILE_IMAGE_KEY, img); }
 
     public void setEndTime(String time) { put(END_TIME_KEY, time); }
 

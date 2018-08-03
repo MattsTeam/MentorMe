@@ -1,6 +1,5 @@
 package me.chrislewis.mentorship;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -98,7 +97,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ParseUser.logOut();
-                //TODO revoke gmail credentials
                 Intent intent = new Intent(view.getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

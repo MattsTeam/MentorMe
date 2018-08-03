@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship.models;
 
 import com.framgia.library.calendardayview.data.IPopup;
+import com.parse.ParseFile;
 
 import java.util.Calendar;
 
@@ -18,9 +19,14 @@ public class Popup implements IPopup {
 
     String quote;
 
+    ParseFile inviteeImg;
+
     public Popup() {
 
     }
+
+    public void setInviteeImg(ParseFile img) { inviteeImg = img; }
+
 
     public void setTitle(String title) {
         this.title = title;

@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.ParseException;
@@ -191,6 +193,17 @@ public class AddEventDialogFragment extends DialogFragment {
         Log.d("CalendarFragment", "endTime: " + endTime);
         Log.d("CalendarFragment", "invitee: " + invitee);
         Log.d("CalendarFragment", "inviteeId: " + inviteeId);
+        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+        query.whereEqualTo("userId", inviteeId);
+        try {
+            List<ParseUser> inviteeUsers = query.find();
+            ParseUser inviteeParseUser = inviteeUsers.get(0);
+            User inviteeUser = new User(inviteeParseUser);
+            ParseFile profileImage = inviteeUser.getProfileImage();
+            newEvent.setInviteeImage(profileImage);
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
         newEvent.setInviteeString(invitee);
         newEvent.setInviteeIdString(inviteeId);
         newEvent.saveInBackground();
