@@ -146,19 +146,24 @@ public class AddEventDialogFragment extends DialogFragment {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String description = eventDescription.getText().toString();
-                String invitee = findMentors.getSelectedItem().toString();
-                String inviteeId = ids.get(names.indexOf(invitee));
-                String startTimeString = startTime.getText().toString();
-                String endTimeString = endTime.getText().toString();
-                model.setNewEventInfo(todayString, startTimeString, endTimeString, description, invitee, inviteeId);
-                createParseEvent();
-                if(model.getCreateFromCalendar()) {
-                    model.getFragmentManager().findFragmentById(R.id.flContainer);
-                    CalendarFragment calendarFragment = (CalendarFragment) model.getFragmentManager().findFragmentByTag("CalendarFragment");
-                    calendarFragment.refreshEvents();
+                if(findMentors.getSelectedItem() == null || startTime.getText() == null || endTime.getText() == null || eventDescription.getText() == null) {
+                    Toast.makeText(getActivity(), "Please fill out all of the required infomation for the new event", Toast.LENGTH_LONG).show();
                 }
-                dismiss();
+                else {
+                    String description = eventDescription.getText().toString();
+                    String invitee = findMentors.getSelectedItem().toString();
+                    String inviteeId = ids.get(names.indexOf(invitee));
+                    String startTimeString = startTime.getText().toString();
+                    String endTimeString = endTime.getText().toString();
+                    model.setNewEventInfo(todayString, startTimeString, endTimeString, description, invitee, inviteeId);
+                    createParseEvent();
+                    if(model.getCreateFromCalendar()) {
+                        model.getFragmentManager().findFragmentById(R.id.flContainer);
+                        CalendarFragment calendarFragment = (CalendarFragment) model.getFragmentManager().findFragmentByTag("CalendarFragment");
+                        calendarFragment.refreshEvents();
+                    }
+                    dismiss();
+                }
             }
         });
     }
