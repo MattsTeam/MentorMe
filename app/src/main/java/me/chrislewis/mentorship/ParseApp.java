@@ -8,8 +8,9 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
 import me.chrislewis.mentorship.models.Chat;
-import me.chrislewis.mentorship.models.ParseEvent;
+import me.chrislewis.mentorship.models.Match;
 import me.chrislewis.mentorship.models.Message;
+import me.chrislewis.mentorship.models.ParseEvent;
 import me.chrislewis.mentorship.models.Review;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -33,6 +34,7 @@ public class ParseApp extends MultiDexApplication {
         ParseObject.registerSubclass(ParseEvent.class);
         ParseObject.registerSubclass(Chat.class);
         ParseObject.registerSubclass(Review.class);
+        ParseObject.registerSubclass(Match.class);
 
         Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
