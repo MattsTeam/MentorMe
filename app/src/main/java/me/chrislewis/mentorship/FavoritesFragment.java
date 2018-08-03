@@ -8,12 +8,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+
+import java.util.List;
 import java.util.Objects;
 
+import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
 
 public class FavoritesFragment extends Fragment {
@@ -24,6 +30,8 @@ public class FavoritesFragment extends Fragment {
     FavoritesAdapter adapter;
     RecyclerView rvFavorites;
     SearchView sv;
+    List<User> favorites;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -38,32 +46,12 @@ public class FavoritesFragment extends Fragment {
                 .get(SharedViewModel.class);
 
         user = model.getCurrentUser();
+        favorites = user.getFavorites();
 
-        adapter = new FavoritesAdapter(user.getFavorites(), model);
+        adapter = new FavoritesAdapter(favorites, model);
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvFavorites.setAdapter(adapter);
-
-        sv = view.findViewById(R.id.search_view);
-
-        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                if (query.equals("")) {
-                    adapter.clear();
-                    adapter.addAll(user.getFavorites());
-                    adapter.notifyDataSetChanged();
-                } else {
-                    adapter.getFilter().filter(query);
-                }
-                return false;
-            }
-        });
     }
 }

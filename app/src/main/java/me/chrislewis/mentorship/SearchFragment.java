@@ -179,6 +179,7 @@ public class SearchFragment extends Fragment {
 
             for (ParseUser user : users) {
                 User mUser = new User(user);
+
                 List<String> common = mUser.getCategories();
                 currentCategories = currentUser.getCategories();
                 if (common != null && currentCategories != null) {

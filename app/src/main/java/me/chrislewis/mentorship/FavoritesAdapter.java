@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +20,7 @@ import java.util.List;
 
 import me.chrislewis.mentorship.models.User;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> implements Filterable {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
     private Context mContext;
     private List<User> favorites;
 
@@ -31,15 +29,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private DetailsFragment detailsFragment = new DetailsFragment();
     private MessageFragment messageFragment = new MessageFragment();
 
-    ArrayList<User> arrayUsers, filterList;
-    FavoritesFilter filter;
-
     FavoritesAdapter(List<User> favorites, SharedViewModel model) {
         this.favorites = favorites;
         this.model = model;
-        this.arrayUsers = (ArrayList<User>) favorites;
-        this.filterList = (ArrayList<User>) favorites;
-
     }
     @NonNull
     @Override
@@ -129,13 +121,5 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     public void addAll(List<User> list) {
         favorites.addAll(list);
         notifyDataSetChanged();
-    }
-
-    @Override
-    public Filter getFilter() {
-        if (filter == null) {
-            filter = new FavoritesFilter(filterList, this);
-        }
-        return filter;
     }
 }
