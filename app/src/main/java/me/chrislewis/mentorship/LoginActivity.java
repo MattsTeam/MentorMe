@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     Log.d("LoginActivity", "Login failure.");
+                    Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
