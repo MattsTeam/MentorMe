@@ -36,17 +36,12 @@ import me.chrislewis.mentorship.models.User;
 
 public class AddEventDialogFragment extends DialogFragment {
 
-    public interface OnReceivedData {
-        public void passNewEvent(String date, String time, String description, String invitee, String inviteeId);
-    }
-
     private Button addEventButton;
     private TimePicker timePicker;
     private EditText eventDescription;
     private Boolean isSynced;
     private TextView selectTime;
     private String todayString;
-    private OnReceivedData mData;
     private Date date;
     private Spinner findMentors;
     private TextView startTime;
@@ -123,8 +118,8 @@ public class AddEventDialogFragment extends DialogFragment {
         populateFavoritesInfo(names, ids, users);
         findMentors = view.findViewById(R.id.findMentor);
         findMentors.setPrompt("Select your mentor.");
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.search_suggestion, names);
-        adapter.setDropDownViewResource(R.layout.search_suggestion);
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, names);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         findMentors.setAdapter(adapter);
         selectTime = view.findViewById(R.id.tvSelectTime);
         selectTime.setText(dateFormat.format(date));
@@ -188,15 +183,16 @@ public class AddEventDialogFragment extends DialogFragment {
         newEvent.setEventDescription(description);
         String invitee = model.getNewEventInfo().get(3);
         String inviteeId = model.getNewEventInfo().get(4);
-        Log.d("CalendarFragment", "date: " + date);
-        Log.d("CalendarFragment", "time: " + startTime);
-        Log.d("CalendarFragment", "endTime: " + endTime);
-        Log.d("CalendarFragment", "invitee: " + invitee);
-        Log.d("CalendarFragment", "inviteeId: " + inviteeId);
-        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
-        query.whereEqualTo("userId", inviteeId);
+        Log.d("AddEventDialog", "date: " + date);
+        Log.d("AddEventDialog", "time: " + startTime);
+        Log.d("AddEventDialog", "endTime: " + endTime);
+        Log.d("AddEventDialog", "invitee: " + invitee);
+        Log.d("AddEventDialog", "inviteeId: " + inviteeId);
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("objectId", inviteeId);
         try {
             List<ParseUser> inviteeUsers = query.find();
+            Log.d("AddEventDialog", "invitees size: " + Integer.toString(inviteeUsers.size()));
             ParseUser inviteeParseUser = inviteeUsers.get(0);
             User inviteeUser = new User(inviteeParseUser);
             ParseFile profileImage = inviteeUser.getProfileImage();

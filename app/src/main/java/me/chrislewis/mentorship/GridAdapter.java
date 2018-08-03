@@ -60,11 +60,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
         if (name != null) {
             holder.tvName.setText(name);
         }
-        String description = user.getDescription();
-        if (description != null) {
-            holder.tvDescription.setText(description);
-        }
-
         if(user.getProfileImage() != null) {
             Glide.with(context).load(user.getProfileImage().getUrl()).into(holder.ivProfileImage);
         }
@@ -78,11 +73,26 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
 
         Double relDistance = user.getRelDistance();
         holder.tvDistance.setText(Double.toString(relDistance) + " miles away");
-
         if (user.getCategories() != null) {
-            String categoriesText = user.getCategories().toString();
-            if (categoriesText != null) {
-                holder.tvCategories.setText(categoriesText);
+            for(int i = 0; i < user.getCategories().size(); i++) {
+                if(user.getCategories().get(i).equals("Art")) {
+                    holder.artIcon.setImageResource(R.drawable.ic_art_pressed);
+                }
+                else if(user.getCategories().get(i).equals("Engineering")) {
+                    holder.engineeringIcon.setImageResource(R.drawable.ic_engineering_pressed);
+                }
+                else if(user.getCategories().get(i).equals("Sports")) {
+                    holder.sportsIcon.setImageResource(R.drawable.ic_sport_pressed);
+                }
+                else if(user.getCategories().get(i).equals("Sciences")) {
+                    holder.scienceIcon.setImageResource(R.drawable.ic_sciences_pressed);
+                }
+                else if(user.getCategories().get(i).equals("Languages")) {
+                    holder.languagesIcon.setImageResource(R.drawable.ic_languages_pressed);
+                }
+                else if(user.getCategories().get(i).equals("Humanities")) {
+                    holder.humanitiesIcon.setImageResource(R.drawable.ic_humanities_pressed);
+                }
             }
         }
         user.saveInBackground();
@@ -98,18 +108,26 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
         public ImageView ivProfileImage;
         public TextView tvName;
         public TextView tvDistance;
-        public TextView tvDescription;
-        public TextView tvCategories;
         public TextView tvRating;
+        public ImageView artIcon;
+        public ImageView engineeringIcon;
+        public ImageView sportsIcon;
+        public ImageView scienceIcon;
+        public ImageView languagesIcon;
+        public ImageView humanitiesIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfile);
             tvName = (TextView) itemView.findViewById(R.id.tvName);
             tvDistance = (TextView) itemView.findViewById(R.id.tvDistance);
-            tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
-            tvCategories = (TextView) itemView.findViewById(R.id.tvCategories);
             tvRating = (TextView) itemView.findViewById(R.id.tvRating);
+            artIcon = (ImageView) itemView.findViewById(R.id.artIcon);
+            engineeringIcon = (ImageView) itemView.findViewById(R.id.engineeringIcon);
+            sportsIcon= (ImageView) itemView.findViewById(R.id.sportsIcon);
+            scienceIcon = (ImageView) itemView.findViewById(R.id.scienceIcon);
+            languagesIcon = (ImageView) itemView.findViewById(R.id.languagesIcon);
+            humanitiesIcon = (ImageView) itemView.findViewById(R.id.humanitiesIcon);
             itemView.setOnClickListener(this);
         }
 
@@ -119,7 +137,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
             if (position != RecyclerView.NO_POSITION) {
                 ParseUser user = mUsers.get(position);
                 model.setUser(new User(user));
-
                 FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
                 fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();

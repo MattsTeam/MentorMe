@@ -7,19 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-
 import java.util.List;
 import java.util.Objects;
 
-import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
 
 public class FavoritesFragment extends Fragment {
@@ -29,7 +23,6 @@ public class FavoritesFragment extends Fragment {
 
     FavoritesAdapter adapter;
     RecyclerView rvFavorites;
-    SearchView sv;
     List<User> favorites;
 
 

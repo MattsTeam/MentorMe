@@ -54,7 +54,7 @@ import me.chrislewis.mentorship.models.Popup;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse, AddEventDialogFragment.OnReceivedData{
+public class CalendarFragment extends Fragment implements OnDateSelectedListener, ApiAsyncTask.AsyncResponse {
 
     SimpleDateFormat todayFormat = new SimpleDateFormat("MMM dd, yyyy");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -110,6 +110,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         todayText = view.findViewById(R.id.tvCurrentDay);
         calendar = Calendar.getInstance();
         calendarView.setDateSelected(calendar.getTime(), true);
+        selectedDate = dateFormat.format(calendar.getTime());
         todayText.setText(todayFormat.format(calendar.getTime()));
         calendarView.setOnDateChangedListener(this);
 
@@ -417,18 +418,18 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void processFinish(List<com.google.api.services.calendar.model.Event> output) {
     }
 
-    @Override
-    public void passNewEvent(String date, String time, String description, String invitee, String inviteeId) {
-        //Add new event to Google Calendar
-        if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
-            try {
-                new CreateEvent(mService, date, time, description, invitee).execute();
-                refreshResults();
-            }
-            catch (java.text.ParseException e) {
-                e.printStackTrace();
-            }
-        }
+//    @Override
+//    public void passNewEvent(String date, String time, String description, String invitee, String inviteeId) {
+//        //Add new event to Google Calendar
+//        if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
+//            try {
+//                new CreateEvent(mService, date, time, description, invitee).execute();
+//                refreshResults();
+//            }
+//            catch (java.text.ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
         //Add new event to Parse
         /*else {
             Event newEvent = new Event();
@@ -460,6 +461,6 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             }
 
         }*/
-    }
+    //}
 
 }
