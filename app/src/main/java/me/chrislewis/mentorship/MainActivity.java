@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction = fragmentManager.beginTransaction();
         User currentUser = new User(ParseUser.getCurrentUser());
         currentUser.getFavorites();
+        currentUser.getMatches();
 
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
         model.setFragmentManager(fragmentManager);
