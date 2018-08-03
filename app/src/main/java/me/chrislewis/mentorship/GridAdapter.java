@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,9 +21,11 @@ import java.util.List;
 
 import me.chrislewis.mentorship.models.User;
 
-public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
+public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> implements Filterable {
 
     private List<ParseUser> mUsers;
+    ArrayList<ParseUser> users, filterList;
+    SearchFilter filter;
     private Context context;
     private User currentUser;
     private Location currentLocation = new Location("currentLocation");
@@ -31,7 +35,9 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
 
     public GridAdapter(ArrayList<ParseUser> users, SharedViewModel model) {
         mUsers = users;
+        this.users = users;
         this.model = model;
+        this.filterList = users;
     }
 
 
@@ -73,9 +79,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
         Double relDistance = user.getRelDistance();
         holder.tvDistance.setText(Double.toString(relDistance) + " miles away");
 
-        String categoriesText = user.getCategories().toString();
-        if (categoriesText != null) {
-            holder.tvCategories.setText(categoriesText);
+        if (user.getCategories() != null) {
+            String categoriesText = user.getCategories().toString();
+            if (categoriesText != null) {
+                holder.tvCategories.setText(categoriesText);
+            }
         }
         user.saveInBackground();
         currentUser.saveInBackground();
@@ -127,6 +135,14 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder>{
     public void addAll(List<ParseUser> list) {
         mUsers.addAll(list);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null) {
+            filter = new SearchFilter(filterList, this);
+        }
+        return filter;
     }
 
 

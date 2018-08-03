@@ -89,4 +89,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             body = itemView.findViewById(R.id.tvBody);
         }
     }
+
+
+
 }

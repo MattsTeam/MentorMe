@@ -19,7 +19,7 @@
         app:contentInsetStart="0dp">
 
         <android.support.v7.widget.SearchView
-            android:id="@+id/search_view"
+            android:id="@+id/search_view_message_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/orange"

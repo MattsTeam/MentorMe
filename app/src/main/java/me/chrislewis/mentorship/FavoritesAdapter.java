@@ -11,9 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,12 +43,27 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+
         final User user = favorites.get(i);
-        viewHolder.tvName.setText(user.getName());
-        Glide.with(mContext)
-                .load(user.getProfileImage().getUrl())
-                .apply(new RequestOptions().circleCrop())
-                .into(viewHolder.ivProfile);
+        /*
+        if (user != null) {
+
+            String name = user.getName();
+            if (name != null) {
+                viewHolder.tvName.setText(name);
+            }
+
+
+            if (user.getProfileImage().getUrl() != null) {
+                Glide.with(mContext)
+                        .load(user.getProfileImage().getUrl())
+                        .apply(new RequestOptions().circleCrop())
+                        .into(viewHolder.ivProfile);
+            }
+
+        }
+        */
+
     }
 
     @Override

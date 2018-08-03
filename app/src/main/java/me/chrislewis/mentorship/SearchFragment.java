@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.parse.ParseGeoPoint;
@@ -42,6 +43,7 @@ public class SearchFragment extends Fragment {
     private User currentUser;
 
     private SharedViewModel model;
+    android.support.v7.widget.SearchView sv;
 
     private List<String> currentCategories;
     private List<String> allCategories;
@@ -118,6 +120,25 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        sv = view.findViewById(R.id.search_view);
+
+        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (query == "" || query == null) {
+                    getAllUsers();
+                }
+                gridAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
+
+
         getAllUsers();
     }
 
@@ -147,11 +168,14 @@ public class SearchFragment extends Fragment {
             for (ParseUser user : users) {
                 User mUser = new User(user);
                 List<String> common = mUser.getCategories();
-                common.retainAll(currentUser.getCategories());
+                currentCategories = currentUser.getCategories();
+                if (common != null && currentCategories != null) {
+                    common.retainAll(currentUser.getCategories());
 
-                if (common.size() == 0) {
-                    sameCategoryUsers.remove(user);
-                    Log.i("common", "Common is null");
+                    if (common.size() == 0) {
+                        sameCategoryUsers.remove(user);
+                        Log.i("common", "Common is null");
+                    }
                 }
             }
 
@@ -334,16 +358,14 @@ public class SearchFragment extends Fragment {
 
                     if (category == "All Categories") {
                         getAllUsers();
+                    } else if (category == "Go to Profile") {
+                        Toast.makeText(getActivity(), "add new categories", Toast.LENGTH_SHORT).show();
+                        FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
                     } else {
                         filterByCategory(category);
                     }
-
                     mDrawerLayout.closeDrawers();
-
-                } else {
-                    Toast.makeText(getActivity(), "add new categories", Toast.LENGTH_SHORT).show();
-                    FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
                 }
                 return true;
             }

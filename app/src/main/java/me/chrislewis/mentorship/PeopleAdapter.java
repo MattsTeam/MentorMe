@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,13 +21,15 @@ import java.util.List;
 import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.User;
 
-public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
+public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> implements Filterable{
 
     Context context;
     private List<Chat> chats;
     User currentUser;
     SharedViewModel model;
     private MessageFragment messageFragment = new MessageFragment();
+    ArrayList<Chat> arrayChats, filterList;
+    MessageListFilter filter;
 
 
     PeopleAdapter(Context context, List<Chat> chats, SharedViewModel model) {
@@ -33,6 +37,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         this.chats = chats;
         this.model = model;
         this.currentUser = model.getCurrentUser();
+        this.arrayChats = (ArrayList<Chat>) chats;
+        this.filterList = (ArrayList<Chat>) chats;
     }
 
     @NonNull
@@ -99,5 +105,23 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                 fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
             }
         }
+    }
+
+    public void clear() {
+        chats.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Chat> list) {
+        chats.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null) {
+            filter = new MessageListFilter(filterList, this);
+        }
+        return filter;
     }
 }

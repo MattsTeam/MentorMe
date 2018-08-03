@@ -9,29 +9,6 @@
     android:windowSoftInputMode="adjustPan"
     tools:context=".MainActivity">
 
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:fitsSystemWindows="true"-->
-        <!--app:theme="@style/ThemeOverlay.AppCompat.Light"-->
-        <!--app:title=""-->
-        <!--android:background="@color/orange"-->
-        <!--app:contentInsetLeft="0dp"-->
-        <!--app:contentInsetStart="0dp">-->
-
-        <!--<android.support.v7.widget.SearchView-->
-            <!--android:id="@+id/search_view"-->
-            <!--android:layout_width="150dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:background="@color/orange"-->
-            <!--android:queryHint="Search"-->
-            <!--app:iconifiedByDefault="false" />-->
-    <!--</android.support.v7.widget.Toolbar>-->
-
     <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="match_parent"

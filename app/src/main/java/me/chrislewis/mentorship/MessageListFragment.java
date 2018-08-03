@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -26,6 +27,7 @@ public class MessageListFragment extends Fragment {
 
     RecyclerView rvPeople;
     PeopleAdapter adapter;
+    android.support.v7.widget.SearchView sv;
 
     List<Chat> chats = new ArrayList<>();
 
@@ -50,6 +52,21 @@ public class MessageListFragment extends Fragment {
         rvPeople.setAdapter(adapter);
 
         findChats(model.getCurrentUser());
+
+        sv = view.findViewById(R.id.search_view_message_list);
+
+        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+        });
     }
 
     void findChats(User user) {

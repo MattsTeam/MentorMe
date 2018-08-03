@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -191,9 +192,12 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 parseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
                 model.setLocation(parseLocation);
-                User currentUser = new User(ParseUser.getCurrentUser());
-                currentUser.setLocation(parseLocation);
-                currentUser.saveInBackground();
+                ParseUser parseUser = ParseUser.getCurrentUser();
+                if (parseUser != null) {
+                    User currentUser = new User(ParseUser.getCurrentUser());
+                    currentUser.setLocation(parseLocation);
+                    currentUser.saveInBackground();
+                }
             }
 
             @Override
