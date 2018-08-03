@@ -11,8 +11,9 @@
         android:id="@+id/tvUsername"
         android:layout_width="220dp"
         android:layout_height="45dp"
+        android:layout_below="@id/imageView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/round_text_input"
         android:hint=" Username"
         android:paddingLeft="15dp"
@@ -62,11 +63,11 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="255dp"
-        android:layout_height="77dp"
+        android:layout_width="303dp"
+        android:layout_height="204dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="46dp"
-        app:srcCompat="@drawable/mentorme" />
+        app:srcCompat="@drawable/mentor_me_3" />
 
 </RelativeLayout>
