@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.parse.ParseGeoPoint;
@@ -176,6 +175,7 @@ public class SearchFragment extends Fragment {
         try {
             List<ParseUser> users = query.find();
             sameCategoryUsers = new ArrayList<>(users);
+            Log.d("SearchFragment", "users: " + Integer.toString(users.size()));
 
             for (ParseUser user : users) {
                 User mUser = new User(user);
@@ -202,6 +202,7 @@ public class SearchFragment extends Fragment {
                     return (int)(o1.getDouble("rank") - (o2.getDouble("rank")));
                 }
             });
+            Log.d("SearchFragment", "same category: " + Integer.toString(sameCategoryUsers.size()));
             gridAdapter.addAll(sameCategoryUsers);
 
         }

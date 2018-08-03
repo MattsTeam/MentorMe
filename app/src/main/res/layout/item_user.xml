@@ -42,25 +42,73 @@
             android:text="Distance away"
             android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="150dp"
+        <!--<TextView-->
+            <!--android:id="@+id/tvDescription"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/tvDistance"-->
+            <!--android:text="Description: N/A"-->
+            <!--android:textAlignment="center" />-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvDistance"
-            android:text="Description: N/A"
-            android:textAlignment="center" />
-        <TextView
-            android:id="@+id/tvCategories"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvDescription"
-            android:text="Categories"
-            android:textAlignment="center" />
+            android:gravity="center"
+            android:layout_below="@+id/tvRating"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <ImageView
+                android:id="@+id/artIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                card_view:srcCompat="@drawable/ic_art" />
+
+
+            <ImageView
+                android:id="@+id/engineeringIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@+id/artIcon"
+                card_view:srcCompat="@drawable/ic_engineering" />
+
+            <ImageView
+                android:id="@+id/sportsIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@+id/engineeringIcon"
+                card_view:srcCompat="@drawable/ic_sport" />
+
+            <ImageView
+                android:id="@+id/scienceIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/tvRating"
+                android:layout_toEndOf="@+id/sportsIcon"
+                card_view:srcCompat="@drawable/ic_sciences" />
+
+            <ImageView
+                android:id="@+id/languagesIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@+id/scienceIcon"
+                card_view:srcCompat="@drawable/ic_languages" />
+
+            <ImageView
+                android:id="@+id/humanitiesIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@+id/languagesIcon"
+                card_view:srcCompat="@drawable/ic_humanities" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tvRating"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvCategories"
+            android:layout_below="@id/tvDistance"
             android:text="Rating: N/A"
             android:textAlignment="center" />
 
@@ -72,7 +120,6 @@
             android:layout_below="@+id/ivProfile"
             app:srcCompat="@android:color/holo_blue_bright" />
     </RelativeLayout>
-
 
 
 
