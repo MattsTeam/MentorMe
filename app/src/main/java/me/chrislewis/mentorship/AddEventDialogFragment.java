@@ -146,8 +146,14 @@ public class AddEventDialogFragment extends DialogFragment {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(findMentors.getSelectedItem() == null || startTime.getText() == null || endTime.getText() == null || eventDescription.getText() == null) {
-                    Toast.makeText(getActivity(), "Please fill out all of the required infomation for the new event", Toast.LENGTH_LONG).show();
+                if(findMentors.getSelectedItem() == null
+                        || startTime.getText().toString().equals("Start Time")
+                        || endTime.getText().toString().equals("End Time")
+                        || eventDescription.equals("")) {
+                    Toast toast = Toast.makeText(getActivity(), "Please fill out all of the required information for the new event.", Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    v.setGravity(Gravity.CENTER);
+                    toast.show();
                 }
                 else {
                     String description = eventDescription.getText().toString();
