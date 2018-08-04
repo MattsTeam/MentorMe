@@ -3,15 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFFFF">
+    android:background="@color/papaya">
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="387dp"
-        android:layout_marginTop="60dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="75dp"
         app:mcv_arrowColor="@color/orange"
         app:mcv_selectionColor="@color/orange"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/round_event_dialog"
         app:mcv_showOtherDates="all" />
 
     <android.support.v7.widget.Toolbar
@@ -29,7 +33,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="50dp">
 
             <TextView
                 android:id="@+id/tvCurrentDay"
@@ -58,8 +62,8 @@
                 android:layout_width="103dp"
                 android:layout_height="50dp"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="7dp"
-                android:layout_marginLeft="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="17dp"
                 android:switchPadding="0dp"
                 android:text="Google Calendar Sync"
                 android:textColor="@color/white"
@@ -72,16 +76,22 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="220dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_below="@+id/calendarView"
+        android:background="@drawable/round_event_dialog"
         >
 
         <com.framgia.library.calendardayview.CalendarDayView
             android:id="@+id/dayView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
+            android:layout_marginTop="15dp"
             android:paddingRight="10dp"
+            android:layout_marginRight="5dp"
             app:dayHeight="64dp"/>
     </ScrollView>
 

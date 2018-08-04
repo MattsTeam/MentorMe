@@ -94,6 +94,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         permissionToggle = view.findViewById(R.id.syncSwitch);
         dayView = view.findViewById(R.id.dayView);
         dayView.setDecorator(new CustomDecoration(getActivity()));
+
         if(ParseUser.getCurrentUser().getBoolean("allowSync")) {
             permissionToggle.setOnCheckedChangeListener (null);
             permissionToggle.setChecked(true);
@@ -285,17 +286,14 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
             timeEnd.set(Calendar.MINUTE,getMinute(currentEvent.getEndTime()));
             //String location = "N/A";
             String description = currentEvent.getEventDescription();
-            //Event event = new Event(3, timeStart, timeEnd, description, location, orange);
             Popup popup = new Popup();
             popup.setStartTime(timeStart);
             popup.setEndTime(timeEnd);
             popup.setTitle(description);
             popup.setDescription(currentEvent.getInviteeString());
             popup.setQuote("");
-            //dayViewEvents.add(event);
             dayViewPopups.add(popup);
         }
-        //dayView.setEvents(dayViewEvents);
         dayView.setPopups(dayViewPopups);
     }
 
