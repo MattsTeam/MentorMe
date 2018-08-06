@@ -56,6 +56,7 @@ public class Chat extends ParseObject{
 
         public Query findChats(User user){
             whereContainsAll(USERS_KEY, Collections.singleton(user.getParseUser()));
+            include(USERS_KEY);
             return this;
         }
     }

@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.Camera;
-import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.User;
 
@@ -115,10 +114,6 @@ public class MessageFragment extends Fragment {
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("Messages", "Working");
-                                if(firstMessage) {
-                                    Chat chat = new Chat(recipients);
-                                    chat.saveInBackground();
-                                }
                             } else {
                                 Log.d("Messages", "Fail "+ e);
                             }

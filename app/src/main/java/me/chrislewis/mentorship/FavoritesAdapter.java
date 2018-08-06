@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Match;
 import me.chrislewis.mentorship.models.User;
 
@@ -131,6 +132,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                         match.saveInBackground();
                         btAccept.setVisibility(View.INVISIBLE);
                         btDecline.setVisibility(View.INVISIBLE);
+                        Chat chat = new Chat(new ArrayList<User>(Arrays.asList(match.getMentee(), match.getMentor())));
+                        chat.saveInBackground();
                     }
                 }
             });

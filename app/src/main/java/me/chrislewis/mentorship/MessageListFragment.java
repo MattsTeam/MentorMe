@@ -2,6 +2,7 @@ package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,9 +28,19 @@ public class MessageListFragment extends Fragment {
     PeopleAdapter adapter;
     android.support.v7.widget.SearchView sv;
 
-    List<Chat> chats = new ArrayList<>();
-
     SharedViewModel model;
+
+    User currentUser;
+
+    static final int POLL_INTERVAL = 1000;
+    Handler myHandler = new Handler();
+    Runnable mRefreshMessagesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            findChats();
+            myHandler.postDelayed(this, POLL_INTERVAL);
+        }
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -45,13 +54,13 @@ public class MessageListFragment extends Fragment {
                 .of(Objects.requireNonNull(getActivity()))
                 .get(SharedViewModel.class);
 
-        adapter = new PeopleAdapter(view.getContext(), chats, model);
+        currentUser = model.getCurrentUser();
+
+        adapter = new PeopleAdapter(view.getContext(), currentUser.getChats(), model);
 
         rvPeople = view.findViewById(R.id.rvPeople);
         rvPeople.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvPeople.setAdapter(adapter);
-
-        findChats(model.getCurrentUser());
 
         sv = view.findViewById(R.id.search_view_message_list);
 
@@ -64,25 +73,27 @@ public class MessageListFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String query) {
                 if (query.equals("")) {
-                    findChats(model.getCurrentUser());
+                    findChats();
                 } else {
                     adapter.getFilter().filter(query);
                 }
                 return false;
             }
         });
+
+        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
     }
 
-    void findChats(User user) {
-        chats.clear();
+    void findChats() {
         Chat.Query query = new Chat.Query();
-        query.findChats(user);
+        query.findChats(currentUser);
         query.findInBackground(new FindCallback<Chat>() {
             @Override
             public void done(List<Chat> objects, ParseException e) {
                 if (e == null) {
-                    chats.addAll(objects);
-                    adapter.notifyDataSetChanged();
+                    adapter.clear();
+                    currentUser.addChats(objects);
+                    adapter.addAll(objects);
                 } else {
                     Log.e("message", "Error Loading Messages " + e);
                 }

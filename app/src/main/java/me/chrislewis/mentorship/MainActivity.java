@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         User currentUser = new User(ParseUser.getCurrentUser());
         currentUser.getFavorites();
         currentUser.getMatches();
+        currentUser.getChats();
 
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
         model.setFragmentManager(fragmentManager);

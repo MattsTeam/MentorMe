@@ -42,6 +42,7 @@ public class User{
     private final static String SYNC_KEY = "allowSync";
     private final static String IS_MENTOR_KEY = "isMentor";
     private final static String CONNECTION_KEY = "connects";
+    private final static String CHAT_KEY = "chats";
 
     private ParseUser user;
     private List<Chat> chats;
@@ -291,13 +292,43 @@ public class User{
         return true;
     }
 
-    public List<Chat> getChats() {
-        return chats;
-    }
-
     public void setChats(List<Chat> chats) {
         this.chats = chats;
     }
+
+    public List<Chat> getChats() {
+        if (chats == null) {
+            chats = new ArrayList<>();
+            List<Chat> holder = (List<Chat>) user.get(CHAT_KEY);
+            if (holder != null) {
+                for (Chat i : holder) {
+                    try {
+                        i.fetchIfNeeded();
+                        chats.add(i);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return chats;
+            } else {
+                return null;
+            }
+        } else {
+            return chats;
+        }
+    }
+
+    public void addChats(List<Chat> chat) {
+        chats = chat;
+        this.user.remove(CHAT_KEY);
+        this.user.addAllUnique(CHAT_KEY, chat);
+    }
+
+    public void removeChat(Chat chat) {
+        this.user.removeAll(CHAT_KEY, Collections.singleton(chat));
+        chats.remove(chat);
+    }
+
 
     public void saveInBackground() {
         user.saveInBackground();
