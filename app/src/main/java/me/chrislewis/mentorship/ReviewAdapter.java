@@ -62,8 +62,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             if(mWriter.getProfileImage() != null) {
                 Glide.with(mContext)
                         .load(mWriter.getProfileImage().getUrl())
-                        //.apply(new RequestOptions().circleCrop())
-                        .apply(requestOptions)
+                        .apply(new RequestOptions().circleCrop())
                         .into(viewHolder.ivReviewWriter);
             }
         } catch (ParseException e) {

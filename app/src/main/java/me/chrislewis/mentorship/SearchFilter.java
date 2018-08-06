@@ -28,7 +28,7 @@ public class SearchFilter extends Filter {
             constraint=constraint.toString().toUpperCase();
             ArrayList<ParseUser> filteredUsers = new ArrayList<>();
 
-            for (int i=0;i<filterList.size();i++)
+            for (int i = 0 ;i < filterList.size(); i++)
             {
                 if (filterList.get(i) != null) {
                     User u = new User(filterList.get(i));
@@ -40,8 +40,7 @@ public class SearchFilter extends Filter {
             }
             results.count=filteredUsers.size();
             results.values=filteredUsers;
-        } else
-        {
+        } else {
             results.count=filterList.size();
             results.values=filterList;
         }

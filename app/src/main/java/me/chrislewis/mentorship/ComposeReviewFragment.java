@@ -128,7 +128,7 @@ public class ComposeReviewFragment extends DialogFragment {
                     public void done(ParseException e) {
                         if (e == null) {
                             Log.d("Debug Reviews", "Reviews work");
-                            Toast.makeText(getActivity(), "You submitted a review for this mentor", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "You submitted a review", Toast.LENGTH_SHORT).show();
                             dismiss();
                             FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.flContainer, detailsFragment2).commit();
@@ -138,12 +138,6 @@ public class ComposeReviewFragment extends DialogFragment {
                         }
                     }
                 });
-
-                //reviewedUser.addReview(review);
-
-
-
-
             }
         });
 

@@ -2,79 +2,163 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvMeetups"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileFragment"
+    android:background="@color/papaya">
 
     <ImageButton
         android:id="@+id/bEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/ivProfile"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="13dp"
+        android:layout_marginTop="72dp"
+        android:background="@color/papaya"
         android:src="@drawable/edit"
         android:text="Edit" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivProfile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_profile"
+        app:civ_border_width="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/ic_profile" />
-
-    <Button
-        android:id="@+id/bLogOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/bEdit"
-        android:text="@string/log_out" />
-
+        android:layout_marginTop="20dp"
+        app:civ_border_color="@color/white"
+        android:background="@drawable/ic_profile"/>
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="22dp"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/ivProfile"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
+        android:gravity="center_horizontal"
         android:text="Name"
-        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvSkills"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvName"
-        android:background="@android:color/transparent"
-        android:text="Skills" />
+    <ImageButton
+        android:id="@+id/bLogOut"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/bEdit"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="-71dp"
+        android:background="@color/papaya"
+        android:src="@drawable/logout"
+        android:text="@string/log_out" />
 
     <TextView
         android:id="@+id/tvJob"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvSkills"
-        android:background="@android:color/transparent"
-        android:text="Job" />
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_below="@id/tvName"
+        android:layout_centerHorizontal="true"
+        android:text="Job"
+        android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/tvSummary"
-        android:layout_width="250dp"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvMatches"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvJob"
-        android:background="@android:color/transparent"
-        android:text="Summary" />
+        android:layout_alignTop="@id/cvRating"
+        android:layout_marginLeft="5dp"
+        app:cardCornerRadius="10dp">
 
-    <TextView
-        android:id="@+id/tvEdu"
-        android:layout_width="250dp"
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvNumMatches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Matches"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="1"
+                android:textColor="@color/orange"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvRating"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/nb_profile"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="N/A"
+                android:textColor="@color/orange"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:id="@+id/tvRating"/>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/nb_profile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tvJob"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/papaya"
+        app:menu="@menu/navigation_profile">
+
+    </android.support.design.widget.BottomNavigationView>
+
+    <FrameLayout
+        android:id="@+id/flProfile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvSummary"
-        android:background="@android:color/transparent"
-        android:text="Education" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/nb_profile">
+
+    </FrameLayout>
 
 </RelativeLayout>

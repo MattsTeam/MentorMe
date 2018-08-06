@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <ImageButton
+        android:id="@+id/engineeringButton"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_category_button"/>
+
+    <TextView
+        android:id="@+id/tvEngineeringTitle"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/engineeringButton"
+        android:layout_marginStart="31dp"
+        android:textAlignment="center"
+        tools:text="Engineering"
+        android:textColor="@color/orange"/>
+
+    <ImageButton
+        android:id="@+id/artButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/round_category_button"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <ImageButton
+        android:id="@+id/sportsButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageButton
+        android:id="@+id/scienceButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignLeft="@id/engineeringButton"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageButton
+        android:id="@+id/humanitiesButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/scienceButton"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageButton
+        android:id="@+id/languagesButton"
+        android:layout_width="95dp"
+        android:layout_height="88dp"
+        android:layout_alignLeft="@id/artButton"
+        android:layout_alignTop="@+id/artButton"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/round_category_button" />
+
+    <ImageView
+        android:id="@+id/ivEngineering"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/engineeringButton"
+        android:layout_alignTop="@+id/engineeringButton"
+        app:srcCompat="@drawable/engineering_icon" />
+
+    <ImageView
+        android:id="@+id/ivArt"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/artButton"
+        android:layout_alignTop="@+id/artButton"
+        app:srcCompat="@drawable/art_icon" />
+
+    <ImageView
+        android:id="@+id/ivSport"
+        android:layout_width="85dp"
+        android:layout_height="79dp"
+        android:layout_alignEnd="@+id/sportsButton"
+        android:layout_alignTop="@+id/engineeringButton"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        app:srcCompat="@drawable/sport_icon" />
+
+    <ImageView
+        android:id="@+id/ivHumanities"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/humanitiesButton"
+        android:layout_alignTop="@+id/humanitiesButton"
+        android:layout_marginEnd="-34dp"
+        app:srcCompat="@drawable/humanities_icon" />
+
+    <ImageView
+        android:id="@+id/ivSciences"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/scienceButton"
+        android:layout_alignTop="@+id/scienceButton"
+        app:srcCompat="@drawable/sciences_icon" />
+
+    <ImageView
+        android:id="@+id/ivLanguages"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        android:layout_alignStart="@+id/languagesButton"
+        android:layout_alignTop="@+id/languagesButton"
+        app:srcCompat="@drawable/languages_icon" />
+
+
+</RelativeLayout>

@@ -5,20 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
 
 import java.util.Objects;
@@ -26,26 +24,23 @@ import java.util.Objects;
 import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.User;
 
-import static android.app.Activity.RESULT_OK;
-import static me.chrislewis.mentorship.MainActivity.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
-import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
-
 public class ProfileFragment extends Fragment {
     ImageView ivProfile;
     TextView tvName;
     TextView tvJob;
-    TextView tvSkills;
-    TextView tvSummary;
-    TextView tvEdu;
+    TextView tvMatches;
+    TextView tvMeetings;
+    TextView tvRating;
 
-    Button bLogOut;
+
+    ImageButton bLogOut;
     ImageButton bEdit;
     Button bSave;
     CalendarFragment calendarFragment;
     EditProfileFragment editProfileFragment;
+    BottomNavigationView bottomNavigationView;
 
     User user;
-
     private SharedViewModel model;
 
     private Camera camera;
@@ -58,23 +53,32 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        tvName = view.findViewById(R.id.tvName);
-        tvJob = view.findViewById(R.id.tvJob);
-        tvSkills = view.findViewById(R.id.tvSkills);
-        tvSummary = view.findViewById(R.id.tvSummary);
-        tvEdu = view.findViewById(R.id.tvEdu);
-        tvEdu.setEnabled(false);
-        ivProfile = view.findViewById(R.id.ivProfile);
+
+
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        user = model.getCurrentUser();
         calendarFragment = (CalendarFragment) Objects.requireNonNull(getActivity())
                 .getSupportFragmentManager()
                 .findFragmentByTag("CalendarFragment");
 
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        user = model.getCurrentUser();
-        camera = new Camera(getContext(), this, model);
+        ivProfile = view.findViewById(R.id.ivProfile);
 
-        populateInfo();
+        tvName = view.findViewById(R.id.tvName);
+        tvJob = view.findViewById(R.id.tvJob);
+        tvRating = view.findViewById(R.id.tvRating);
+        String name = user.getName();
+        if (name != null) {
+            tvName.setText(name);
+        }
+        String job = user.getJob();
+        if (job != null) {
+            tvJob.setText(job);
+        }
 
+        double rating = user.getOverallRating();
+        if (rating != 0) {
+            tvRating.setText(String.valueOf(rating));
+        }
 
         bEdit = view.findViewById(R.id.bEdit);
 
@@ -98,27 +102,39 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+
+        ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
+        FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
+
+        bottomNavigationView = view.findViewById(R.id.nb_profile);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                FragmentTransaction fragmentTransaction;
+                switch (menuItem.getItemId()) {
+                    case R.id.nb_general:
+                        ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
+                        fragmentTransaction = getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
+                        return true;
+                    case R.id.nb_categories:
+                        ProfileCategoriesFragment profileCategoriesFragment = new ProfileCategoriesFragment();
+                        fragmentTransaction = getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.flProfile, profileCategoriesFragment).commit();
+                        return true;
+                    case R.id.nb_reviews:
+                        ProfileReviewsFragment profileReviewsFragment = new ProfileReviewsFragment();
+                        fragmentTransaction = getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.flProfile, profileReviewsFragment).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
+
     }
 
-    private void populateInfo() {
-        tvName.setText(user.getName());
-        if (user.getJob() != null) {
-            tvJob.setText("Job: " + user.getJob());
-        }
-        if (user.getSkills() != null) {
-            tvSkills.setText("Skills: " + user.getSkills());
-        }
-        if (user.getSummary() != null) {
-            tvSummary.setText("Summary: " + user.getSummary());
-        }
-        if (user.getEducation() != null) {
-            tvEdu.setText("Education: " + user.getEducation());
-        }
-        if (user.getProfileImage() != null) {
-            Glide.with(Objects.requireNonNull(getContext()))
-                    .load(user.getProfileImage().getUrl())
-                    .apply(new RequestOptions().circleCrop())
-                    .into(ivProfile);
-        }
-    }
+
 }
