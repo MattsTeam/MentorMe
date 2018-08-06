@@ -366,24 +366,23 @@ public class SearchFragment extends Fragment {
                 uncheckAllItems(menuOthers);
                 uncheckAllItems(menuAdd);
                 menuItem.setChecked(true);
-                if (category != "Add Categories") {
+                if (category != "Go to Profile") {
                     checkedItem = menuItem;
                     if (currentUser.getIsMentor() == true) {
                         Toast.makeText(getActivity(),"Showing mentees for " + menuItem, Toast.LENGTH_SHORT).show();
                     } else if (currentUser.getIsMentor() == false) {
                         Toast.makeText(getActivity(),"Showing mentors for " + menuItem, Toast.LENGTH_SHORT).show();
                     }
-
-                    if (category == "All Categories") {
-                        getAllUsers();
-                    } else if (category == "Go to Profile") {
-                        Toast.makeText(getActivity(), "add new categories", Toast.LENGTH_SHORT).show();
-                        FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
-                    } else {
+                    if (category != "All Categories") {
                         filterByCategory(category);
+                    } else {
+                        getAllUsers();
                     }
                     mDrawerLayout.closeDrawers();
+                } else {
+                    FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
+
                 }
                 return true;
             }
