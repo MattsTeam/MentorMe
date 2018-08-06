@@ -23,7 +23,6 @@ import me.chrislewis.mentorship.models.User;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
     private Context mContext;
-    private List<User> favorites;
     private List<Match> matches;
     User currentUser;
 
@@ -31,11 +30,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     SharedViewModel model;
     private FragmentTransaction fragmentTransaction;
-    private DetailsFragment detailsFragment = new DetailsFragment();
+    private DetailsFragment2 detailsFragment = new DetailsFragment2();
     private MessageFragment messageFragment = new MessageFragment();
 
     FavoritesAdapter(List<User> favorites, List<Match> matches, SharedViewModel model) {
-        this.favorites = favorites;
         this.matches = matches;
         this.model = model;
         currentUser = model.currentUser;
@@ -55,18 +53,20 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public void onBindViewHolder ( @NonNull final ViewHolder viewHolder, int i){
         Match match = matches.get(i);
+        User user = null;
         try {
-            User user = null;
             if (isMentor) {
                 user = match.getMentee();
-                viewHolder.btAccept.setVisibility(View.VISIBLE);
-                viewHolder.btDecline.setVisibility(View.VISIBLE);
+                if (!match.isAccepted()) {
+                    viewHolder.btAccept.setVisibility(View.VISIBLE);
+                    viewHolder.btDecline.setVisibility(View.VISIBLE);
+                }
             } else {
                 user = match.getMentor();
             }
             viewHolder.tvName.setText(user.getName());
             if (match.isAccepted()) {
-                viewHolder.tvMatch.setText("ACCEPTED");
+                viewHolder.tvMatch.setText("");
             } else {
                 viewHolder.tvMatch.setText("PENDING");
             }
@@ -109,8 +109,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        User user = favorites.get(position);
-
+                        User user = null;
+                        if(isMentor) {
+                            user = matches.get(position).getMentee();
+                        } else {
+                            user = matches.get(position).getMentor();
+                        }
                         model.setRecipients(new ArrayList<>(Arrays.asList(user, model.getCurrentUser())));
                         fragmentTransaction = model.getFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
@@ -124,6 +128,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                     if (position != RecyclerView.NO_POSITION) {
                         Match match = matches.get(position);
                         match.setAccepted(true);
+                        match.saveInBackground();
                         btAccept.setVisibility(View.INVISIBLE);
                         btDecline.setVisibility(View.INVISIBLE);
                     }
@@ -135,10 +140,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Match match = matches.get(position);
-                        match.setDeclined(true);
                         match.deleteInBackground();
-                        btAccept.setVisibility(View.INVISIBLE);
-                        btDecline.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -151,7 +153,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                User user = favorites.get(position);
+                User user = null;
+                if(isMentor) {
+                    user = matches.get(position).getMentee();
+                } else {
+                    user = matches.get(position).getMentor();
+                }
                 model.setUser(user);
 
                 fragmentTransaction = model.getFragmentManager().beginTransaction();

@@ -11,6 +11,9 @@ public class Match extends ParseObject{
     private final static String MENTEE_KEY = "mentee";
     private final static String MENTOR_KEY = "mentor";
 
+    private final static String DECLINED_KEY = "declined";
+    private final static String ACCEPTED_KEY = "accepted";
+
     private User mentee;
     private User mentor;
     private boolean isAccepted;
@@ -32,19 +35,19 @@ public class Match extends ParseObject{
     }
 
     public boolean isAccepted() {
-        return isAccepted;
+        return getBoolean(ACCEPTED_KEY);
     }
 
     public void setAccepted(boolean accepted) {
-        isAccepted = accepted;
+        put(ACCEPTED_KEY, accepted);
     }
 
     public boolean isDeclined() {
-        return isDeclined;
+        return getBoolean(DECLINED_KEY);
     }
 
     public void setDeclined(boolean declined) {
-        isDeclined = declined;
+        put(DECLINED_KEY, declined);
     }
 
     public User getMentee() {
