@@ -32,6 +32,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
 
     SharedViewModel model;
     DetailsFragment detailsFragment = new DetailsFragment();
+    DetailsFragment2 detailsFragment2 = new DetailsFragment2();
 
     public GridAdapter(ArrayList<ParseUser> users, SharedViewModel model) {
         mUsers = users;
@@ -48,7 +49,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View gridView = inflater.inflate(R.layout.item_user, parent, false);
         return new ViewHolder(gridView);
     }
@@ -141,7 +141,8 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
 
                 FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
                 fragmentTransaction = model.getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
+                //fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
+                fragmentTransaction.replace(R.id.flContainer, detailsFragment2).commit();
             }
         }
     }

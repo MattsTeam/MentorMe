@@ -91,6 +91,11 @@ dependencies {
     implementation 'com.google.http-client:google-http-client-gson:1.23.0' exclude module: 'httpclient'
 
     implementation 'com.github.khacpv:Calendar-Day-View:master-SNAPSHOT'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    implementation 'com.google.android:flexbox:1.0.0'
+
+    implementation 'jp.wasabeef:glide-transformations:3.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

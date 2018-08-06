@@ -1,6 +1,9 @@
 package me.chrislewis.mentorship;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +14,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -49,13 +54,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             User mWriter = new User(tmp);
             viewHolder.tvReviewWriter.setText(mWriter.getName());
 
-            //  viewHolder.rbReview.setRating(review.getRating());
-            viewHolder.rbReview.setRating(1);
-
+            viewHolder.rbReview.setRating(review.getRating());
+            LayerDrawable stars = (LayerDrawable) viewHolder.rbReview.getProgressDrawable();
+            stars.getDrawable(2).setColorFilter(Color.rgb(255, 128, 0), PorterDuff.Mode.SRC_ATOP);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(13));
             if(mWriter.getProfileImage() != null) {
                 Glide.with(mContext)
                         .load(mWriter.getProfileImage().getUrl())
-                        .apply(new RequestOptions().circleCrop())
+                        //.apply(new RequestOptions().circleCrop())
+                        .apply(requestOptions)
                         .into(viewHolder.ivReviewWriter);
             }
         } catch (ParseException e) {

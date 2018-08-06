@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="7dp"
+    android:layout_marginBottom="7dp">
+
+    <TextView
+        android:id="@+id/skillBubble"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/round_skill_bubble"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:paddingTop="1dp"
+        android:text="Skill"
+        android:textColor="@color/textGrey"
+        android:textSize="15sp" />
+
+</LinearLayout>

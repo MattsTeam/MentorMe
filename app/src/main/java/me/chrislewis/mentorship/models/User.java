@@ -21,6 +21,7 @@ public class User{
     private final static String JOB_KEY = "job";
     private final static String PROFILE_IMAGE_KEY = "profileImage";
     private final static String SKILLS_KEY = "skills";
+    private final static String SKILLS_LIST_KEY = "skillStrings";
     private final static String SUMMARY_KEY = "summary";
     private final static String EDUCATION_KEY = "education";
     private final static String DESCRIPTION_KEY = "description";
@@ -113,6 +114,10 @@ public class User{
 
     public void setSkills(String skills) {
         user.put(SKILLS_KEY, skills);
+    }
+
+    public List<String> getSkillsList() {
+        return user.getList(SKILLS_LIST_KEY);
     }
 
     public String getSummary() {

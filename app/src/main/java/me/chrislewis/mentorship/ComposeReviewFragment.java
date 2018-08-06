@@ -3,8 +3,11 @@ package me.chrislewis.mentorship;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -33,7 +36,7 @@ import me.chrislewis.mentorship.models.User;
 import static android.app.Activity.RESULT_OK;
 import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 
-public class ComposeReviewFragment extends Fragment {
+public class ComposeReviewFragment extends DialogFragment {
     private SharedViewModel model;
     private TextView tvUser;
     private RatingBar rbCompose;
@@ -49,10 +52,18 @@ public class ComposeReviewFragment extends Fragment {
     Bitmap photoBitmap;
     ParseFile parseFile;
 
-    ReviewsFragment reviewsFragment = new ReviewsFragment();
+    DetailsFragment2 detailsFragment2 = new DetailsFragment2();
+
+    public ComposeReviewFragment() { }
+
+    public static ComposeReviewFragment newInstance() {
+        ComposeReviewFragment frag = new ComposeReviewFragment();
+        return frag;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.round_event_dialog);
         return inflater.inflate(R.layout.fragment_compose_review, parent, false);
     }
 
@@ -66,15 +77,16 @@ public class ComposeReviewFragment extends Fragment {
 
         tvUser = view.findViewById(R.id.tvUser);
         rbCompose = view.findViewById(R.id.rbCompose);
+        LayerDrawable stars = (LayerDrawable) rbCompose.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.rgb(255, 128, 0), PorterDuff.Mode.SRC_ATOP);
         etReviewBody = view.findViewById(R.id.etReviewBody);
         btnSubmitReview = view.findViewById(R.id.btnSubmitReview);
         btnUploadPhoto = view.findViewById(R.id.btnUploadPhoto);
-        rbCompose = view.findViewById(R.id.rbCompose);
         ivReviewImage = view.findViewById(R.id.ivReviewImage);
 
 
         if (reviewedUser.getUsername() != null ) {
-            tvUser.setText(reviewedUser.getUsername());
+            tvUser.setText(reviewedUser.getName() + "'s Review");
         } else {
             tvUser.setText("reviewed user's username");
         }
@@ -102,7 +114,6 @@ public class ComposeReviewFragment extends Fragment {
                     reviewedUser.setOverallRating(newRating);
                 }
 
-
                 if (photoBitmap != null) {
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     photoBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
@@ -118,8 +129,9 @@ public class ComposeReviewFragment extends Fragment {
                         if (e == null) {
                             Log.d("Debug Reviews", "Reviews work");
                             Toast.makeText(getActivity(), "You submitted a review for this mentor", Toast.LENGTH_SHORT).show();
+                            dismiss();
                             FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.flContainer, reviewsFragment).commit();
+                            fragmentTransaction.replace(R.id.flContainer, detailsFragment2).commit();
                         }
                         else {
                             Log.d("Debug Reviews", "Failed review" + e);

@@ -9,17 +9,22 @@
     <TextView
         android:id="@+id/tvUser"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_height="50dp"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textStyle="bold"
+        android:textSize="33sp"
         android:text="Mentor" />
 
     <RatingBar
         android:id="@+id/rbCompose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/tvUser"
+        android:layout_marginTop="20dp"
         android:numStars="5" />
 
     <ImageView
@@ -35,7 +40,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivReviewImage"
-        android:hint="Example: This mentor was very helpful"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:hint="Ex: This mentor was very helpful."
         android:inputType="textMultiLine" />
 
     <Button
@@ -43,15 +51,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etReviewBody"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="25dp"
         android:text="Submit Review" />
 
     <Button
         android:id="@+id/btnUploadPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/btnSubmitReview"
-        android:layout_marginEnd="99dp"
+        android:layout_below="@+id/etReviewBody"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
         android:text="Upload Photo" />
 
 
