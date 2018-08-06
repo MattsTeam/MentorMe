@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -51,7 +52,6 @@ public class DetailsFragment2 extends Fragment {
     Match match;
 
     MessageFragment messageFragment = new MessageFragment();
-    SelectDateFragment selectDateFragment = new SelectDateFragment();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +91,13 @@ public class DetailsFragment2 extends Fragment {
             @Override
             public void onClick(View view) {
                 model.setCreateFromCalendar(false);
-                selectDateFragment.show(model.getFragmentManager(), "DatePicker");
+                AddEventFragment addEventFragment = new AddEventFragment();
+                Bundle addEventBundle = new Bundle();
+                addEventBundle.putString("dateSelected", "");
+                addEventBundle.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
+                addEventFragment.setArguments(addEventBundle);
+                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.flContainer, addEventFragment).commit();
             }
         });
 

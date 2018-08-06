@@ -6,10 +6,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 @ParseClassName("ParseEvent")
 public class ParseEvent extends ParseObject implements Serializable {
@@ -24,11 +21,12 @@ public class ParseEvent extends ParseObject implements Serializable {
     private final static String INVITEE_ID_STRING = "inviteeId";
     private final static String END_TIME_KEY = "endTimeString";
     private final static String PROFILE_IMAGE_KEY = "inviteeImage";
-    private final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-    private final static DateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
+    private final static String EVENT_TITLE = "title";
 
 
     public ParseEvent() { }
+
+    public void setEventTitle(String title) { put(EVENT_TITLE, title); }
 
     public ParseFile getInviteeImage() { return getParseFile(PROFILE_IMAGE_KEY); }
 

@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/darkOrange</item>
     </style>
 
-    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+    <style name="datePicker" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorAccent">@color/orange</item>
