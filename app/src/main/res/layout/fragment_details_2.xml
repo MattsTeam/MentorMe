@@ -124,7 +124,7 @@
         android:layout_alignTop="@+id/profileImage"
         android:layout_marginEnd="15dp"
         android:background="@null"
-        app:srcCompat="@drawable/ic_bookmark" />
+        app:srcCompat="@drawable/ic_add" />
 
 
 </RelativeLayout>

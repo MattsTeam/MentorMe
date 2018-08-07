@@ -90,7 +90,7 @@ public class DetailsFragment2 extends Fragment {
                             }
                         }
                     });
-                    favoriteButton.setBackgroundResource(R.drawable.ic_bookmark_dark);
+                    favoriteButton.setBackgroundResource(R.drawable.add_user_2_24);
                     isFavorite = true;
                 }
             }
@@ -143,9 +143,9 @@ public class DetailsFragment2 extends Fragment {
             }
         }
         if (isFavorite) {
-            favoriteButton.setBackgroundResource(R.drawable.ic_bookmark_dark);
+            favoriteButton.setBackgroundResource(R.drawable.add_user_2_24);
         } else {
-            favoriteButton.setBackgroundResource(R.drawable.ic_bookmark);
+            favoriteButton.setBackgroundResource(R.drawable.ic_add);
         }
     }
 

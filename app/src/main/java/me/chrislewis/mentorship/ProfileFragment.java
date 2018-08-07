@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseUser;
 
 import java.util.Objects;
@@ -60,6 +62,10 @@ public class ProfileFragment extends Fragment {
                 .findFragmentByTag("CalendarFragment");
 
         ivProfile = view.findViewById(R.id.ivProfile);
+        Glide.with(getActivity())
+                .load(user.getProfileImage().getUrl())
+                .apply(new RequestOptions().circleCrop())
+                .into(ivProfile);
 
         tvName = view.findViewById(R.id.tvName);
         tvJob = view.findViewById(R.id.tvJob);

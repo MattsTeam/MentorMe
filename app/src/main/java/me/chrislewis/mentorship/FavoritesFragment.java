@@ -16,6 +16,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,6 +96,7 @@ public class FavoritesFragment extends Fragment {
             public void done(List<Match> objects, ParseException e) {
                 user.clearMatch();
                 adapter.clear();
+                Collections.reverse(objects);
                 for(int i = 0; i < objects.size(); i++) {
                     user.addMatch(objects.get(i));
                     adapter.notifyItemInserted(objects.size() - 1);
