@@ -23,7 +23,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 DetailsReviewFragment tab2 = new DetailsReviewFragment();
                 return tab2;
             case 2:
-                DetailsInfoFragment tab3 = new DetailsInfoFragment();
+                DetailsMatchesFragment tab3 = new DetailsMatchesFragment();
                 return tab3;
             default:
                 return null;

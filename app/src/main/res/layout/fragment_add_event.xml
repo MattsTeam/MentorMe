@@ -162,6 +162,7 @@
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:paddingLeft="20dp"
+            android:overlapAnchor="false"
             style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
     </RelativeLayout>
 

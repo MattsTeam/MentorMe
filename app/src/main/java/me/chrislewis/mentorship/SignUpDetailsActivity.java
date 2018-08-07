@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseFile;
@@ -179,12 +180,13 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ParseUser.getCurrentUser().logOut();
-                login(username, password);
+                if (!menteeButton.isSelected() && !mentorButton.isSelected()) {
+                    Toast.makeText(SignUpDetailsActivity.this, "Please select whether you'd like to be a mentor/ mentee.", Toast.LENGTH_SHORT).show();
+                } else {
+                    login(username, password);
+                }
             }
         });
-
-        setDefaultValues();
     }
 
     private void saveCategoryInfo() {
@@ -226,9 +228,7 @@ public class SignUpDetailsActivity extends AppCompatActivity {
 
         newUser.setNumRatings(0);
         newUser.setRelDistance(1.0);
-
         newUser.saveInBackground();
-
     }
 
     private void login(String username, String password) {
@@ -244,9 +244,9 @@ public class SignUpDetailsActivity extends AppCompatActivity {
                     else {
                         currentUser.put("isMentor", false);
                     }
+
+                    setDefaultValues();
                     saveCategoryInfo();
-
-
 
                     Intent intent = new Intent(SignUpDetailsActivity.this, MainActivity.class);
                     intent.putExtra("fromSignUp", "signUp");

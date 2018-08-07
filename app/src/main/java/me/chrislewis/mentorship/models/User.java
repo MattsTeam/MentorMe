@@ -265,10 +265,7 @@ public class User{
     }
 
     public void addCategory(String category) {
-        List<String> categories = (List<String>) user.get(CATEGORIES_KEY);
-        if (!categories.contains(category)) {
-            this.user.addUnique(CATEGORIES_KEY, category);
-        }
+        this.user.addUnique(CATEGORIES_KEY, category);
     }
 
     public void setCategories(List<String> categories) {

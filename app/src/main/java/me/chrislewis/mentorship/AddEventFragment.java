@@ -185,11 +185,31 @@ public class AddEventFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        users.addAll(model.getCurrentUser().getFavorites());
+        if(model.getCurrentUser().getFavorites() != null) {
+            users.addAll(model.getCurrentUser().getFavorites());
+        }
         populateFavoritesInfo(names, ids, users);
+        names.add(0, "Select your mentor");
         findMentors = view.findViewById(R.id.findMentor);
-        findMentors.setPrompt("Select your mentor.");
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, names);
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, names) {
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View v = null;
+                //Hide instructions on spinner
+                if (position == 0) {
+                    TextView tv = new TextView(getContext());
+                    tv.setHeight(0);
+                    tv.setVisibility(View.GONE);
+                    v = tv;
+                } else {
+                    //Pass convertView as null to prevent reuse of special case views
+                    v = super.getDropDownView(position, null, parent);
+                }
+                // Hide scroll bar because it appears sometimes unnecessarily, this does not prevent scrolling
+                //parent.setVerticalScrollBarEnabled(false);
+                return v;
+            }
+        };
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         findMentors.setAdapter(adapter);
 
@@ -270,7 +290,7 @@ public class AddEventFragment extends Fragment {
                     String title = eventTitle.getText().toString();
                     String description = eventDescription.getText().toString();
                     String invitee = findMentors.getSelectedItem().toString();
-                    String inviteeId = ids.get(names.indexOf(invitee));
+                    String inviteeId = ids.get(names.indexOf(invitee) - 1);
                     String startTimeString = startTime.getText().toString();
                     String endTimeString = endTime.getText().toString();
                     model.setNewEventInfo(todayString, startTimeString, endTimeString, description, invitee, inviteeId, title);
@@ -288,16 +308,23 @@ public class AddEventFragment extends Fragment {
         });
     }
 
+    //Create event for on self and invitee's calendar
     public void createParseEvent() {
         ParseEvent newEvent = new ParseEvent();
         ParseEvent otherEvent = new ParseEvent();
         newEvent.setUserIdKey(ParseUser.getCurrentUser().getObjectId());
+        otherEvent.setInviteeIdString(model.getCurrentUser().getObjectId());
+        otherEvent.setInviteeString(model.getCurrentUser().getName());
+        otherEvent.setInviteeImage(model.getCurrentUser().getProfileImage());
         String date = model.getNewEventInfo().get(0);
         String startTime = model.getNewEventInfo().get(1);
         String endTime = model.getNewEventInfo().get(5);
         newEvent.setDateString(date);
         newEvent.setTime(startTime);
         newEvent.setEndTime(endTime);
+        otherEvent.setDateString(date);
+        otherEvent.setTime(startTime);
+        otherEvent.setEndTime(endTime);
         Date newDate = null;
         try {
             newDate = newEventFormat.parse(date + " " + startTime);
@@ -305,10 +332,13 @@ public class AddEventFragment extends Fragment {
             e.printStackTrace();
         }
         newEvent.setEventDate(newDate);
+        otherEvent.setEventDate(newDate);
         String description = model.getNewEventInfo().get(2);
         newEvent.setEventDescription(description);
+        otherEvent.setEventDescription(description);
         String invitee = model.getNewEventInfo().get(3);
         String inviteeId = model.getNewEventInfo().get(4);
+        otherEvent.setUserIdKey(inviteeId);
         Log.d("AddEventDialog", "date: " + date);
         Log.d("AddEventDialog", "time: " + startTime);
         Log.d("AddEventDialog", "endTime: " + endTime);
@@ -330,7 +360,9 @@ public class AddEventFragment extends Fragment {
         newEvent.setInviteeIdString(inviteeId);
         String title = model.getNewEventInfo().get(6);
         newEvent.setEventTitle(title);
+        otherEvent.setEventTitle(title);
         newEvent.saveInBackground();
+        otherEvent.saveInBackground();
 
         AlarmBroadcastReceiver.setAlarm(getContext(), date, startTime);
 

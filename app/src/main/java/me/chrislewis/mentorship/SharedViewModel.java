@@ -35,6 +35,7 @@ public class SharedViewModel extends ViewModel{
     Boolean createFromCalendar = false;
     String fragmentIdentifier;
     ParseGeoPoint parseLocation;
+    MatchAdapter matchAdapter;
 
     public void setCreateFromCalendar(Boolean b) { createFromCalendar = b; }
 
@@ -108,6 +109,11 @@ public class SharedViewModel extends ViewModel{
 
     public void setCurrentChat(Chat currentChat) {
         this.currentChat = currentChat;
+    }
+
+    public MatchAdapter getMatchAdapter() { return matchAdapter; }
+    public void setMatchAdapter(MatchAdapter matchAdapter) {
+        this.matchAdapter = matchAdapter;
     }
 
     public FragmentTransaction getFragmentTransaction() {
