@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                     viewHolder.tvName.setVisibility(View.VISIBLE);
                     Glide.with(context)
                             .load(user.getProfileImage().getUrl())
+                            .apply(new RequestOptions().circleCrop())
                             .into(viewHolder.ivProfileImage);
                     viewHolder.ivProfileImage.setVisibility(View.VISIBLE);
                 } catch (ParseException e) {
