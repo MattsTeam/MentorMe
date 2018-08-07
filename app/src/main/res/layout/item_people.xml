@@ -5,34 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:visibility="invisible"
-        app:srcCompat="@android:color/black" />
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ivProfileImage"
-        android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="TextView"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/tvMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvName"
-        android:layout_below="@+id/tvName"
-        android:text="TextView"
-        android:visibility="invisible" />
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivProfileImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:visibility="invisible"
+                app:srcCompat="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/ivProfileImage"
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@+id/ivProfileImage"
+                android:text="TextView"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tvName"
+                android:layout_below="@+id/tvName"
+                android:layout_marginTop="10dp"
+                android:text="TextView"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

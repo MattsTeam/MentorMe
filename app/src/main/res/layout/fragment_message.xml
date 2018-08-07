@@ -46,12 +46,5 @@
             android:text="@string/send"
             android:textSize="18sp"></Button>
 
-        <Button
-            android:id="@+id/btImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/etMessage"
-            android:layout_alignParentTop="true"
-            android:text="Button" />
     </RelativeLayout>
 </RelativeLayout>

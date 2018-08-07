@@ -38,26 +38,6 @@
 
 
     <ImageButton
-        android:id="@+id/eventButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/messageButton"
-        android:layout_marginTop="5dp"
-        android:layout_alignRight="@id/messageButton"
-        app:srcCompat="@drawable/ic_calendar_title"
-        android:background="@null"/>
-
-    <ImageButton
-        android:id="@+id/messageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        app:srcCompat="@drawable/ic_chat"
-        android:background="@null"/>
-
-    <ImageButton
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,12 +120,11 @@
         android:id="@+id/favoriteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/eventButton"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        app:srcCompat="@drawable/ic_bookmark"
-        android:background="@null"/>
+        android:layout_alignTop="@+id/profileImage"
+        android:layout_marginEnd="15dp"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_bookmark" />
 
 
 </RelativeLayout>

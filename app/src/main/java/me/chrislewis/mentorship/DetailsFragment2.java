@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +19,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,14 +41,11 @@ public class DetailsFragment2 extends Fragment {
     ViewPager viewPager;
     PagerAdapter pagerAdapter;
 
-    ImageButton messageButton;
-    ImageButton eventButton;
     ImageButton favoriteButton;
     boolean isFavorite;
     ImageButton backButton;
     Match match;
 
-    MessageFragment messageFragment = new MessageFragment();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,34 +66,6 @@ public class DetailsFragment2 extends Fragment {
         name = view.findViewById(R.id.tvName);
         relativeDistance = view.findViewById(R.id.tvLocation);
         occupation = view.findViewById(R.id.tvOccupation);
-
-        messageButton = view.findViewById(R.id.messageButton);
-        messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<User> users = new ArrayList<>();
-                users.add(currentUser);
-                users.add(user);
-                model.setRecipients(users);
-                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
-            }
-        });
-
-        eventButton = view.findViewById(R.id.eventButton);
-        eventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                model.setCreateFromCalendar(false);
-                AddEventFragment addEventFragment = new AddEventFragment();
-                Bundle addEventBundle = new Bundle();
-                addEventBundle.putString("dateSelected", "");
-                addEventBundle.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
-                addEventFragment.setArguments(addEventBundle);
-                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.flContainer, addEventFragment).commit();
-            }
-        });
 
         favoriteButton = view.findViewById(R.id.favoriteButton);
         favoriteButton.setOnClickListener(new View.OnClickListener() {

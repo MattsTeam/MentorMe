@@ -56,7 +56,6 @@ public class MessageFragment extends Fragment {
 
     EditText etMessage;
     Button bSend;
-    Button btImage;
     ImageView ivMessage;
 
     Camera camera;
@@ -93,7 +92,6 @@ public class MessageFragment extends Fragment {
         bSend = view.findViewById(R.id.bSend);
         rvMessages = view.findViewById(R.id.rvMessages);
         ivMessage = view.findViewById(R.id.ivMessage);
-        btImage = view.findViewById(R.id.btImage);
 
         camera = new Camera(getContext(), this, model);
 
@@ -141,13 +139,6 @@ public class MessageFragment extends Fragment {
 
                     etMessage.setText(null);
                 }
-            }
-        });
-
-        btImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                camera.launchCamera();
             }
         });
 
