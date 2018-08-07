@@ -9,7 +9,7 @@
         android:contentDescription="@string/profile_other"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/ic_profile" />
+        android:src="@drawable/default_profile" />
 
     <TextView
         android:id="@+id/tvBody"
@@ -40,5 +40,5 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_profile" />
+        android:src="@drawable/default_profile" />
 </RelativeLayout>

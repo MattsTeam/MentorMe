@@ -113,13 +113,16 @@ public class FavoritesFragment extends Fragment {
                 matches.clear();
                 matchAdapter.clear();
                 favorites.clear();
+                user.clearFavorites();
                 for(int i = 0; i < objects.size(); i++) {
                     matches.add(objects.get(i));
                     matchAdapter.notifyItemInserted(objects.size() - 1);
                     if (isMentor) {
                         favorites.add(objects.get(i).getMentee());
+                        user.addFavorite(objects.get(i).getMentee());
                     } else {
                         favorites.add(objects.get(i).getMentor());
+                        user.addFavorite(objects.get(i).getMentor());
                     }
                 }
             }
