@@ -125,17 +125,21 @@ public class MessageFragment extends Fragment {
                             }
                         }
                     });
-                    chat.setLastMessage(data);
-                    chat.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("Messages", "CHAT Working");
-                            } else {
-                                Log.d("Messages", "CHAT Fail "+ e);
+                    try {
+                        chat.setLastMessage(data);
+                        chat.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.d("Messages", "CHAT Working");
+                                } else {
+                                    Log.d("Messages", "CHAT Fail " + e);
+                                }
                             }
-                        }
-                    });
+                        });
+                    } catch (Exception e) {
+                        Log.d("Chat", "Error" + e);
+                    }
 
                     etMessage.setText(null);
                 }
