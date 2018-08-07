@@ -31,6 +31,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     private MessageFragment messageFragment = new MessageFragment();
     private ArrayList<Chat> filterList;
     private MessageListFilter filter;
+    public ArrayList<Chat> arrayChats;
 
 
     PeopleAdapter(Context context, List<Chat> chats, SharedViewModel model) {
