@@ -22,17 +22,13 @@ import java.util.Objects;
 import me.chrislewis.mentorship.models.Match;
 import me.chrislewis.mentorship.models.User;
 
-public class FavoritesFragment extends Fragment {
+public class DetailsMatchesFragment extends Fragment {
 
     SharedViewModel model;
     User user;
     boolean isMentor;
 
-    FavoritesAdapter adapter;
-    RecyclerView rvFavorites;
     List<User> favorites;
-    private SwipeRefreshLayout swipeContainer;
-
     MatchAdapter matchAdapter;
     RecyclerView rvMatches;
     List<Match> matches;
@@ -41,7 +37,7 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_favorites, container, false);
+        return inflater.inflate(R.layout.fragment_matches, container, false);
     }
 
     @Override
@@ -50,57 +46,31 @@ public class FavoritesFragment extends Fragment {
                 .of(Objects.requireNonNull(getActivity()))
                 .get(SharedViewModel.class);
 
-        swipeContainer = view.findViewById(R.id.swipeContainer);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        scMatches = view.findViewById(R.id.scMatches);
+        scMatches.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                searchInvites();
-                //searchMatches();
-                swipeContainer.setRefreshing(false);
+                searchMatches();
+                scMatches.setRefreshing(false);
             }
         });
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        scMatches.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
         user = model.getCurrentUser();
-        favorites = new ArrayList<>();
+        favorites = user.getFavorites();
 
         isMentor = user.getIsMentor();
-
-        adapter = new FavoritesAdapter(favorites,user.getMatches(), model);
-        searchInvites();
-
-        rvFavorites = view.findViewById(R.id.rvFavorites);
-        rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        rvFavorites.setAdapter(adapter);
 
         matches = new ArrayList<>();
         matchAdapter = new MatchAdapter(matches, model);
         rvMatches = view.findViewById(R.id.rvMatches);
         rvMatches.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvMatches.setAdapter(matchAdapter);
-        model.setMatchAdapter(matchAdapter);
         searchMatches();
 
-    }
-
-    void searchInvites() {
-        Match.Query query = new Match.Query();
-        query.findMatches(user);
-        query.whereNotEqualTo("accepted", true);
-        query.findInBackground(new FindCallback<Match>() {
-            @Override
-            public void done(List<Match> objects, ParseException e) {
-                user.clearMatch();
-                adapter.clear();
-                for(int i = 0; i < objects.size(); i++) {
-                    user.addMatch(objects.get(i));
-                    adapter.notifyItemInserted(objects.size() - 1);
-                }
-            }
-        });
     }
 
     void searchMatches() {

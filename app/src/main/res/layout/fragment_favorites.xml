@@ -24,40 +24,44 @@
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="272dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
             android:layout_below="@id/tvPending">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvFavorites"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvFavorites"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/Matches"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/tvPending"
-            android:layout_below="@+id/swipeContainer"
-            android:text="Matches"
-            android:textAlignment="center"
-            android:textColor="@color/orange"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                </android.support.v7.widget.RecyclerView>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/scMatches"
-            android:layout_width="match_parent"
-            android:layout_height="239dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true">
+                <TextView
+                    android:id="@+id/tvMatches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rvFavorites"
+                    android:text="Matches"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/orange"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvMatches"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvMatches"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_below="@id/tvMatches"/>
+
+
+            </RelativeLayout>
+
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

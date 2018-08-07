@@ -18,6 +18,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.Review;
@@ -75,6 +76,7 @@ public class DetailsReviewFragment extends Fragment {
                 if (e == null) {
                     adapter.clear();
                     if (objects.size() != 0) {
+                        Collections.reverse(objects);
                         adapter.addAll(objects);
                         adapter.notifyDataSetChanged();
                     }

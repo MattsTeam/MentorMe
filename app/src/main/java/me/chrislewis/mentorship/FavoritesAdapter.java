@@ -26,6 +26,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private Context mContext;
     private List<Match> matches;
     User currentUser;
+    MatchAdapter matchAdapter;
 
     private boolean isMentor;
 
@@ -47,6 +48,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         mContext = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View contactView = inflater.inflate(R.layout.item_favorite, viewGroup, false);
+        matchAdapter = model.getMatchAdapter();
 
         return new ViewHolder(contactView);
     }
@@ -123,6 +125,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                         btDecline.setVisibility(View.INVISIBLE);
                         Chat chat = new Chat(new ArrayList<User>(Arrays.asList(match.getMentee(), match.getMentor())));
                         chat.saveInBackground();
+                        notifyDataSetChanged();
+                        matchAdapter.notifyDataSetChanged();
+
                     }
                 }
             });
@@ -133,6 +138,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                     if (position != RecyclerView.NO_POSITION) {
                         Match match = matches.get(position);
                         match.deleteInBackground();
+                        notifyDataSetChanged();
+                        matchAdapter.notifyDataSetChanged();
                     }
                 }
             });
