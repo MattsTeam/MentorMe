@@ -123,9 +123,15 @@ public class FavoritesFragment extends Fragment {
             public void done(List<Match> objects, ParseException e) {
                 matches.clear();
                 matchAdapter.clear();
+                favorites.clear();
                 for(int i = 0; i < objects.size(); i++) {
                     matches.add(objects.get(i));
                     matchAdapter.notifyItemInserted(objects.size() - 1);
+                    if (isMentor) {
+                        favorites.add(objects.get(i).getMentee());
+                    } else {
+                        favorites.add(objects.get(i).getMentor());
+                    }
                 }
             }
         });

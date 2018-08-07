@@ -194,6 +194,11 @@ public class User{
         }
     }
 
+    public void clearFavorites() {
+        favorites.clear();
+        user.remove(FAVORITE_KEY);
+    }
+
     public void addFavorite(User user) {
         user.getParseUser().revert();
         favorites.add(user);
