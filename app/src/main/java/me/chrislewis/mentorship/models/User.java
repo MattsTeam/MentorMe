@@ -202,7 +202,7 @@ public class User{
     public void addFavorite(User user) {
         user.getParseUser().revert();
         favorites.add(user);
-        this.user.addUnique(FAVORITE_KEY, user.getParseUser());
+        this.user.add(FAVORITE_KEY, user.getParseUser());
     }
 
     public void removeFavorite(User user) {

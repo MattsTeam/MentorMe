@@ -220,7 +220,7 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         User newUser = new User(currentUser);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_profile);
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.default_profile);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         ParseFile profileImage = new ParseFile(stream.toByteArray());

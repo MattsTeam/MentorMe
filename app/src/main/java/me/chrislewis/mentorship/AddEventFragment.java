@@ -279,14 +279,22 @@ public class AddEventFragment extends Fragment {
                 if(findMentors.getSelectedItem() == null
                         || startTime.getText().toString().equals("--:--")
                         || endTime.getText().toString().equals("--:--")
-                        || eventDescription.getText().toString().equals("")
-                        || eventTitle.equals("")) {
+                        || eventDate.getText().toString().equals("")) {
                     Toast toast = Toast.makeText(getActivity(), "Please fill out all of the required information for the new event.", Toast.LENGTH_LONG);
                     TextView v = toast.getView().findViewById(android.R.id.message);
                     v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
-                else {
+                if(eventDescription.getText().toString().equals("")){
+                    eventDescription.setText("N/A");
+                }
+                if(eventTitle.getText().toString().equals("")){
+                    eventTitle.setText("N/A");
+                }
+                if(findMentors.getSelectedItem() != null
+                        && !startTime.getText().toString().equals("--:--")
+                        && !endTime.getText().toString().equals("--:--")
+                        && !eventDate.getText().toString().equals("")) {
                     String title = eventTitle.getText().toString();
                     String description = eventDescription.getText().toString();
                     String invitee = findMentors.getSelectedItem().toString();

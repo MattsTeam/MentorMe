@@ -102,7 +102,7 @@ public class DetailsFragment extends Fragment {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Toast.makeText(getActivity(), "You favorited this mentor", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "You sent this mentor an invitation to connect", Toast.LENGTH_SHORT).show();
                                 match = new Match(currentUser, user);
                                 match.saveInBackground();
                                 currentUser.addMatch(match);
@@ -120,7 +120,7 @@ public class DetailsFragment extends Fragment {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Toast.makeText(getActivity(), "User Unfavorited", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "You revoked your request to connect with this mentor", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

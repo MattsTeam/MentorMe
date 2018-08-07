@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,7 +61,9 @@ public class DetailsFragment2 extends Fragment {
         currentUser = model.getCurrentUser();
         user = model.getUser();
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#ff8000"));
+        tabLayout.setSelectedTabIndicatorHeight((int) (5 * getResources().getDisplayMetrics().density));
         profileImage = view.findViewById(R.id.profileImage);
         location = view.findViewById(R.id.ivLocation);
         name = view.findViewById(R.id.tvName);
@@ -77,7 +80,7 @@ public class DetailsFragment2 extends Fragment {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Toast.makeText(getActivity(), "You favorited this mentor", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "You sent this mentor an invitation to connect", Toast.LENGTH_SHORT).show();
                                 match = new Match(currentUser, user);
                                 match.saveInBackground();
                                 currentUser.addMatch(match);
@@ -89,18 +92,6 @@ public class DetailsFragment2 extends Fragment {
                     });
                     favoriteButton.setBackgroundResource(R.drawable.ic_bookmark_dark);
                     isFavorite = true;
-                } else {
-//                    currentUser.removeFavorite(user);
-//                    currentUser.saveInBackground(new SaveCallback() {
-//                        @Override
-//                        public void done(ParseException e) {
-//                            if (e == null) {
-//                                Toast.makeText(getActivity(), "User Unfavorited", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//                    favoriteButton.setBackgroundResource(R.drawable.ic_bookmark);
-//                    isFavorite = false;
                 }
             }
         });
