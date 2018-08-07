@@ -16,6 +16,7 @@ public class ProfileGeneralFragment extends Fragment {
     TextView tvSkills;
     TextView tvSummary;
     TextView tvEdu;
+    TextView tvDescription;
     SharedViewModel model;
     User user;
 
@@ -33,18 +34,22 @@ public class ProfileGeneralFragment extends Fragment {
         tvEdu = view.findViewById(R.id.tvEdu);
         tvSkills = view.findViewById(R.id.tvSkills);
         tvSummary = view.findViewById(R.id.tvSummary);
-        //populateInfo();
+        tvDescription = view.findViewById(R.id.tvDescription);
+        populateInfo();
     }
 
     private void populateInfo() {
         if (user.getSkills() != null) {
-            tvSkills.setText("Skills: " + user.getSkills());
+            tvSkills.setText(user.getSkills());
         }
         if (user.getSummary() != null) {
-            tvSummary.setText("Summary: " + user.getSummary());
+            tvSummary.setText(user.getSummary());
         }
         if (user.getEducation() != null) {
-            tvEdu.setText("Education: " + user.getEducation());
+            tvEdu.setText(user.getEducation());
+        }
+        if (user.getDescription() != null) {
+            tvDescription.setText(user.getDescription());
         }
     }
 }
