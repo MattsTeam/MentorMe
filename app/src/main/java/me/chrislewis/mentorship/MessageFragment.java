@@ -1,7 +1,6 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,13 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.parse.FindCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
@@ -30,14 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.User;
-
-import static android.app.Activity.RESULT_OK;
-import static me.chrislewis.mentorship.MainActivity.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
-import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 
 public class MessageFragment extends Fragment {
 
@@ -55,10 +47,8 @@ public class MessageFragment extends Fragment {
     ArrayList<User> recipients = new ArrayList<>();
 
     EditText etMessage;
-    Button bSend;
-    ImageView ivMessage;
-
-    Camera camera;
+    ImageButton bSend;
+    TextView tvName;
 
     static final int POLL_INTERVAL = 1000;
     Handler myHandler = new Handler();
@@ -91,9 +81,18 @@ public class MessageFragment extends Fragment {
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
         rvMessages = view.findViewById(R.id.rvMessages);
-        ivMessage = view.findViewById(R.id.ivMessage);
-
-        camera = new Camera(getContext(), this, model);
+        tvName = view.findViewById(R.id.tvName);
+        for(User user : recipients) {
+            if (!currentUser.getObjectId().equals(user.getObjectId())) {
+                try {
+                    user.fetchIfNeed();
+                    tvName.setText(user.getName());
+                    tvName.setVisibility(View.VISIBLE);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         adapter = new MessageAdapter(view.getContext(), currentUser.getParseUser(), mMessages);
         rvMessages.setAdapter(adapter);
@@ -170,30 +169,4 @@ public class MessageFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Glide.with(Objects.requireNonNull(getContext()))
-                        .load(camera.getPhoto())
-                        .apply(new RequestOptions().circleCrop())
-                        .into(ivMessage);
-            } else {
-                Toast.makeText(getContext(),
-                        "Picture wasn't taken!",
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == PICK_IMAGE_REQUEST) {
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                Glide.with(Objects.requireNonNull(getContext()))
-                        .load(camera.getChosenPhoto(data))
-                        .apply(new RequestOptions().circleCrop())
-                        .into(ivMessage);
-
-            }
-        }
-
-    }
-
 }
