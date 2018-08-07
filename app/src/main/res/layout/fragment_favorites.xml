@@ -49,6 +49,7 @@
                     android:layout_below="@id/rvFavorites"
                     android:text="Matches"
                     android:textAlignment="viewStart"
+                    android:layout_marginLeft="10dp"
                     android:textColor="@color/orange"
                     android:textSize="20sp"
                     android:textStyle="bold" />
