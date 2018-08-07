@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.FindCallback;
+import com.parse.ParseACL;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.Camera;
+import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Message;
 import me.chrislewis.mentorship.models.User;
 
@@ -40,7 +43,8 @@ import static me.chrislewis.mentorship.MainActivity.PICK_IMAGE_REQUEST;
 public class MessageFragment extends Fragment {
 
     boolean firstLoad = true;
-    boolean firstMessage = true;
+
+    Chat chat;
 
     RecyclerView rvMessages;
     ArrayList<Message> mMessages = new ArrayList<>();
@@ -82,7 +86,7 @@ public class MessageFragment extends Fragment {
         recipients = model.getRecipients();
         user = model.getCurrentUser();
 
-        firstMessage = user.firstChat(recipients);
+        chat = user.findChat(recipients);
 
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
@@ -109,6 +113,10 @@ public class MessageFragment extends Fragment {
                     message.setBody(data);
                     message.setUser(user.getParseUser());
                     message.addRecipient(recipients);
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    ParseACL acl = new ParseACL(currentUser);
+                    acl.setPublicReadAccess(true);
+                    message.setACL(acl);
                     message.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -119,6 +127,7 @@ public class MessageFragment extends Fragment {
                             }
                         }
                     });
+                    chat.setLastMessage(data);
                     HashMap<String, String> payload = new HashMap<>();
                     payload.put("customData", "New message: " + data);
                     ParseCloud.callFunctionInBackground("pingReply", payload);

@@ -124,17 +124,17 @@ public class DetailsFragment2 extends Fragment {
                     favoriteButton.setBackgroundResource(R.drawable.ic_bookmark_dark);
                     isFavorite = true;
                 } else {
-                    currentUser.removeFavorite(user);
-                    currentUser.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Toast.makeText(getActivity(), "User Unfavorited", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                    favoriteButton.setBackgroundResource(R.drawable.ic_bookmark);
-                    isFavorite = false;
+//                    currentUser.removeFavorite(user);
+//                    currentUser.saveInBackground(new SaveCallback() {
+//                        @Override
+//                        public void done(ParseException e) {
+//                            if (e == null) {
+//                                Toast.makeText(getActivity(), "User Unfavorited", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    });
+//                    favoriteButton.setBackgroundResource(R.drawable.ic_bookmark);
+//                    isFavorite = false;
                 }
             }
         });

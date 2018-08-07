@@ -290,15 +290,17 @@ public class User{
 
     }
 
-    public boolean firstChat(ArrayList<User> users) {
-        if (chats != null) {
-            for (Chat chat : chats) {
-                if (chat.getUsers().equals(users)) {
-                    return false;
-                }
+    public Chat findChat(List<User> users) {
+        ArrayList<ParseUser> holder = new ArrayList<>();
+        for (User i: users) {
+            holder.add(i.getParseUser());
+        }
+        for (Chat chat : chats) {
+            if (chat.getParseUsers().equals(holder)) {
+                return chat;
             }
         }
-        return true;
+        return null;
     }
 
     public void setChats(List<Chat> chats) {
