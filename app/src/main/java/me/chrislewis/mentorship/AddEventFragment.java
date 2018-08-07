@@ -68,17 +68,21 @@ public class AddEventFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
-        isSynced = getArguments().getBoolean("isSynced");
-        todayString = getArguments().getString("dateSelected");
-        Log.d("AddEventDialogFragment", "dateSelected: " + todayString);
         try {
-            date = currFormat.parse(todayString);
-            Log.d("AddEventDialogFragment", dateFormat.format(date));
+            if (getArguments() != null) {
+                isSynced = getArguments().getBoolean("isSynced");
+                todayString = getArguments().getString("dateSelected");
+                Log.d("AddEventDialogFragment", "dateSelected: " + todayString);
+                date = currFormat.parse(todayString);
+                Log.d("AddEventDialogFragment", dateFormat.format(date));
+                Log.d("AddEventDialogFragment", "isSynced: " + Boolean.toString(isSynced));
+            }
+
         } catch (ParseException e) {
             Log.d("AddEventDialog", "Failed to parse today string");
             e.printStackTrace();
         }
-        Log.d("AddEventDialogFragment", "isSynced: " + Boolean.toString(isSynced));
+
         return inflater.inflate(R.layout.fragment_add_event, parent, false);
     }
 

@@ -3,19 +3,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FavoritesFragment">
+    tools:context=".FavoritesFragment"
+    android:background="@color/papaya">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeContainer"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvFavorites"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tvPending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Pending Matches"
+            android:textColor="@color/orange"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="272dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tvPending">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvFavorites"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/Matches"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/tvPending"
+            android:layout_below="@+id/swipeContainer"
+            android:text="Matches"
+            android:textAlignment="center"
+            android:textColor="@color/orange"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/scMatches"
+            android:layout_width="match_parent"
+            android:layout_height="239dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvMatches"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+
 
 </FrameLayout>

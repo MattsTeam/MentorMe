@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +33,11 @@ public class FavoritesFragment extends Fragment {
     List<User> favorites;
     private SwipeRefreshLayout swipeContainer;
 
+    MatchAdapter matchAdapter;
+    RecyclerView rvMatches;
+    List<Match> matches;
+    private SwipeRefreshLayout scMatches;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,6 +49,19 @@ public class FavoritesFragment extends Fragment {
         model = ViewModelProviders
                 .of(Objects.requireNonNull(getActivity()))
                 .get(SharedViewModel.class);
+
+        scMatches = view.findViewById(R.id.scMatches);
+        scMatches.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                searchMatches();
+                scMatches.setRefreshing(false);
+            }
+        });
+        scMatches.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         swipeContainer = view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -58,24 +77,30 @@ public class FavoritesFragment extends Fragment {
                 android.R.color.holo_red_light);
 
         user = model.getCurrentUser();
-        favorites = user.getFavorites();
+        favorites = new ArrayList<>();
 
         isMentor = user.getIsMentor();
 
-        adapter = new FavoritesAdapter(user.getFavorites(),user.getMatches(), model);
+        adapter = new FavoritesAdapter(favorites,user.getMatches(), model);
+        searchInvites();
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvFavorites.setAdapter(adapter);
 
-        if(isMentor) {
-          searchInvites();
-        }
+        matches = new ArrayList<>();
+        matchAdapter = new MatchAdapter(matches, model);
+        rvMatches = view.findViewById(R.id.rvMatches);
+        rvMatches.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvMatches.setAdapter(matchAdapter);
+        searchMatches();
+
     }
 
     void searchInvites() {
         Match.Query query = new Match.Query();
         query.findMatches(user);
+        query.whereNotEqualTo("accepted", true);
         query.findInBackground(new FindCallback<Match>() {
             @Override
             public void done(List<Match> objects, ParseException e) {
@@ -88,4 +113,23 @@ public class FavoritesFragment extends Fragment {
             }
         });
     }
+
+    void searchMatches() {
+        Match.Query query = new Match.Query();
+        query.findMatches(user);
+        query.whereEqualTo("accepted", true);
+        query.findInBackground(new FindCallback<Match>() {
+            @Override
+            public void done(List<Match> objects, ParseException e) {
+                matches.clear();
+                matchAdapter.clear();
+                for(int i = 0; i < objects.size(); i++) {
+                    matches.add(objects.get(i));
+                    matchAdapter.notifyItemInserted(objects.size() - 1);
+                }
+            }
+        });
+    }
+
+
 }

@@ -28,10 +28,7 @@ public class ProfileFragment extends Fragment {
     ImageView ivProfile;
     TextView tvName;
     TextView tvJob;
-    TextView tvMatches;
-    TextView tvMeetings;
     TextView tvRating;
-
 
     ImageButton bLogOut;
     ImageButton bEdit;
@@ -39,6 +36,7 @@ public class ProfileFragment extends Fragment {
     CalendarFragment calendarFragment;
     EditProfileFragment editProfileFragment;
     BottomNavigationView bottomNavigationView;
+    int checkedItemId;
 
     User user;
     private SharedViewModel model;
@@ -104,11 +102,21 @@ public class ProfileFragment extends Fragment {
         });
 
 
-        ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
-        FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
-
         bottomNavigationView = view.findViewById(R.id.nb_profile);
+
+        if (checkedItemId == R.id.nb_categories) {
+            ProfileCategoriesFragment profileCategoriesFragment = new ProfileCategoriesFragment();
+            FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.flProfile, profileCategoriesFragment).commit();
+        } else if (checkedItemId == R.id.nb_reviews) {
+            ProfileReviewsFragment profileReviewsFragment = new ProfileReviewsFragment();
+            FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.flProfile, profileReviewsFragment).commit();
+        } else {
+            ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
+            FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -118,16 +126,19 @@ public class ProfileFragment extends Fragment {
                         ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
                         fragmentTransaction = getChildFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
+                        checkedItemId = R.id.nb_general;
                         return true;
                     case R.id.nb_categories:
                         ProfileCategoriesFragment profileCategoriesFragment = new ProfileCategoriesFragment();
                         fragmentTransaction = getChildFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.flProfile, profileCategoriesFragment).commit();
+                        checkedItemId = R.id.nb_categories;
                         return true;
                     case R.id.nb_reviews:
                         ProfileReviewsFragment profileReviewsFragment = new ProfileReviewsFragment();
                         fragmentTransaction = getChildFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.flProfile, profileReviewsFragment).commit();
+                        checkedItemId = R.id.nb_reviews;
                         return true;
                 }
                 return false;

@@ -79,7 +79,7 @@ public class DetailsReviewFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                     else {
-                        Toast.makeText(getActivity(), "This user has no reviews.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "This user has no reviews.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {

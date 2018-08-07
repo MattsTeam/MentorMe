@@ -225,6 +225,7 @@ public class SignUpDetailsActivity extends AppCompatActivity {
         newUser.setProfileImage(profileImage);
 
         newUser.setNumRatings(0);
+        newUser.setRelDistance(1.0);
 
         newUser.saveInBackground();
 

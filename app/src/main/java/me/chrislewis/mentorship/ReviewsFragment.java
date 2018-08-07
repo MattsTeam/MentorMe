@@ -72,7 +72,7 @@ public class ReviewsFragment extends Fragment {
                         pb.setVisibility(ProgressBar.INVISIBLE);
                     }
                     else {
-                        Toast.makeText(getActivity(), "This user has no reviews.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "This user has no reviews.", Toast.LENGTH_SHORT).show();
                         DetailsFragment detailsFragment = new DetailsFragment();
                         FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();

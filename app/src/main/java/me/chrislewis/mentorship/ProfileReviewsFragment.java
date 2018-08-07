@@ -67,18 +67,19 @@ public class ProfileReviewsFragment extends Fragment {
             @Override
             public void done(List<Review> objects, ParseException e) {
                 if (e == null) {
-                    adapter.clear();
                     if (objects.size() != 0) {
+                        adapter.clear();
                         adapter.addAll(objects);
                         adapter.notifyDataSetChanged();
                         pb.setVisibility(ProgressBar.INVISIBLE);
                     }
                     else {
-                        Toast.makeText(getActivity(), "You currently have no reviews.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getParentFragment().getActivity(), "You currently have no reviews.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
                     e.printStackTrace();
+                    Toast.makeText(getActivity(), "unable to retrieve reviews from server", Toast.LENGTH_SHORT).show();
                 }
             }
         });

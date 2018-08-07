@@ -207,6 +207,7 @@ public class SearchFragment extends Fragment {
 
         }
         catch (com.parse.ParseException e) {
+            Toast.makeText(getActivity(), "unable to retrieve users from server", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         pb.setVisibility(ProgressBar.INVISIBLE);
@@ -302,6 +303,7 @@ public class SearchFragment extends Fragment {
             }
         }
         catch (com.parse.ParseException e) {
+            Toast.makeText(getActivity(), "unable to retrieve users from server", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         pb.setVisibility(ProgressBar.INVISIBLE);

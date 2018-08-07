@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,11 +18,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.Chat;
 import me.chrislewis.mentorship.models.Match;
 import me.chrislewis.mentorship.models.User;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
+public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> {
     private Context mContext;
     private List<Match> matches;
     User currentUser;
@@ -33,8 +32,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private FragmentTransaction fragmentTransaction;
     private DetailsFragment2 detailsFragment = new DetailsFragment2();
     private MessageFragment messageFragment = new MessageFragment();
+    AddEventFragment addEventFragment = new AddEventFragment();
 
-    FavoritesAdapter(List<User> favorites, List<Match> matches, SharedViewModel model) {
+    MatchAdapter(List<Match> matches, SharedViewModel model) {
         this.matches = matches;
         this.model = model;
         currentUser = model.currentUser;
@@ -46,7 +46,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     public ViewHolder onCreateViewHolder (@NonNull ViewGroup viewGroup,int i){
         mContext = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View contactView = inflater.inflate(R.layout.item_favorite, viewGroup, false);
+        View contactView = inflater.inflate(R.layout.item_match, viewGroup, false);
 
         return new ViewHolder(contactView);
     }
@@ -58,18 +58,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         try {
             if (isMentor) {
                 user = match.getMentee();
-                if (!match.isAccepted()) {
-                    viewHolder.btAccept.setVisibility(View.VISIBLE);
-                    viewHolder.btDecline.setVisibility(View.VISIBLE);
-                }
             } else {
                 user = match.getMentor();
             }
-
             viewHolder.tvName.setText(user.getName());
             Double dist = user.getRelDistance();
-            if (dist != 0) {
-                viewHolder.tvDist.setText(dist.toString() + " miles away");
+            if (dist != null) {
+                viewHolder.tvDistance.setText(dist.toString() + " miles away");
             }
             String description = user.getDescription();
             if (description != null) {
@@ -82,6 +77,29 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                     .into(viewHolder.ivProfile);
         } catch (Exception e) {
             currentUser.removeMatch(match);
+        }
+
+        if (user.getCategories() != null) {
+            for(int j = 0; j < user.getCategories().size(); j++) {
+                if(user.getCategories().get(j).equals("Art")) {
+                    viewHolder.artIcon.setImageResource(R.drawable.ic_art_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Engineering")) {
+                    viewHolder.engineeringIcon.setImageResource(R.drawable.ic_engineering_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Sports")) {
+                    viewHolder.sportsIcon.setImageResource(R.drawable.ic_sport_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Sciences")) {
+                    viewHolder.scienceIcon.setImageResource(R.drawable.ic_sciences_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Languages")) {
+                    viewHolder.languagesIcon.setImageResource(R.drawable.ic_languages_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Humanities")) {
+                    viewHolder.humanitiesIcon.setImageResource(R.drawable.ic_humanities_pressed);
+                }
+            }
         }
     }
 
@@ -97,47 +115,60 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView ivProfile;
         TextView tvName;
+        TextView tvDistance;
         TextView tvDescription;
-        Button btAccept;
-        Button btDecline;
-        TextView tvDist;
+        ImageButton btMessage;
+        ImageButton btEvent;
+
+        public ImageView artIcon;
+        public ImageView engineeringIcon;
+        public ImageView sportsIcon;
+        public ImageView scienceIcon;
+        public ImageView languagesIcon;
+        public ImageView humanitiesIcon;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfile = itemView.findViewById(R.id.ivProfile);
             tvName = itemView.findViewById(R.id.tvName);
-            tvDist = itemView.findViewById(R.id.tvDistPending);
+            tvDistance = itemView.findViewById(R.id.tvDistHome);
             tvDescription = itemView.findViewById(R.id.tvDescription);
-            btAccept = itemView.findViewById(R.id.btAccept);
-            btDecline = itemView.findViewById(R.id.btDecline);
+            artIcon = (ImageView) itemView.findViewById(R.id.artIcon);
+            engineeringIcon = (ImageView) itemView.findViewById(R.id.engineeringIcon);
+            sportsIcon= (ImageView) itemView.findViewById(R.id.sportsIcon);
+            scienceIcon = (ImageView) itemView.findViewById(R.id.scienceIcon);
+            languagesIcon = (ImageView) itemView.findViewById(R.id.languagesIcon);
+            humanitiesIcon = (ImageView) itemView.findViewById(R.id.humanitiesIcon);
 
-            btAccept.setOnClickListener(new View.OnClickListener() {
+            btMessage = itemView.findViewById(R.id.btMessage);
+            btMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Match match = matches.get(position);
-                        match.setAccepted(true);
-                        match.saveInBackground();
-                        btAccept.setVisibility(View.INVISIBLE);
-                        btDecline.setVisibility(View.INVISIBLE);
-                        Chat chat = new Chat(new ArrayList<User>(Arrays.asList(match.getMentee(), match.getMentor())));
-                        chat.saveInBackground();
-                    }
-                }
-            });
-            btDecline.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        Match match = matches.get(position);
-                        match.deleteInBackground();
+                        User user = null;
+                        if(isMentor) {
+                            user = matches.get(position).getMentee();
+                        } else {
+                            user = matches.get(position).getMentor();
+                        }
+                        model.setRecipients(new ArrayList<>(Arrays.asList(user, model.getCurrentUser())));
+                        fragmentTransaction = model.getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
                     }
                 }
             });
             itemView.setOnClickListener(this);
 
+            btEvent = itemView.findViewById(R.id.btEvent);
+            btEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    model.setCreateFromCalendar(false);
+                    FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, addEventFragment).commit();
+                }
+            });
 
         }
 
