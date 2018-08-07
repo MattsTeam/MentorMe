@@ -29,8 +29,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     User currentUser;
     SharedViewModel model;
     private MessageFragment messageFragment = new MessageFragment();
-    ArrayList<Chat> arrayChats, filterList;
-    MessageListFilter filter;
+    private ArrayList<Chat> filterList;
+    private MessageListFilter filter;
 
 
     PeopleAdapter(Context context, List<Chat> chats, SharedViewModel model) {
@@ -38,7 +38,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         this.chats = chats;
         this.model = model;
         this.currentUser = model.getCurrentUser();
-        this.arrayChats = (ArrayList<Chat>) chats;
         this.filterList = (ArrayList<Chat>) chats;
     }
 
@@ -62,6 +61,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                     user.fetchIfNeed();
                     viewHolder.tvName.setText(user.getName());
                     viewHolder.tvName.setVisibility(View.VISIBLE);
+                    viewHolder.tvMessage.setText(chat.getLastMessage());
+                    viewHolder.tvMessage.setVisibility(View.VISIBLE);
                     Glide.with(context)
                             .load(user.getProfileImage().getUrl())
                             .apply(new RequestOptions().circleCrop())
@@ -87,11 +88,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView ivProfileImage;
         TextView tvName;
+        TextView tvMessage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvName = itemView.findViewById(R.id.tvName);
+            tvMessage = itemView.findViewById(R.id.tvMessage);
 
             itemView.setOnClickListener(this);
         }

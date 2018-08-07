@@ -11,19 +11,23 @@ import java.util.List;
 @ParseClassName("Message")
 public class Message extends ParseObject{
     private final static String USER_KEY = "user";
-    private final static String USER_ID_KEY = "userId";
     private final static String BODY_KEY = "body";
     private final static String RECIPIENT_KEY = "recipients";
     private final static String CREATED_AT_KEY = "createdAt";
 
-    static ArrayList<ParseUser> recipientUsers = new ArrayList<>();
+    public Message() {}
 
+    public Message(String body, User sender, ArrayList<User> recipients) {
+        setUser(sender);
+        setBody(body);
+        addRecipient(recipients);
+    }
 
     public String getBody() {
         return getString(BODY_KEY);
     }
 
-    public void setBody(String body) {
+    private void setBody(String body) {
         put(BODY_KEY, body);
     }
 
@@ -31,15 +35,15 @@ public class Message extends ParseObject{
         return getParseUser(USER_KEY);
     }
 
-    public void setUser(ParseUser user) {
-        put(USER_KEY, user);
+    private void setUser(User user) {
+        put(USER_KEY, user.getParseUser());
     }
 
     public ParseUser getRecicpent() {
         return getParseUser(RECIPIENT_KEY);
     }
 
-    public void addRecipient(ArrayList<User> users) {
+    private void addRecipient(ArrayList<User> users) {
         for (User i : users) {
             i.getParseUser().revert();
             addUnique(RECIPIENT_KEY, i.getParseUser());

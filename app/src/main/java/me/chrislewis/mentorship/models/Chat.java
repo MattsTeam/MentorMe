@@ -16,11 +16,8 @@ public class Chat extends ParseObject{
     private final static String OBJECT_ID_KEY = "objectId";
     private final static String LAST_MESSAGE_KEY = "lastMessage";
 
-    String lastMessage;
-
-    ArrayList<User> recipients;
-
-    String objectId;
+    private String lastMessage;
+    private ArrayList<User> recipients;
 
     public Chat() {}
 
@@ -33,7 +30,6 @@ public class Chat extends ParseObject{
             parseACL.setReadAccess(i.getParseUser(), true);
         }
         setACL(parseACL);
-        objectId = getString(OBJECT_ID_KEY);
     }
 
     public ArrayList<User> getUsers() {
@@ -62,11 +58,16 @@ public class Chat extends ParseObject{
     }
 
     public String getLastMessage() {
-        return lastMessage;
+        if (lastMessage == null) {
+            lastMessage = getString(LAST_MESSAGE_KEY);
+            return lastMessage;
+        } else {
+            return lastMessage;
+        }
     }
 
     public void setLastMessage(String lastMessage) {
-        this.lastMessage = lastMessage;
+        put(LAST_MESSAGE_KEY, lastMessage);
     }
 
     public static class Query extends ParseQuery<Chat> {

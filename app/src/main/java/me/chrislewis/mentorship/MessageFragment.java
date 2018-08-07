@@ -21,15 +21,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.FindCallback;
-import com.parse.ParseACL;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import me.chrislewis.mentorship.models.Camera;
 import me.chrislewis.mentorship.models.Chat;
@@ -52,7 +51,7 @@ public class MessageFragment extends Fragment {
 
     SharedViewModel model;
 
-    User user;
+    User currentUser;
     ArrayList<User> recipients = new ArrayList<>();
 
     EditText etMessage;
@@ -73,7 +72,7 @@ public class MessageFragment extends Fragment {
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
@@ -82,11 +81,13 @@ public class MessageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        model = ViewModelProviders
+                .of(Objects.requireNonNull(getActivity()))
+                .get(SharedViewModel.class);
         recipients = model.getRecipients();
-        user = model.getCurrentUser();
+        currentUser = model.getCurrentUser();
 
-        chat = user.findChat(recipients);
+        chat = currentUser.findChat(recipients);
 
         etMessage = view.findViewById(R.id.etMessage);
         bSend = view.findViewById(R.id.bSend);
@@ -96,7 +97,7 @@ public class MessageFragment extends Fragment {
 
         camera = new Camera(getContext(), this, model);
 
-        adapter = new MessageAdapter(view.getContext(), user.getParseUser(), mMessages);
+        adapter = new MessageAdapter(view.getContext(), currentUser.getParseUser(), mMessages);
         rvMessages.setAdapter(adapter);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -108,30 +109,35 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!etMessage.getText().toString().equals("")) {
-                    String data = etMessage.getText().toString();
-                    Message message = new Message();
-                    message.setBody(data);
-                    message.setUser(user.getParseUser());
-                    message.addRecipient(recipients);
-                    ParseUser currentUser = ParseUser.getCurrentUser();
-                    ParseACL acl = new ParseACL(currentUser);
-                    acl.setPublicReadAccess(true);
-                    message.setACL(acl);
+                    final String data = etMessage.getText().toString();
+                    Message message = new Message(data, currentUser, recipients);
                     message.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("Messages", "Working");
+                                HashMap<String, String> payload = new HashMap<>();
+                                payload.put("customData", "New message: " + data);
+                                ParseCloud.callFunctionInBackground("pingReply", payload);
+                                Toast.makeText(getActivity(),
+                                        "A notification was sent to your mentor",
+                                        Toast.LENGTH_LONG).show();
                             } else {
                                 Log.d("Messages", "Fail "+ e);
                             }
                         }
                     });
                     chat.setLastMessage(data);
-                    HashMap<String, String> payload = new HashMap<>();
-                    payload.put("customData", "New message: " + data);
-                    ParseCloud.callFunctionInBackground("pingReply", payload);
-                    Toast.makeText(getActivity(), "A notification was sent to your mentor", Toast.LENGTH_LONG).show();
+                    chat.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("Messages", "CHAT Working");
+                            } else {
+                                Log.d("Messages", "CHAT Fail "+ e);
+                            }
+                        }
+                    });
 
                     etMessage.setText(null);
                 }
@@ -174,23 +180,21 @@ public class MessageFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Glide.with(getContext())
+                Glide.with(Objects.requireNonNull(getContext()))
                         .load(camera.getPhoto())
                         .apply(new RequestOptions().circleCrop())
                         .into(ivMessage);
             } else {
-                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),
+                        "Picture wasn't taken!",
+                        Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == PICK_IMAGE_REQUEST) {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                if (resultCode == RESULT_OK) {
-                    Glide.with(getContext())
-                            .load(camera.getChosenPhoto(data))
-                            .apply(new RequestOptions().circleCrop())
-                            .into(ivMessage);
-                } else {
-                    Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-                }
+                Glide.with(Objects.requireNonNull(getContext()))
+                        .load(camera.getChosenPhoto(data))
+                        .apply(new RequestOptions().circleCrop())
+                        .into(ivMessage);
 
             }
         }
