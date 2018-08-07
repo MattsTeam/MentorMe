@@ -56,6 +56,14 @@
         android:layout_marginStart="31dp"
         android:layout_marginTop="193dp"
         android:background="@drawable/round_category_button"/>
+    <TextView
+        android:id="@+id/tvEngineeringTitle"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/engineeringButton"
+        android:layout_below="@+id/engineeringButton"
+        android:text="Engineering"
+        android:textAlignment="center" />
 
     <ImageButton
         android:id="@+id/artButton"
@@ -67,6 +75,15 @@
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
+    <TextView
+        android:id="@+id/tvArtTitle"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/artButton"
+        android:layout_below="@+id/artButton"
+        android:text="Art"
+        android:textAlignment="center" />
+
     <ImageButton
         android:id="@+id/sportsButton"
         android:layout_width="95dp"
@@ -76,14 +93,30 @@
         android:layout_marginEnd="30dp"
         android:background="@drawable/round_category_button" />
 
+    <TextView
+        android:id="@+id/tvSportsTitle"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/sportsButton"
+        android:layout_below="@+id/sportsButton"
+        android:text="Sports"
+        android:textAlignment="center" />
+
     <ImageButton
         android:id="@+id/scienceButton"
         android:layout_width="95dp"
         android:layout_height="88dp"
-        android:layout_alignLeft="@id/engineeringButton"
-        android:layout_alignTop="@+id/engineeringButton"
-        android:layout_marginTop="120dp"
+        android:layout_alignStart="@+id/engineeringButton"
+        android:layout_alignTop="@+id/ivSciences"
         android:background="@drawable/round_category_button" />
+    <TextView
+        android:id="@+id/tvScienceTitle"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/scienceButton"
+        android:layout_below="@+id/scienceButton"
+        android:text="Science"
+        android:textAlignment="center" />
 
     <ImageButton
         android:id="@+id/humanitiesButton"
@@ -94,14 +127,31 @@
         android:layout_marginEnd="30dp"
         android:background="@drawable/round_category_button" />
 
+    <TextView
+        android:id="@+id/tvHumanitiesTitle"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/humanitiesButton"
+        android:layout_below="@+id/humanitiesButton"
+        android:text="Humanities"
+        android:textAlignment="center" />
+
     <ImageButton
         android:id="@+id/languagesButton"
         android:layout_width="95dp"
         android:layout_height="88dp"
-        android:layout_alignLeft="@id/artButton"
-        android:layout_alignTop="@+id/artButton"
-        android:layout_marginTop="120dp"
+        android:layout_alignTop="@+id/scienceButton"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/round_category_button" />
+
+    <TextView
+        android:id="@+id/tvLanguagesTitle"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/languagesButton"
+        android:layout_below="@+id/languagesButton"
+        android:text="Languages"
+        android:textAlignment="center" />
 
     <ImageView
         android:id="@+id/ivEngineering"
@@ -142,16 +192,17 @@
         android:id="@+id/ivSciences"
         android:layout_width="95dp"
         android:layout_height="89dp"
-        android:layout_alignStart="@+id/scienceButton"
-        android:layout_alignTop="@+id/scienceButton"
+        android:layout_alignStart="@+id/engineeringButton"
+        android:layout_below="@id/tvEngineeringTitle"
+        android:layout_marginTop="20dp"
         app:srcCompat="@drawable/sciences_icon" />
 
     <ImageView
         android:id="@+id/ivLanguages"
         android:layout_width="95dp"
         android:layout_height="89dp"
-        android:layout_alignStart="@+id/languagesButton"
-        android:layout_alignTop="@+id/languagesButton"
+        android:layout_alignTop="@+id/scienceButton"
+        android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/languages_icon" />
 
     <TextView

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -158,13 +159,14 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddEventDialogFragment addEventFragment = AddEventDialogFragment.newInstance();
+                AddEventFragment addEventFragment = new AddEventFragment();
                 model.setCreateFromCalendar(true);
                 Bundle addEventBundle = new Bundle();
                 addEventBundle.putString("dateSelected", selectedDate);
                 addEventBundle.putBoolean("isSynced", ParseUser.getCurrentUser().getBoolean("allowSync"));
                 addEventFragment.setArguments(addEventBundle);
-                addEventFragment.show(getFragmentManager(), null);
+                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.flContainer, addEventFragment).commit();
             }
         });
     }

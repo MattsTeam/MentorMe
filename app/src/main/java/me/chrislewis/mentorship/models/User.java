@@ -259,7 +259,16 @@ public class User{
         return (List<String>) user.get(CATEGORIES_KEY);
     }
 
-    public void addCategory(String category) {this.user.addUnique(CATEGORIES_KEY, category);}
+    public void addCategory(String category) {
+        List<String> categories = (List<String>) user.get(CATEGORIES_KEY);
+        if (!categories.contains(category)) {
+            this.user.addUnique(CATEGORIES_KEY, category);
+        }
+    }
+
+    public void setCategories(List<String> categories) {
+        user.put(CATEGORIES_KEY, categories);
+    }
 
     public ParseGeoPoint getCurrentLocation() {
         return user.getParseGeoPoint(LOCATION_KEY);

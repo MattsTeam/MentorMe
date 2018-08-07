@@ -8,6 +8,51 @@
     android:background="@color/white">
 
 
+    <TextView
+        android:id="@+id/tvScience"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/engineeringButton"
+        android:layout_below="@+id/scienceButton"
+        android:text="Science"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/tvLanguages"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivHumanities"
+        android:layout_centerHorizontal="true"
+        android:text="Languages"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/tvSports"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/sportsButton"
+        android:layout_below="@+id/engineeringButton"
+        android:text="Sports"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/tvHumanities"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/sportsButton"
+        android:layout_below="@+id/scienceButton"
+        android:text="Humanities"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/tvArt"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/artButton"
+        android:layout_centerHorizontal="true"
+        android:text="Art"
+        android:textAlignment="center" />
+
     <ImageButton
         android:id="@+id/engineeringButton"
         android:layout_width="95dp"
@@ -15,19 +60,17 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="31dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/round_category_button"/>
 
     <TextView
         android:id="@+id/tvEngineeringTitle"
         android:layout_width="95dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/engineeringButton"
-        android:layout_marginStart="31dp"
-        android:textAlignment="center"
-        tools:text="Engineering"
-        android:textColor="@color/orange"/>
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/engineeringButton"
+        android:layout_below="@+id/engineeringButton"
+        android:text="Engineering"
+        android:textAlignment="center" />
 
     <ImageButton
         android:id="@+id/artButton"
@@ -43,9 +86,8 @@
         android:id="@+id/sportsButton"
         android:layout_width="95dp"
         android:layout_height="88dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/humanitiesButton"
         android:layout_alignTop="@+id/engineeringButton"
-        android:layout_marginEnd="30dp"
         android:background="@drawable/round_category_button" />
 
     <ImageButton
@@ -53,8 +95,8 @@
         android:layout_width="95dp"
         android:layout_height="88dp"
         android:layout_alignLeft="@id/engineeringButton"
-        android:layout_alignTop="@+id/engineeringButton"
-        android:layout_marginTop="120dp"
+        android:layout_below="@id/tvEngineeringTitle"
+        android:layout_marginTop="20dp"
         android:background="@drawable/round_category_button" />
 
     <ImageButton
@@ -70,9 +112,8 @@
         android:id="@+id/languagesButton"
         android:layout_width="95dp"
         android:layout_height="88dp"
-        android:layout_alignLeft="@id/artButton"
-        android:layout_alignTop="@+id/artButton"
-        android:layout_marginTop="120dp"
+        android:layout_alignTop="@+id/scienceButton"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/round_category_button" />
 
     <ImageView
@@ -122,9 +163,17 @@
         android:id="@+id/ivLanguages"
         android:layout_width="95dp"
         android:layout_height="89dp"
-        android:layout_alignStart="@+id/languagesButton"
-        android:layout_alignTop="@+id/languagesButton"
+        android:layout_alignTop="@+id/scienceButton"
+        android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/languages_icon" />
+
+    <Button
+        android:id="@+id/btnCategories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvHumanities"
+        android:layout_alignParentEnd="true"
+        android:text="Update Categories" />
 
 
 </RelativeLayout>

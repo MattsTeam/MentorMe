@@ -126,7 +126,7 @@ public class SharedViewModel extends ViewModel{
         this.fragmentManager = fragmentManager;
     }
 
-    public void setNewEventInfo(String date, String startTime, String endTime, String description, String invitee, String inviteeId) {
+    public void setNewEventInfo(String date, String startTime, String endTime, String description, String invitee, String inviteeId, String title) {
         newEventInfo.clear();
         newEventInfo.add(date);
         newEventInfo.add(startTime);
@@ -134,6 +134,7 @@ public class SharedViewModel extends ViewModel{
         newEventInfo.add(invitee);
         newEventInfo.add(inviteeId);
         newEventInfo.add(endTime);
+        newEventInfo.add(title);
     }
 
     public void addInviteeImg(ParseFile img) {

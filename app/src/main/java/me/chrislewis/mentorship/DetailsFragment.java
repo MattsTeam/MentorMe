@@ -53,7 +53,6 @@ public class DetailsFragment extends Fragment {
     MessageFragment messageFragment = new MessageFragment();
     ReviewsFragment reviewsFragment = new ReviewsFragment();
     ComposeReviewFragment composeReviewFragment = new ComposeReviewFragment();
-    SelectDateFragment selectDateFragment = new SelectDateFragment();
 
     boolean isFavorite;
     private RatingBar ratingBar;
@@ -164,7 +163,6 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 model.setCreateFromCalendar(false);
-                selectDateFragment.show(model.getFragmentManager(), "DatePicker");
             }
         });
     }
