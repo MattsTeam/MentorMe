@@ -25,6 +25,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.parse.ParseACL;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
@@ -108,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
         currentUser.getFavorites();
         currentUser.getMatches();
         currentUser.getChats();
+        ParseACL parseACL = new ParseACL(ParseUser.getCurrentUser());
+        parseACL.setPublicReadAccess(true);
+
+        ParseUser.getCurrentUser().setACL(parseACL);
 
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
         model.setFragmentManager(fragmentManager);
