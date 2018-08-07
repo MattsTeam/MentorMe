@@ -13,9 +13,31 @@
         <item name="colorAccent">@color/orange</item>
     </style>
 
+
+    <style name="Theme_Holo_Dialog_Alert" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle_Holo</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    </style>
+
+    <style name="DialogWindowTitle_Holo">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Holo.DialogWindowTitle</item>
+    </style>
+
+    <style name="Theme_TimePicker_Dialog_Alert" parent="@style/Theme_Holo_Dialog_Alert">
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle.TimePicker</item>
+    </style>
+
+    <style name="DialogWindowTitle.TimePicker" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
+        <item name="android:textColor">@color/loginGrey</item>
+    </style>
+
     <style name="AppThemeRatingBar" parent="Theme.AppCompat">
-        <item name="colorAccent">@color/orange</item>
-        <item name="android:colorControlNormal">@color/darkOrange</item>
+        <item name="colorAccent">@color/darkOrange</item>
     </style>
 
 </resources>

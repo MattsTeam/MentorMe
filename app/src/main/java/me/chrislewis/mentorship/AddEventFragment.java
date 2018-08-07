@@ -1,10 +1,11 @@
 package me.chrislewis.mentorship;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -27,6 +29,7 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,12 +106,53 @@ public class AddEventFragment extends Fragment {
         }
     }
 
-    public void getTime(final TextView text) {
+    private void applyStyLing(TimePickerDialog timePickerDialog){
+        Resources system = Resources.getSystem();
+        int hourNumberPickerId = system.getIdentifier("hour", "id", "android");
+        int minuteNumberPickerId = system.getIdentifier("minute", "id", "android");
+        int ampmNumberPickerId = system.getIdentifier("amPm", "id", "android");
+
+        NumberPicker hourNumberPicker = (NumberPicker) timePickerDialog.findViewById(hourNumberPickerId);
+        NumberPicker minuteNumberPicker = (NumberPicker) timePickerDialog.findViewById(minuteNumberPickerId);
+        NumberPicker ampmNumberPicker = (NumberPicker) timePickerDialog.findViewById(ampmNumberPickerId);
+
+        setNumberPickerDividerColour(hourNumberPicker);
+        setNumberPickerDividerColour(minuteNumberPicker);
+        setNumberPickerDividerColour(ampmNumberPicker);
+    }
+
+    private void setNumberPickerDividerColour(NumberPicker number_picker){
+        final int count = number_picker.getChildCount();
+
+        for(int i = 0; i < count; i++){
+
+            try{
+                Field dividerField = number_picker.getClass().getDeclaredField("mSelectionDivider");
+                dividerField.setAccessible(true);
+                ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.orange));
+                dividerField.set(number_picker,colorDrawable);
+
+                number_picker.invalidate();
+            }
+            catch(NoSuchFieldException e){
+                Log.w("setNumberPickerTxtClr", e);
+            }
+            catch(IllegalAccessException e){
+                Log.w("setNumberPickerTxtClr", e);
+            }
+            catch(IllegalArgumentException e){
+                Log.w("setNumberPickerTxtClr", e);
+            }
+        }
+    }
+
+    public void getTime(final TextView text, Boolean isStartTime) {
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
+
+        mTimePicker = new TimePickerDialog(getActivity(), R.style.Theme_TimePicker_Dialog_Alert, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 String selectedHrStr = Integer.toString(selectedHour);
@@ -122,8 +166,18 @@ public class AddEventFragment extends Fragment {
                 text.setText(selectedHrStr + ":" + selectedMinStr);
             }
         }, hour, minute, true);
-        mTimePicker.setTitle("Select the event's start time.");
+        if(isStartTime) {
+            mTimePicker.setTitle("Select a start time for your event.");
+        }
+        else {
+            mTimePicker.setTitle("Select an end time for your event.");
+        }
         mTimePicker.show();
+        applyStyLing(mTimePicker);
+        int titleDividerId = getResources().getIdentifier("titleDivider", "id", "android");
+        View titleDivider = mTimePicker.findViewById(titleDividerId);
+        if (titleDivider != null)
+            titleDivider.setBackgroundColor(getResources().getColor(R.color.orange));
     }
 
     @Override
@@ -187,14 +241,14 @@ public class AddEventFragment extends Fragment {
         startBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getTime(startTime);
+                getTime(startTime, true);
             }
         });
         endBox = view.findViewById(R.id.endBox);
         endBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getTime(endTime);
+                getTime(endTime, false);
             }
         });
 
