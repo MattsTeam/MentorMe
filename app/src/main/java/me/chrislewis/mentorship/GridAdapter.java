@@ -72,7 +72,9 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
         }
 
         Double relDistance = user.getRelDistance();
-        holder.tvDistance.setText(Double.toString(relDistance) + " mi");
+        if (relDistance != null) {
+            holder.tvDistance.setText(Double.toString(relDistance) + " mi");
+        }
 
         if (user.getCategories() != null) {
             for(int i = 0; i < user.getCategories().size(); i++) {

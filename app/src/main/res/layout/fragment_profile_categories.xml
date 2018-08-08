@@ -96,7 +96,7 @@
         android:layout_height="88dp"
         android:layout_alignLeft="@id/engineeringButton"
         android:layout_below="@id/tvEngineeringTitle"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/round_category_button" />
 
     <ImageButton
@@ -170,9 +170,9 @@
     <Button
         android:id="@+id/btnCategories"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvHumanities"
+        android:layout_height="38dp"
         android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvScience"
         android:text="Update Categories" />
 
 

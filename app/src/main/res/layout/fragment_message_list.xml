@@ -28,10 +28,19 @@
             app:iconifiedByDefault="false" />
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvPeople"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/scMessageList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:background="@color/papaya" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/toolbar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvPeople"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/papaya" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.widget.Filter;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.chrislewis.mentorship.models.User;
 
@@ -25,7 +26,7 @@ public class SearchFilter extends Filter {
 
         if(constraint != null && constraint.length() > 0)
         {
-            constraint=constraint.toString().toUpperCase();
+            constraint = constraint.toString().toUpperCase();
             ArrayList<ParseUser> filteredUsers = new ArrayList<>();
 
             for (int i = 0 ;i < filterList.size(); i++)
@@ -35,6 +36,16 @@ public class SearchFilter extends Filter {
                     if(u.getName().toUpperCase().contains(constraint))
                     {
                         filteredUsers.add(filterList.get(i));
+                    }
+                    List<String> skills = u.getSkillsList();
+                    if (skills != null) {
+                        for (String skill: skills) {
+                            if (skill.toUpperCase().contains(constraint)) {
+                                if (!filteredUsers.contains(filterList.get(i))) {
+                                    filteredUsers.add(filterList.get(i));
+                                }
+                            }
+                        }
                     }
                 }
             }

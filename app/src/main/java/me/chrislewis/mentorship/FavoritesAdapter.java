@@ -70,7 +70,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
             viewHolder.tvName.setText(user.getName());
             Double dist = user.getRelDistance();
-            if (dist != 0) {
+            if (dist != null) {
                 viewHolder.tvDist.setText(dist.toString() + " miles away");
             }
             String description = user.getDescription();
