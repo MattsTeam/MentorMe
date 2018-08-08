@@ -18,10 +18,10 @@
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_toRightOf="@+id/tvTime"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvTime"
         android:layout_marginLeft="35dp"
+        android:layout_toRightOf="@+id/tvTime"
         android:text="TextView"
         android:textSize="25sp" />
 </RelativeLayout>
