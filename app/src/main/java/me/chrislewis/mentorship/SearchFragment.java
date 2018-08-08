@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,8 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -86,6 +89,7 @@ public class SearchFragment extends Fragment {
 
         rvUsers.setLayoutManager(new GridLayoutManager(this.getActivity(), 2));
         rvUsers.setAdapter(gridAdapter);
+        runLayoutAnimation(rvUsers);
 
         swipeContainer = view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -389,5 +393,15 @@ public class SearchFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    private void runLayoutAnimation(final RecyclerView recyclerView) {
+        final Context context = recyclerView.getContext();
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
+
+        recyclerView.setLayoutAnimation(controller);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 }

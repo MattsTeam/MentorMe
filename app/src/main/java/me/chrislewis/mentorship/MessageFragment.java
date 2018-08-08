@@ -1,6 +1,7 @@
 package me.chrislewis.mentorship;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -50,7 +53,7 @@ public class MessageFragment extends Fragment {
     ImageButton bSend;
     TextView tvName;
 
-    static final int POLL_INTERVAL = 1000;
+    static final int POLL_INTERVAL = 2000;
     Handler myHandler = new Handler();
     Runnable mRefreshMessagesRunnable = new Runnable() {
         @Override
@@ -100,6 +103,10 @@ public class MessageFragment extends Fragment {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(linearLayoutManager);
+
+        int resId = R.anim.layout_animation_fall_down;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
+        rvMessages.setLayoutAnimation(animation);
 
         bSend = view.findViewById(R.id.bSend);
         bSend.setOnClickListener(new View.OnClickListener() {
@@ -162,11 +169,22 @@ public class MessageFragment extends Fragment {
                     if (firstLoad) {
                         rvMessages.scrollToPosition(0);
                         firstLoad = false;
+                        runLayoutAnimation(rvMessages);
                     }
                 } else {
                     Log.e("message", "Error Loading Messages " + e);
                 }
             }
         });
+    }
+
+    private void runLayoutAnimation(final RecyclerView recyclerView) {
+        final Context context = recyclerView.getContext();
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
+
+        recyclerView.setLayoutAnimation(controller);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 }
