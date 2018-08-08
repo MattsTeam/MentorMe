@@ -1,73 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FavoritesFragment"
-    android:background="@color/papaya">
-
-    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="40dp"
+        android:layout_below="@id/profileColor"
+        android:layout_centerHorizontal="true"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabIndicatorHeight="0dp"
+        android:background="@drawable/round_profile_tabs"
+        app:tabTextColor="@color/black">
 
-        <TextView
-            android:id="@+id/tvPending"
+        <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:text="Pending Matches"
-            android:textColor="@color/orange"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:text="Matches" />
 
-        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/swipeContainer"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/tvPending">
+            android:text="Pending" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvFavorites"
-                    android:layout_width="match_parent"
-                    android:layout_height="260dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true">
-
-                </android.support.v7.widget.RecyclerView>
-
-                <TextView
-                    android:id="@+id/tvMatches"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/rvFavorites"
-                    android:text="Matches"
-                    android:textAlignment="viewStart"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/orange"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvMatches"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_below="@id/tvMatches"/>
-
-
-            </RelativeLayout>
-
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-    </RelativeLayout>
-
-
-
-</FrameLayout>
+    </android.support.design.widget.TabLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabs_home" />
+</RelativeLayout>

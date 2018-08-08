@@ -19,6 +19,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.Review;
@@ -69,6 +70,7 @@ public class ProfileReviewsFragment extends Fragment {
                 if (e == null) {
                     if (objects.size() != 0) {
                         adapter.clear();
+                        Collections.reverse(objects);
                         adapter.addAll(objects);
                         adapter.notifyDataSetChanged();
                         pb.setVisibility(ProgressBar.INVISIBLE);
