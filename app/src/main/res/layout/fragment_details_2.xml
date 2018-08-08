@@ -12,7 +12,7 @@
         android:layout_height="290dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/loginOrange" />
+        android:background="@drawable/profile_gradient" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,7 +34,8 @@
         android:layout_marginTop="10dp"
         android:text="Name"
         android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
 
 
     <ImageButton
@@ -82,7 +83,8 @@
         android:layout_alignBottom="@+id/line"
         android:layout_toStartOf="@+id/line"
         android:text="TextView"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
 
     <ImageView
         android:id="@+id/ivLocation"
@@ -99,7 +101,8 @@
         android:layout_below="@+id/tvName"
         android:layout_centerHorizontal="true"
         android:text=" | "
-        android:textSize="28sp" />
+        android:textSize="28sp"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/tvOccupation"
@@ -108,7 +111,8 @@
         android:layout_alignTop="@+id/ivLocation"
         android:layout_toEndOf="@+id/line"
         android:text="TextView"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

@@ -5,7 +5,6 @@
         <shape>
             <solid android:color="@color/white"/>
             <!--<corners android:radius="5dp"/>-->
-            <!--<stroke android:width="2dip" android:color="@color/orange" />-->
         </shape>
     </item>
 
@@ -13,7 +12,6 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android" >
             <solid android:color="@color/white"/>
             <!--<corners android:radius="5dp" />-->
-            <!--<stroke android:width="2dip" android:color="@color/orange" />-->
         </shape>
     </item>
 
@@ -21,7 +19,7 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android" >
             <solid android:color="@color/white"/>
             <!--<corners android:radius="5dp"/>-->
-            <!--<stroke android:width="2dip" android:color="@color/orange" />-->
+            <stroke android:width="2dip" android:color="@color/tabGrey" />
         </shape>
     </item>
 
@@ -29,7 +27,7 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android" >
             <solid android:color="@color/white"/>
             <!--<corners android:radius="5dp" />-->
-            <!--<stroke android:width="2dip" android:color="@color/orange" />-->
+            <stroke android:width="2dip" android:color="@color/tabGrey" />
         </shape>
     </item>
 </selector>

@@ -111,7 +111,8 @@ public class DetailsFragment2 extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO make fragment go back
+                SearchFragment searchFragment = new SearchFragment();
+                model.getFragmentManager().beginTransaction().replace(R.id.flContainer, searchFragment).commit();
             }
         });
 
