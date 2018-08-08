@@ -24,7 +24,7 @@ public class MessageListFilter extends Filter {
 
         if(constraint != null && constraint.length() > 0)
         {
-            constraint=constraint.toString().toUpperCase();
+            constraint = constraint.toString().toUpperCase();
             ArrayList<Chat> filteredChats = new ArrayList<>();
 
             for (int i=0 ; i < filterList.size();i++)
