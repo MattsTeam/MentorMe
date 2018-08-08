@@ -32,6 +32,8 @@ public class MessageListFragment extends Fragment {
     SharedViewModel model;
     SwipeRefreshLayout swipeContainer;
 
+    boolean firstLoad = true;
+
     User currentUser;
 
     static final int POLL_INTERVAL = 1000000;
@@ -108,6 +110,10 @@ public class MessageListFragment extends Fragment {
                     adapter.clear();
                     currentUser.addChats(objects);
                     adapter.addAll(objects);
+                    if (firstLoad) {
+                        rvPeople.scrollToPosition(0);
+                        firstLoad = false;
+                    }
                 } else {
                     Log.e("message", "Error Loading Messages " + e);
                 }
