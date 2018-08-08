@@ -73,22 +73,27 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_favorites:
                     fragmentTransaction = fragmentManager.beginTransaction();
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
                     return true;
                 case R.id.navigation_search:
                     fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, searchFragment).commit();
                     return true;
                 case R.id.navigation_messages:
                     fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
                     return true;
                 case R.id.navigation_calendar:
                     fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
                     return true;
             }
@@ -103,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         User currentUser = new User(ParseUser.getCurrentUser());
         currentUser.getFavorites();
         currentUser.getMatches();

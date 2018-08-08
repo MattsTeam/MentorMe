@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -91,8 +92,10 @@ public class ProfileFragment extends Fragment {
         bEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
+                FragmentManager manager = model.getFragmentManager();
+                FragmentTransaction fragmentTransaction = manager.beginTransaction();
                 editProfileFragment = new EditProfileFragment();
+                fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                 fragmentTransaction.replace(R.id.flContainer, editProfileFragment).commit();
             }
         });
@@ -115,14 +118,17 @@ public class ProfileFragment extends Fragment {
         if (checkedItemId == R.id.nb_categories) {
             ProfileCategoriesFragment profileCategoriesFragment = new ProfileCategoriesFragment();
             FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             fragmentTransaction.replace(R.id.flProfile, profileCategoriesFragment).commit();
         } else if (checkedItemId == R.id.nb_reviews) {
             ProfileReviewsFragment profileReviewsFragment = new ProfileReviewsFragment();
             FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             fragmentTransaction.replace(R.id.flProfile, profileReviewsFragment).commit();
         } else {
             ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
             FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -133,18 +139,21 @@ public class ProfileFragment extends Fragment {
                     case R.id.nb_general:
                         ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
                         fragmentTransaction = getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                         fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
                         checkedItemId = R.id.nb_general;
                         return true;
                     case R.id.nb_categories:
                         ProfileCategoriesFragment profileCategoriesFragment = new ProfileCategoriesFragment();
                         fragmentTransaction = getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                         fragmentTransaction.replace(R.id.flProfile, profileCategoriesFragment).commit();
                         checkedItemId = R.id.nb_categories;
                         return true;
                     case R.id.nb_reviews:
                         ProfileReviewsFragment profileReviewsFragment = new ProfileReviewsFragment();
                         fragmentTransaction = getChildFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                         fragmentTransaction.replace(R.id.flProfile, profileReviewsFragment).commit();
                         checkedItemId = R.id.nb_reviews;
                         return true;
