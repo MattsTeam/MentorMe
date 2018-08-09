@@ -183,7 +183,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
                     user = matches.get(position).getMentor();
                 }
                 model.setUser(user);
-
+                model.setDetailsFromGrid(false);
                 fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
             }

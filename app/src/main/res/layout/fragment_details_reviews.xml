@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/papaya">
@@ -10,6 +11,8 @@
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -26,19 +29,81 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/round_login_button"
                 android:text="Have something to say?  Write a review"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/statsBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/writeReviewButton"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                card_view:cardCornerRadius="6dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp" />
+
+                    <TextView
+                        android:id="@+id/aveRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="75dp"
+                        android:layout_marginLeft="20dp"
+                        android:maxLines="2"
+                        android:singleLine="false"
+                        android:text="Average\n Rating"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tvAve"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignLeft="@id/aveRating"
+                        android:layout_below="@+id/aveRating"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:text="5.0" />
+
+                    <ImageView
+                        android:id="@+id/star"
+                        android:layout_width="25dp"
+                        android:layout_height="27dp"
+                        android:layout_alignTop="@id/tvAve"
+                        android:layout_marginLeft="7dp"
+                        android:layout_toRightOf="@id/tvAve"
+                        app:srcCompat="@drawable/outline_star_black_24dp" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvDetailsReviews"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/writeReviewButton"
+                android:layout_below="@id/statsBox"
                 android:layout_marginTop="15dp"
                 android:background="@color/papaya" />
 

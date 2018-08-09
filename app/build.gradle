@@ -99,6 +99,7 @@ dependencies {
 
     implementation 'com.desarrollodroide:fragmenttransactionextended:1'
 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

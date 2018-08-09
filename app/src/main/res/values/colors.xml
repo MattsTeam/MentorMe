@@ -16,4 +16,9 @@
     <color name="lightGrey">#cccccc</color>
     <color name="tabGrey">#E8E8E8</color>
     <color name="bubbleGrey">#f5f5f5</color>
+    <color name="chart1">#309fdb</color>
+    <color name="chart2">#3caf85</color>
+    <color name="chart3">#B369E6</color>
+    <color name="chart4">#ff912b</color>
+    <color name="chart5">#e95b54</color>
 </resources>
