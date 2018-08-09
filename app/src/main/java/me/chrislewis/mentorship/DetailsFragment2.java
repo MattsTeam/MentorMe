@@ -102,7 +102,7 @@ public class DetailsFragment2 extends Fragment {
                             }
                         }
                     });
-                    favoriteButton.setBackgroundResource(R.drawable.add_user_2_24);
+                    favoriteButton.setImageResource(R.drawable.ic_add);
                     isFavorite = true;
                 }
             }
@@ -113,9 +113,15 @@ public class DetailsFragment2 extends Fragment {
             @Override
             public void onClick(View view) {
                 SearchFragment searchFragment = new SearchFragment();
+                FavoritesFragment favoritesFragment = new FavoritesFragment();
                 FragmentTransaction transaction = model.getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.anim_slide_out_right, R.anim.anim_slide_in_right, R.anim.anim_slide_out_right, R.anim.anim_slide_in_right);
-                transaction.replace(R.id.flContainer, searchFragment).commit();
+                if(model.getDetailsFromGrid()) {
+                    transaction.replace(R.id.flContainer, searchFragment).commit();
+                }
+                else {
+                    transaction.replace(R.id.flContainer, favoritesFragment).commit();
+                }
             }
         });
 
@@ -158,9 +164,9 @@ public class DetailsFragment2 extends Fragment {
             }
         }
         if (isFavorite) {
-            favoriteButton.setBackgroundResource(R.drawable.add_user_2_24);
+            favoriteButton.setImageResource(R.drawable.ic_add);
         } else {
-            favoriteButton.setBackgroundResource(R.drawable.ic_add);
+            favoriteButton.setImageResource(R.drawable.ic_add_before);
         }
     }
 

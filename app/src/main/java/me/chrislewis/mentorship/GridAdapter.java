@@ -137,9 +137,9 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
                 ParseUser user = mUsers.get(position);
                 model.setUser(new User(user));
 
-                FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
-                fragmentTransaction = model.getFragmentManager().beginTransaction();
-                //fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
+                //FragmentTransaction fragmentTransaction = model.getFragmentTransaction();
+                model.setDetailsFromGrid(true);
+                FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, detailsFragment2).commit();
             }
         }

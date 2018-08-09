@@ -36,6 +36,11 @@ public class SharedViewModel extends ViewModel{
     String fragmentIdentifier;
     ParseGeoPoint parseLocation;
     MatchAdapter matchAdapter;
+    Boolean detailsFromGrid;
+
+    public Boolean getDetailsFromGrid() { return detailsFromGrid; };
+
+    public void setDetailsFromGrid(Boolean b) { detailsFromGrid = b; }
 
     public void setCreateFromCalendar(Boolean b) { createFromCalendar = b; }
 

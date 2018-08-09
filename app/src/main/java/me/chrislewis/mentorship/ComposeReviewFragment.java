@@ -122,7 +122,6 @@ public class ComposeReviewFragment extends DialogFragment {
                 }
 
                 review.setUserId(otherId);
-
                 review.saveInBackground(new com.parse.SaveCallback() {
                     @Override
                     public void done(ParseException e) {
