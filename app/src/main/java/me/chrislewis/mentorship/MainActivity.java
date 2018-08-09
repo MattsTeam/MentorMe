@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_favorites:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
                     return true;
                 case R.id.navigation_search:

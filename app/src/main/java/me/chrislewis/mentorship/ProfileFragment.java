@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment {
         } else {
             ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
             FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
             fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
