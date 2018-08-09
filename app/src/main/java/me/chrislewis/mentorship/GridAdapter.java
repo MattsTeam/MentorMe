@@ -65,11 +65,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
         }
 
         Double rating = user.getOverallRating();
-        if (rating != null) {
-            holder.tvRating.setText("Rating: " + String.format("%.2f", rating));
-        } else {
-            holder.tvRating.setText("Rating: N/A");
-        }
+        holder.tvRating.setText(String.format("%.2f", rating));
 
         Double relDistance = user.getRelDistance();
         if (relDistance != null) {
