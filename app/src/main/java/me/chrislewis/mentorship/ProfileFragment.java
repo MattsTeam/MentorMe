@@ -47,6 +47,9 @@ public class ProfileFragment extends Fragment {
     BottomNavigationView bottomNavigationView;
     int checkedItemId;
 
+    TextView tvAveRating;
+    TextView tvMatches;
+
     User user;
     private SharedViewModel model;
 
@@ -62,8 +65,6 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         user = model.getCurrentUser();
         calendarFragment = (CalendarFragment) Objects.requireNonNull(getActivity())
@@ -80,7 +81,10 @@ public class ProfileFragment extends Fragment {
 
         tvName = view.findViewById(R.id.tvName);
         tvJob = view.findViewById(R.id.tvJob);
-        tvRating = view.findViewById(R.id.tvRating);
+
+        tvAveRating = view.findViewById(R.id.tvAveRating);
+        tvMatches = view.findViewById(R.id.tvMatches);
+
         String name = user.getName();
         if (name != null) {
             tvName.setText(name);
@@ -92,10 +96,8 @@ public class ProfileFragment extends Fragment {
 
         double rating = user.getOverallRating();
         if (rating != 0) {
-            tvRating.setText(String.valueOf(rating));
+            tvAveRating.setText(String.valueOf(rating));
         }
-
-        tvNumMatches = view.findViewById(R.id.tvNumMatches);
 
         Match.Query query = new Match.Query();
         query.findMatches(user);
@@ -104,7 +106,7 @@ public class ProfileFragment extends Fragment {
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
-                tvNumMatches.setText(String.valueOf(count));
+                tvMatches.setText(String.valueOf(count));
             }
         });
 
@@ -139,17 +141,17 @@ public class ProfileFragment extends Fragment {
         if (checkedItemId == R.id.nb_categories) {
             ProfileCategoriesFragment profileCategoriesFragment = new ProfileCategoriesFragment();
             FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             fragmentTransaction.replace(R.id.flProfile, profileCategoriesFragment).commit();
         } else if (checkedItemId == R.id.nb_reviews) {
             ProfileReviewsFragment profileReviewsFragment = new ProfileReviewsFragment();
             FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             fragmentTransaction.replace(R.id.flProfile, profileReviewsFragment).commit();
         } else {
             ProfileGeneralFragment profileGeneralFragment = new ProfileGeneralFragment();
             FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+            //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
             fragmentTransaction.replace(R.id.flProfile, profileGeneralFragment).commit();
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

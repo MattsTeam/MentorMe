@@ -10,11 +10,12 @@
     <ImageView
         android:id="@+id/profileColor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@id/tvJob"
-        android:layout_alignParentTop="true"
+        android:layout_height="290dp"
         android:layout_above="@id/nb_profile"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="-10dp"
         android:background="@drawable/profile_gradient" />
 
     <ImageButton
@@ -67,98 +68,162 @@
         android:src="@drawable/logout"
         android:text="@string/log_out" />
 
-    <TextView
-        android:id="@+id/tvJob"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:background="@null"
-        android:text="Job"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvMatches"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/cvRating"
-        android:layout_marginLeft="5dp"
-        app:cardCornerRadius="10dp">
+        android:layout_below="@id/tvName"
+        android:id="@+id/detailsBox"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true">
 
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvMatches"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignBottom="@+id/line"
+            android:layout_toStartOf="@+id/line"
+            android:layout_marginRight="2dp"
+            android:text="Matches"
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
 
-            <TextView
-                android:id="@+id/tvMatchesTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Matches"
-                android:textSize="15sp" />
+        <ImageView
+            android:id="@+id/ivMatches"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@drawable/ic_matches"
+            android:layout_marginRight="4dp"/>
 
-            <TextView
-                android:id="@+id/tvNumMatches"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:text="0"
-                android:textColor="@color/orange"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/tvName"
+            android:text=" | "
+            android:textSize="28sp"
+            android:textColor="@color/white"/>
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvJob"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/tvName"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@null"
+            android:text="Job"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-    </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/line2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/tvName"
+            android:text=" | "
+            android:layout_marginRight="5dp"
+            android:textSize="28sp"
+            android:textColor="@color/white"/>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvRating"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="208dp"
-        app:cardCornerRadius="10dp">
+        <TextView
+            android:id="@+id/tvAveRating"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignBottom="@+id/line"
+            android:layout_toStartOf="@+id/line"
+            android:text="Rate"
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
 
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <ImageView
+            android:id="@+id/ivStar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_white_star" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rating"
-                android:textSize="15sp" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:text="N/A"
-                android:textColor="@color/orange"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:id="@+id/cvMatches"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignTop="@id/cvRating"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--app:cardCornerRadius="10dp">-->
 
-        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:orientation="vertical">-->
 
-    </android.support.v7.widget.CardView>
+            <!--<TextView-->
+                <!--android:id="@+id/tvNumMatches"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Matches"-->
+                <!--android:textSize="15sp" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="5dp"-->
+                <!--android:text="1"-->
+                <!--android:textColor="@color/orange"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textStyle="bold" />-->
+
+        <!--</LinearLayout>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:id="@+id/cvRating"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignTop="@id/tvName"-->
+        <!--app:cardCornerRadius="10dp">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Rating"-->
+                <!--android:textSize="15sp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tvRating"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="5dp"-->
+                <!--android:text="N/A"-->
+                <!--android:textColor="@color/orange"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textStyle="bold" />-->
+
+        <!--</LinearLayout>-->
+
+    <!--</android.support.v7.widget.CardView>-->
 
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/nb_profile"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/tvJob"
+        android:layout_below="@+id/detailsBox"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
+        app:elevation="0dp"
         android:background="@drawable/nav_bar"
         app:menu="@menu/navigation_profile">
 
