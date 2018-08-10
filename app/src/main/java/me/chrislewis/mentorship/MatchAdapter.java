@@ -34,11 +34,11 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     private MessageFragment messageFragment = new MessageFragment();
     AddEventFragment addEventFragment = new AddEventFragment();
 
-    MatchAdapter(List<Match> matches, SharedViewModel model) {
+    MatchAdapter(List<Match> matches, SharedViewModel model, User thisUser) {
         this.matches = matches;
         this.model = model;
-        currentUser = model.currentUser;
-        isMentor = currentUser.getIsMentor();
+        currentUser = thisUser;
+        isMentor = thisUser.getIsMentor();
     }
 
     @NonNull
@@ -179,7 +179,8 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
                 User user = null;
                 if(isMentor) {
                     user = matches.get(position).getMentee();
-                } else {
+                }
+                else {
                     user = matches.get(position).getMentor();
                 }
                 model.setUser(user);

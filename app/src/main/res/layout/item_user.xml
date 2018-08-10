@@ -7,6 +7,7 @@
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
     card_view:cardCornerRadius="6dp">
 
     <RelativeLayout
@@ -28,57 +29,65 @@
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_alignEnd="@id/ivProfile"
             android:layout_alignStart="@id/ivProfile"
             android:layout_below="@id/ivProfile"
+            android:layout_marginTop="5dp"
             android:text="Name"
             android:textAlignment="center"
+            android:textSize="20sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvDistance"
-            android:layout_width="67dp"
-            android:layout_height="20dp"
-            android:layout_alignStart="@+id/ivProfile"
-            android:layout_below="@+id/tvName"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="0dp"
-            android:text="distance"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tvLine"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_below="@+id/tvName"
-            android:layout_centerHorizontal="true"
-            android:text="|"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tvRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/ivProfile"
-            android:layout_below="@+id/tvName"
-            android:layout_marginEnd="50dp"
-            android:text="3.0"
-            android:textAlignment="center" />
-
-        <ImageView
-            android:id="@+id/ivStar"
-            android:layout_width="30dp"
-            android:layout_height="19dp"
-            android:layout_below="@+id/tvName"
-            android:layout_marginStart="-50dp"
-            android:layout_toEndOf="@+id/tvRating"
-            card_view:srcCompat="@drawable/outline_star_black_24dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvRating"
+            android:layout_below="@+id/tvName"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/locationRatingBox"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@id/tvLine"
+                android:layout_marginRight="10dp"
+                android:text="distance"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tvLine"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:text="|"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="3.0"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/ivStar"
+                android:layout_width="17dp"
+                android:layout_height="19dp"
+                android:layout_marginLeft="3dp"
+                android:layout_toEndOf="@+id/tvRating"
+                card_view:srcCompat="@drawable/outline_star_black_24dp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locationRatingBox"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"

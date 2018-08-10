@@ -59,13 +59,13 @@ public class DetailsMatchesFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        user = model.getCurrentUser();
+        user = model.getUser();
         favorites = user.getFavorites();
 
         isMentor = user.getIsMentor();
 
         matches = new ArrayList<>();
-        matchAdapter = new MatchAdapter(matches, model);
+        matchAdapter = new MatchAdapter(matches, model, user);
         rvMatches = view.findViewById(R.id.rvMatches);
         rvMatches.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvMatches.setAdapter(matchAdapter);
@@ -88,7 +88,8 @@ public class DetailsMatchesFragment extends Fragment {
                     matchAdapter.notifyItemInserted(objects.size() - 1);
                     if (isMentor) {
                         favorites.add(objects.get(i).getMentee());
-                    } else {
+                    }
+                    else {
                         favorites.add(objects.get(i).getMentor());
                     }
                 }

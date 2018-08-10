@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,6 @@ public class FavoritesMatchesFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d("FavoriteMatches", "onViewCreated FavoriteMatches");
         model = ViewModelProviders
                 .of(Objects.requireNonNull(getActivity()))
                 .get(SharedViewModel.class);
@@ -66,7 +64,7 @@ public class FavoritesMatchesFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         matches = new ArrayList<>();
-        matchAdapter = new MatchAdapter(matches, model);
+        matchAdapter = new MatchAdapter(matches, model, user);
         rvMatches = view.findViewById(R.id.rvMatches);
         rvMatches.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvMatches.setAdapter(matchAdapter);

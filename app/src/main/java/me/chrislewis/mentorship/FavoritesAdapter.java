@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -85,6 +85,29 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         } catch (Exception e) {
             currentUser.removeMatch(match);
         }
+
+        if (user.getCategories() != null) {
+            for(int j = 0; j < user.getCategories().size(); j++) {
+                if(user.getCategories().get(j).equals("Art")) {
+                    viewHolder.artIcon.setImageResource(R.drawable.ic_art_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Engineering")) {
+                    viewHolder.engineeringIcon.setImageResource(R.drawable.ic_engineering_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Sports")) {
+                    viewHolder.sportsIcon.setImageResource(R.drawable.ic_sport_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Sciences")) {
+                    viewHolder.scienceIcon.setImageResource(R.drawable.ic_sciences_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Languages")) {
+                    viewHolder.languagesIcon.setImageResource(R.drawable.ic_languages_pressed);
+                }
+                else if(user.getCategories().get(j).equals("Humanities")) {
+                    viewHolder.humanitiesIcon.setImageResource(R.drawable.ic_humanities_pressed);
+                }
+            }
+        }
     }
 
     @Override
@@ -100,9 +123,16 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         ImageView ivProfile;
         TextView tvName;
         TextView tvDescription;
-        Button btAccept;
-        Button btDecline;
+        ImageButton btAccept;
+        ImageButton btDecline;
         TextView tvDist;
+
+        public ImageView artIcon;
+        public ImageView engineeringIcon;
+        public ImageView sportsIcon;
+        public ImageView scienceIcon;
+        public ImageView languagesIcon;
+        public ImageView humanitiesIcon;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -112,6 +142,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             tvDescription = itemView.findViewById(R.id.tvDescription);
             btAccept = itemView.findViewById(R.id.btAccept);
             btDecline = itemView.findViewById(R.id.btDecline);
+
+            artIcon = (ImageView) itemView.findViewById(R.id.artIcon);
+            engineeringIcon = (ImageView) itemView.findViewById(R.id.engineeringIcon);
+            sportsIcon= (ImageView) itemView.findViewById(R.id.sportsIcon);
+            scienceIcon = (ImageView) itemView.findViewById(R.id.scienceIcon);
+            languagesIcon = (ImageView) itemView.findViewById(R.id.languagesIcon);
+            humanitiesIcon = (ImageView) itemView.findViewById(R.id.humanitiesIcon);
 
             btAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -159,7 +196,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                     user = matches.get(position).getMentor();
                 }
                 model.setUser(user);
-
+                model.setDetailsFromGrid(false);
                 fragmentTransaction = model.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.flContainer, detailsFragment).commit();
             }

@@ -53,7 +53,6 @@ public class DetailsReviewFragment extends Fragment {
     CardView cardView;
 
     Button writeReviewButton;
-    ComposeReviewFragment composeReviewFragment = new ComposeReviewFragment();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,6 +100,11 @@ public class DetailsReviewFragment extends Fragment {
         legend.setEnabled(false);
     }
 
+    private static double round (double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
+    }
+
     public void sortRatings(List<Review> ratingReviews) {
         Double total = 0.0;
         for(int i = 0; i < ratingReviews.size(); i++) {
@@ -117,7 +121,8 @@ public class DetailsReviewFragment extends Fragment {
             cardView.setVisibility(View.GONE);
         }
         else {
-            Double average = total / ratingReviews.size();
+            double average = round(total / ratingReviews.size(), 1);
+            Log.d("DetailsReview", "Rating average: " + Double.toString(average));
             aveRating.setText(Double.toString(average));
             user.setOverallRating(average);
             user.saveInBackground();
@@ -179,27 +184,6 @@ public class DetailsReviewFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        query.findInBackground(new FindCallback<Review>() {
-//            @Override
-//            public void done(List<Review> objects, ParseException e) {
-//                if (e == null) {
-//                    adapter.clear();
-//                    if (objects.size() != 0) {
-//                        Collections.reverse(objects);
-//                        ratingReviews.addAll(objects);
-//                        Log.d("Reviews", Integer.toString(objects.size()));
-//                        adapter.addAll(objects);
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                    else {
-//                        Toast.makeText(getActivity(), "This user has no reviews.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                else {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
     }
 
 }
