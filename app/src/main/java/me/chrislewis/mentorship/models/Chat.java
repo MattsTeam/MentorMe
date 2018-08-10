@@ -1,5 +1,7 @@
 package me.chrislewis.mentorship.models;
 
+import android.text.format.DateUtils;
+
 import com.parse.ParseACL;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -15,8 +17,10 @@ public class Chat extends ParseObject{
     private final static String USERS_KEY = "users";
     private final static String OBJECT_ID_KEY = "objectId";
     private final static String LAST_MESSAGE_KEY = "lastMessage";
+    private final static String LAST_MESSAGE_TIME_KEY = "lastMessageTime";
 
     private String lastMessage;
+    private long lastMessageTime;
     private ArrayList<User> recipients;
 
     public Chat() {}
@@ -63,6 +67,22 @@ public class Chat extends ParseObject{
             return lastMessage;
         } else {
             return lastMessage;
+        }
+    }
+
+    public void setRelativeTime(long time) {
+        put(LAST_MESSAGE_TIME_KEY, time);
+    }
+
+    public String getRelativeTime() {
+        lastMessageTime = getLong(LAST_MESSAGE_TIME_KEY);
+        if (lastMessageTime > 0) {
+            String relativeDate;
+            relativeDate = DateUtils.getRelativeTimeSpanString(lastMessageTime,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            return relativeDate;
+        } else {
+            return "";
         }
     }
 
