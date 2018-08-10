@@ -26,6 +26,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private Context mContext;
     private List<Match> matches;
     User currentUser;
+    User user;
     MatchAdapter matchAdapter;
 
     private boolean isMentor;
@@ -56,7 +57,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public void onBindViewHolder ( @NonNull final ViewHolder viewHolder, int i){
         Match match = matches.get(i);
-        User user = null;
         try {
             if (isMentor) {
                 user = match.getMentee();

@@ -28,6 +28,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import me.chrislewis.mentorship.models.PercentFormatter;
@@ -179,6 +180,7 @@ public class DetailsReviewFragment extends Fragment {
         try {
             adapter.clear();
             List<Review> chartReviews = query.find();
+            Collections.reverse(chartReviews);
             adapter.addAll(chartReviews);
             adapter.notifyDataSetChanged();
             ratingReviews.addAll(chartReviews);

@@ -22,11 +22,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.parse.CountCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.Objects;
 
 import me.chrislewis.mentorship.models.Camera;
+import me.chrislewis.mentorship.models.Match;
 import me.chrislewis.mentorship.models.User;
 
 public class ProfileFragment extends Fragment {
@@ -34,6 +37,7 @@ public class ProfileFragment extends Fragment {
     TextView tvName;
     TextView tvJob;
     TextView tvRating;
+    TextView tvNumMatches;
 
     ImageButton bLogOut;
     ImageButton bEdit;
@@ -90,6 +94,19 @@ public class ProfileFragment extends Fragment {
         if (rating != 0) {
             tvRating.setText(String.valueOf(rating));
         }
+
+        tvNumMatches = view.findViewById(R.id.tvNumMatches);
+
+        Match.Query query = new Match.Query();
+        query.findMatches(user);
+        query.whereEqualTo("accepted", true);
+        query.findInBackground();
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int count, ParseException e) {
+                tvNumMatches.setText(String.valueOf(count));
+            }
+        });
 
         bEdit = view.findViewById(R.id.bEdit);
 

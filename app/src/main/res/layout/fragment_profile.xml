@@ -96,17 +96,18 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvNumMatches"
+                android:id="@+id/tvMatchesTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Matches"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tvNumMatches"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:text="1"
+                android:text="0"
                 android:textColor="@color/orange"
                 android:textSize="15sp"
                 android:textStyle="bold" />
