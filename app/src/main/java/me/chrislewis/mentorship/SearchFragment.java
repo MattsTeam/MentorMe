@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageButton;
@@ -66,6 +67,8 @@ public class SearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        parent.startAnimation(fadeIn);
         return inflater.inflate(R.layout.fragment_search, parent, false);
     }
 

@@ -95,7 +95,6 @@ public class ComposeReviewFragment extends DialogFragment {
         btnSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentUser.getParseUser().revert();
                 reviewedUser.getParseUser().revert();
                 String body = etReviewBody.getText().toString();
                 double rating = rbCompose.getRating();
