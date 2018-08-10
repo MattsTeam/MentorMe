@@ -39,6 +39,7 @@ public class DetailsReviewFragment extends Fragment {
 
     SharedViewModel model;
     User user;
+    User currentUser;
     SwipeRefreshLayout swipeDetailReview;
 
     ReviewAdapter adapter;
@@ -148,6 +149,7 @@ public class DetailsReviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         user = model.getUser();
+        currentUser = model.getCurrentUser();
 
         reviews = new ArrayList<>();
         ratingReviews = new ArrayList<>();
@@ -164,6 +166,9 @@ public class DetailsReviewFragment extends Fragment {
         rvReviews.setAdapter(adapter);
 
         writeReviewButton = view.findViewById(R.id.writeReviewButton);
+        if (!currentUser.getFavorites().contains(user)) {
+            writeReviewButton.setVisibility(View.INVISIBLE);
+        }
         writeReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
