@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -100,23 +101,59 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mentorOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_favorites:
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.flContainer, favoritesFragment).commit();
+                    return true;
+                case R.id.navigation_messages:
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                    fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
+                    return true;
+                case R.id.navigation_calendar:
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                    fragmentTransaction.replace(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
+                    return true;
+                case R.id.navigation_profile:
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                    fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
+                    return true;
+            }
+            return false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         User currentUser = new User(ParseUser.getCurrentUser());
         currentUser.getFavorites();
         currentUser.getMatches();
         currentUser.getChats();
         ParseACL parseACL = new ParseACL(ParseUser.getCurrentUser());
         parseACL.setPublicReadAccess(true);
-
         ParseUser.getCurrentUser().setACL(parseACL);
+        if (currentUser.getIsMentor()) {
+            BottomNavigationView navigation = findViewById(R.id.navigation_mentor);
+            navigation.setVisibility(View.VISIBLE);
+            navigation.setOnNavigationItemSelectedListener(mentorOnNavigationItemSelectedListener);
+        } else {
+            BottomNavigationView navigation = findViewById(R.id.navigation);
+            navigation.setVisibility(View.VISIBLE);
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        }
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
 
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
         model.setFragmentManager(fragmentManager);
