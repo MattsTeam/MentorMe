@@ -64,6 +64,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
                     viewHolder.tvName.setVisibility(View.VISIBLE);
                     viewHolder.tvMessage.setText(chat.getLastMessage());
                     viewHolder.tvMessage.setVisibility(View.VISIBLE);
+                    viewHolder.tvTime.setText(chat.getRelativeTime());
+                    viewHolder.tvTime.setVisibility(View.VISIBLE);
                     Glide.with(context)
                             .load(user.getProfileImage().getUrl())
                             .apply(new RequestOptions().circleCrop())
@@ -90,12 +92,14 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         ImageView ivProfileImage;
         TextView tvName;
         TextView tvMessage;
+        TextView tvTime;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvName = itemView.findViewById(R.id.tvName);
             tvMessage = itemView.findViewById(R.id.tvMessage);
+            tvTime = itemView.findViewById(R.id.tvTime);
 
             itemView.setOnClickListener(this);
         }

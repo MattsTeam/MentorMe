@@ -26,10 +26,26 @@
         android:layout_alignParentStart="true"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
+        android:isScrollContainer="false"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:isScrollContainer="false"
         app:menu="@menu/navigation" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation_mentor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
+        android:isScrollContainer="false"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation_mentor" />
 
 </RelativeLayout>

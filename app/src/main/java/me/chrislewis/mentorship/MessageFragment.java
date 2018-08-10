@@ -135,7 +135,13 @@ public class MessageFragment extends Fragment {
                         }
                     });
                     try {
+                        Log.d("Messages", "TEst");
+                    } catch (Exception e) {
+
+                    }
+                    try {
                         chat.setLastMessage(data);
+                        chat.setRelativeTime(System.currentTimeMillis());
                         chat.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -147,7 +153,7 @@ public class MessageFragment extends Fragment {
                             }
                         });
                     } catch (Exception e) {
-                        Log.d("Chat", "Error" + e);
+                        Log.d("Chats", "Error" + e);
                     }
 
                     etMessage.setText(null);
