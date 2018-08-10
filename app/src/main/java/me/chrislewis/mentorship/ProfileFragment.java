@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,6 +51,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        container.startAnimation(fadeIn);
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -95,7 +99,7 @@ public class ProfileFragment extends Fragment {
                 FragmentManager manager = model.getFragmentManager();
                 FragmentTransaction fragmentTransaction = manager.beginTransaction();
                 editProfileFragment = new EditProfileFragment();
-                fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                 fragmentTransaction.replace(R.id.flContainer, editProfileFragment).commit();
             }
         });
