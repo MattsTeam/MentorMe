@@ -95,7 +95,6 @@ public class ComposeReviewFragment extends DialogFragment {
         btnSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reviewedUser.getParseUser().revert();
                 String body = etReviewBody.getText().toString();
                 double rating = rbCompose.getRating();
                 final ParseUser otherUser = reviewedUser.getParseUser();
@@ -123,6 +122,7 @@ public class ComposeReviewFragment extends DialogFragment {
                 }
 
                 review.setUserId(otherId);
+                otherUser.revert();
                 review.saveInBackground(new com.parse.SaveCallback() {
                     @Override
                     public void done(ParseException e) {

@@ -90,7 +90,7 @@ public class DetailsMatchesFragment extends Fragment {
                     matchAdapter.notifyItemInserted(objects.size() - 1);
                     if (favorites != null) {
                         if (isMentor) {
-                            favorites.add(objects.get(i).getMentee());
+                                favorites.add(objects.get(i).getMentee());
                         }
                         else {
                             favorites.add(objects.get(i).getMentor());

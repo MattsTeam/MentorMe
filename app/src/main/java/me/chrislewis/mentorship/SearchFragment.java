@@ -64,6 +64,7 @@ public class SearchFragment extends Fragment {
     Toolbar toolbar;
 
     ImageButton menuButton;
+    List<User> mFavorites;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class SearchFragment extends Fragment {
         ParseUser.getCurrentUser().fetchInBackground();
         currentUser = new User(ParseUser.getCurrentUser());
         model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        mFavorites = currentUser.getFavorites();
 
         setupNavigationDrawer(view);
 
@@ -182,11 +184,9 @@ public class SearchFragment extends Fragment {
         try {
             List<ParseUser> users = query.find();
             sameCategoryUsers = new ArrayList<>(users);
-            Log.d("SearchFragment", "users: " + Integer.toString(users.size()));
 
             for (ParseUser user : users) {
                 User mUser = new User(user);
-
                 List<String> common = mUser.getCategories();
                 currentCategories = currentUser.getCategories();
                 if (common != null && currentCategories != null) {
@@ -196,8 +196,20 @@ public class SearchFragment extends Fragment {
                         sameCategoryUsers.remove(user);
                         Log.i("common", "Common is null");
                     }
+
+                    // don't show users that have already been favorited by current user
+                    if (mFavorites != null) {
+                        for (User favUser : mFavorites) {
+                            ParseUser favParseUser = favUser.getParseUser();
+                            if (favParseUser.getObjectId().equals(user.getObjectId())) {
+                                sameCategoryUsers.remove(user);
+                            }
+                        }
+                    }
                 }
             }
+
+
 
             for(int i = 0; i < sameCategoryUsers.size(); i++) {
                 User user = new User (sameCategoryUsers.get(i));
