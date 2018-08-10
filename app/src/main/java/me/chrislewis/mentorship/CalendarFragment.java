@@ -89,6 +89,8 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        parent.startAnimation(fadeIn);
         return inflater.inflate(R.layout.fragment_calendar, parent, false);
     }
 

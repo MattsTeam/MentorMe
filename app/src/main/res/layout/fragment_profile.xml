@@ -157,9 +157,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/tvJob"
-
         android:layout_centerHorizontal="true"
-        android:background="@color/papaya"
+        android:background="@drawable/nav_bar"
         app:menu="@menu/navigation_profile">
 
     </android.support.design.widget.BottomNavigationView>
