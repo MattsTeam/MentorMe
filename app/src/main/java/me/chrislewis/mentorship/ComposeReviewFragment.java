@@ -95,9 +95,11 @@ public class ComposeReviewFragment extends DialogFragment {
         btnSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                currentUser.getParseUser().revert();
+                reviewedUser.getParseUser().revert();
                 String body = etReviewBody.getText().toString();
                 double rating = rbCompose.getRating();
-                ParseUser otherUser = reviewedUser.getParseUser();
+                final ParseUser otherUser = reviewedUser.getParseUser();
                 String otherId = otherUser.getObjectId();
                 Review review = new Review();
                 review.setBody(body);
@@ -126,11 +128,11 @@ public class ComposeReviewFragment extends DialogFragment {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
-                            Log.d("Debug Reviews", "Reviews work");
                             Toast.makeText(getActivity(), "You submitted a review", Toast.LENGTH_SHORT).show();
                             dismiss();
                             FragmentTransaction fragmentTransaction = model.getFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.flContainer, detailsFragment2).commit();
+                            Log.d("Debug Reviews", "Reviews work");
                         }
                         else {
                             Log.d("Debug Reviews", "Failed review" + e);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class DetailsReviewFragment extends Fragment {
 
     SharedViewModel model;
     User user;
+    SwipeRefreshLayout swipeDetailReview;
 
     ReviewAdapter adapter;
     List<Review> reviews;
@@ -155,7 +157,6 @@ public class DetailsReviewFragment extends Fragment {
         getUserReviews();
         cardView = view.findViewById(R.id.statsBox);
         sortRatings(ratingReviews);
-
 
         rvReviews = view.findViewById(R.id.rvDetailsReviews);
         rvReviews.setLayoutManager(new LinearLayoutManager(view.getContext()));
