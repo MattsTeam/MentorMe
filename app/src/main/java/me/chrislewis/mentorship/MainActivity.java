@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -146,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
         ParseUser.getCurrentUser().setACL(parseACL);
         if (currentUser.getIsMentor()) {
             BottomNavigationView navigation = findViewById(R.id.navigation_mentor);
-            navigation.setVisibility(View.VISIBLE);
+            navigation.setVisibility(View
+                    .VISIBLE);
             navigation.setOnNavigationItemSelectedListener(mentorOnNavigationItemSelectedListener);
         } else {
             BottomNavigationView navigation = findViewById(R.id.navigation);

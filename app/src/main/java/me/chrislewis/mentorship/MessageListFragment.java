@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,6 +98,7 @@ public class MessageListFragment extends Fragment {
             }
         });
 
+        findChats();
         myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
     }
 
@@ -117,7 +119,7 @@ public class MessageListFragment extends Fragment {
                 } else {
                     Log.e("message", "Error Loading Messages " + e);
                 }
-                model.getCurrentUser().setChats(objects);
+                model.getCurrentUser().setChats((ArrayList<Chat>) objects);
             }
         });
     }

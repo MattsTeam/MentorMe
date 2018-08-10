@@ -45,7 +45,7 @@ public class User{
     private final static String CHAT_KEY = "chats";
 
     private ParseUser user;
-    private List<Chat> chats;
+    private ArrayList<Chat> chats;
     private ArrayList<User> favorites;
     private ArrayList<Match> matches;
 
@@ -305,11 +305,11 @@ public class User{
         return null;
     }
 
-    public void setChats(List<Chat> chats) {
+    public void setChats(ArrayList<Chat> chats) {
         this.chats = chats;
     }
 
-    public List<Chat> getChats() {
+    public ArrayList<Chat> getChats() {
         if (chats == null) {
             chats = new ArrayList<>();
             List<Chat> holder = (List<Chat>) user.get(CHAT_KEY);
@@ -332,7 +332,7 @@ public class User{
     }
 
     public void addChats(List<Chat> chat) {
-        chats = chat;
+        chats = (ArrayList<Chat>) chat;
         this.user.remove(CHAT_KEY);
         this.user.addAllUnique(CHAT_KEY, chat);
     }
