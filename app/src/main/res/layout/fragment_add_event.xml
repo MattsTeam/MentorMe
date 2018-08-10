@@ -183,7 +183,7 @@
         android:layout_alignLeft="@id/locationBox"
         android:layout_alignTop="@id/locationBox"
         android:layout_marginLeft="10dp"
-        app:srcCompat="@drawable/ic_location" />
+        app:srcCompat="@drawable/ic_event_location" />
 
     <EditText
         android:id="@+id/eventLocation"

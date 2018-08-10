@@ -100,6 +100,8 @@ dependencies {
     implementation 'com.desarrollodroide:fragmenttransactionextended:1'
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

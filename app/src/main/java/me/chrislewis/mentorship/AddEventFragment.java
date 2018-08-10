@@ -15,6 +15,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -66,11 +68,15 @@ public class AddEventFragment extends Fragment {
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd, yyyy");
     SimpleDateFormat currFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat newEventFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    private ViewGroup parent;
     private SharedViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
+        Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        parent.startAnimation(fadeIn);
         try {
             if (getArguments() != null) {
                 isSynced = getArguments().getBoolean("isSynced");
@@ -277,24 +283,25 @@ public class AddEventFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(findMentors.getSelectedItem() == null
-                        || startTime.getText().toString().equals("--:--")
-                        || endTime.getText().toString().equals("--:--")
+                        || startTime.getText().toString().equals("- - : - -")
+                        || endTime.getText().toString().equals("- - : - -")
                         || eventDate.getText().toString().equals("")) {
                     Toast toast = Toast.makeText(getActivity(), "Please fill out all of the required information for the new event.", Toast.LENGTH_LONG);
                     TextView v = toast.getView().findViewById(android.R.id.message);
                     v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
-                if(eventDescription.getText().toString().equals("")){
-                    eventDescription.setText("N/A");
-                }
-                if(eventTitle.getText().toString().equals("")){
-                    eventTitle.setText("N/A");
-                }
                 if(findMentors.getSelectedItem() != null
+                        && findMentors.getSelectedItem() != "Select your mentor"
                         && !startTime.getText().toString().equals("--:--")
                         && !endTime.getText().toString().equals("--:--")
                         && !eventDate.getText().toString().equals("")) {
+                    if(eventDescription.getText().toString().equals("")){
+                        eventDescription.setText("N/A");
+                    }
+                    if(eventTitle.getText().toString().equals("")){
+                        eventTitle.setText("N/A");
+                    }
                     String title = eventTitle.getText().toString();
                     String description = eventDescription.getText().toString();
                     String invitee = findMentors.getSelectedItem().toString();
@@ -378,7 +385,22 @@ public class AddEventFragment extends Fragment {
         toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
         toast.show();
         Log.d("AddEventDialogFragment", "Saved new event to Parse");
+    }
 
+    public void willBeDisplayed() {
+        Log.d("AddEventFragment", "here");
+        if (parent != null) {
+            Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+            parent.startAnimation(fadeIn);
+        }
+    }
+
+    public void willBeHidden() {
+        Log.d("AddEventFragment", "here2");
+        if (parent != null) {
+            Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
+            parent.startAnimation(fadeOut);
+        }
     }
 
 }

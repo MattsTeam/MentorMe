@@ -77,22 +77,22 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_search:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, searchFragment).commit();
                     return true;
                 case R.id.navigation_messages:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, messageFragment).commit();
                     return true;
                 case R.id.navigation_calendar:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, calendarFragment, "CalendarFragment").addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                    //fragmentTransaction.setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     fragmentTransaction.replace(R.id.flContainer, profileFragment).commit();
                     return true;
             }
