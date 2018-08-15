@@ -124,7 +124,7 @@ public class MessageFragment extends Fragment {
                                 payload.put("customData", "New message: " + data);
                                 ParseCloud.callFunctionInBackground("pingReply", payload);
                                 Toast.makeText(getActivity(),
-                                        "A notification was sent to your mentor",
+                                        "A message was sent",
                                         Toast.LENGTH_LONG).show();
                             } else {
                                 Log.d("Messages", "Fail "+ e);

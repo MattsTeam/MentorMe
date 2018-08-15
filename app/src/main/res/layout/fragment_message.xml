@@ -42,6 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/bSend"
             android:layout_toLeftOf="@+id/bSend"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:gravity="top"
             android:hint="@string/message_hint"
             android:imeOptions="actionSend"
@@ -49,12 +51,12 @@
 
         <ImageButton
             android:id="@+id/bSend"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="38dp"
             android:background="@drawable/send"
             android:backgroundTint="@color/orange"
             android:tint="@color/orange" />

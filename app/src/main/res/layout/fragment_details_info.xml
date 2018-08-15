@@ -34,8 +34,8 @@
 
                     <TextView
                         android:id="@+id/descriptionTitle"
-                        android:layout_width="120dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="15dp"
@@ -79,13 +79,13 @@
 
                     <TextView
                         android:id="@+id/educationTitle"
-                        android:layout_width="120dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginRight="15dp"
-                        android:textColor="@color/orange"
+                        android:layout_marginTop="15dp"
                         android:text="Education"
+                        android:textColor="@color/orange"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -124,13 +124,13 @@
 
                     <TextView
                         android:id="@+id/skillsTitle"
-                        android:layout_width="120dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="15dp"
-                        android:textColor="@color/orange"
                         android:text="Skills"
+                        android:textColor="@color/orange"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -168,11 +168,11 @@
 
                     <TextView
                         android:id="@+id/organizationTitle"
-                        android:layout_width="150dp"
-                        android:layout_height="32dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"
                         android:text="Organization"
                         android:textColor="@color/orange"
                         android:textSize="25sp"

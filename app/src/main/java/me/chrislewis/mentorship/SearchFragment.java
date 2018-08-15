@@ -197,15 +197,15 @@ public class SearchFragment extends Fragment {
                         Log.i("common", "Common is null");
                     }
 
-                    // don't show users that have already been favorited by current user
-                    if (mFavorites != null) {
-                        for (User favUser : mFavorites) {
-                            ParseUser favParseUser = favUser.getParseUser();
-                            if (favParseUser.getObjectId().equals(user.getObjectId())) {
-                                sameCategoryUsers.remove(user);
-                            }
-                        }
-                    }
+//                    // don't show users that have already been favorited by current user
+//                    if (mFavorites != null) {
+//                        for (User favUser : mFavorites) {
+//                            ParseUser favParseUser = favUser.getParseUser();
+//                            if (favParseUser.getObjectId().equals(user.getObjectId())) {
+//                                sameCategoryUsers.remove(user);
+//                            }
+//                        }
+//                    }
                 }
             }
 

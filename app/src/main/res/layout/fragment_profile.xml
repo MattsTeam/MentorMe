@@ -139,7 +139,8 @@
         <ImageView
             android:id="@+id/ivStar"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="bottom"
             app:srcCompat="@drawable/ic_white_star" />
 
     </LinearLayout>

@@ -39,7 +39,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import me.chrislewis.mentorship.models.AlarmBroadcastReceiver;
 import me.chrislewis.mentorship.models.ParseEvent;
 import me.chrislewis.mentorship.models.User;
 
@@ -379,7 +378,7 @@ public class AddEventFragment extends Fragment {
         newEvent.saveInBackground();
         otherEvent.saveInBackground();
 
-        AlarmBroadcastReceiver.setAlarm(getContext(), date, startTime);
+//        AlarmBroadcastReceiver.setAlarm(getContext(), date, startTime);
 
         Toast toast = Toast.makeText(getActivity(), "Added new event!", Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
