@@ -64,4 +64,9 @@ Application that mentors and mentees based on shared interests, goals, available
 ## Week 2 GIF
 ![Walkthrough](week2GIF.gif)
 
+<br><br><br>
+
+## Week 3-5 GIF
+![Walkthrough](lastGIF.gif)
+
 
