@@ -1,8 +1,8 @@
-# toBeNamed
-Tinder for mentorship (this will be changed)
+# MentorMe
+MentorMe is an app that helps address the massive educational gap where students from underprivileged backgrounds do not get the resources they need and the education they deserve. We provide a free platform for these students to find and interact with mentors in their nearby communities.
 
 # Short Description
-Application to match mentors and mentees based on shared interests, goals, available location, and other categories.
+Application that mentors and mentees based on shared interests, goals, available location, and other categories. Users can message, create events with, and review one another.
 
 # Core User Stories
 * matching algorithm (MVP/partial implementation)
@@ -45,15 +45,16 @@ Application to match mentors and mentees based on shared interests, goals, avail
 
 
 # APIs
-
-* Google Maps
 * Parse Push for push notification
-* Calendar Provider API 
+* Google Calendar API
 
 # Models
-* User: goals, skills, location, profile picture, current mentors/mentees
+* User: areas of interest, skills, location, profile picture, current mentors/mentees
 * Meeting: time, location
-* Calendar: meetings
+* Match and Chat: links between users
+* Message
+* ParseEvent
+* Review: rating, description, photos
 
 ## Week 1 GIF
 ![Walkthrough](week1GIF.gif)
